@@ -1,0 +1,74 @@
+{
+    "benefits": [
+        {
+            "icon": "https://salt.tikicdn.com/ts/upload/c5/37/ee/76c708d43e377343e82baee8a0340297.png",
+            "text": "Được đồng kiểm khi nhận hàng"
+        },
+        {
+            "icon": "https://salt.tikicdn.com/ts/upload/ea/02/b4/b024e431ec433e6c85d4734aaf35bd65.png",
+            "text": "<b>Được hoàn tiền 200%</b> nếu là hàng giả."
+        },
+        {
+            "icon": "https://salt.tikicdn.com/ts/upload/d8/c7/a5/1cd5bd2f27f9bd74b2c340b8e27c4d82.png",
+            "text": "Đổi trả miễn phí trong 30 ngày khi bạn đổi ý hoặc sản phẩm không đúng cam kết.",
+            "sub_text": [],
+            "cta": {
+                "text": "Chi tiết",
+                "type": "open_policy_return_modal"
+            }
+        }
+    ],
+    "return_policy": {
+        "body": [
+            {
+                "label": "Trong 30 ngày khi bạn đổi ý hoặc sản phẩm không đúng cam kết:",
+                "content": [
+                    "Sản phẩm phải còn nguyên hộp, bao bì, phiếu bảo hành, tem, mác, phụ kiện và quà tặng kèm (nếu có).",
+                    "Đặc biệt, trong trường hợp bạn đổi ý hoặc sản phẩm bị giao sai: Sản phẩm phải chưa qua sử dụng, chưa kích hoạt, còn nguyên bao bì, nhãn mác, niêm phong (nếu có), và sản phẩm không mua bằng hình thức trả góp."
+                ]
+            }
+        ],
+        "cta": {
+            "link": "https://hotro.tiki.vn/s/article/chinh-sach-doi-tra-san-pham",
+            "text_button": "Tìm hiểu thêm"
+        },
+        "title": "Đổi trả miễn phí"
+    },
+    "warranty_info": [
+        {
+            "name": "Thời gian bảo hành",
+            "value": "6 Tháng"
+        },
+        {
+            "name": "Hình thức bảo hành",
+            "value": "Hóa đơn"
+        },
+        {
+            "name": "Nơi bảo hành",
+            "value": "Bảo hành bởi nhà bán hàng thông qua Tiki"
+        },
+        {
+            "name": "Hướng dẫn bảo hành",
+            "value": "Xem chi tiết",
+            "url": "https://hotro.tiki.vn/s/article/chinh-sach-bao-hanh-tai-tiki-nhu-the-nao"
+        }
+    ],
+    "installment_info": [
+        {
+            "display_text": "Ưu đãi đến 600k với thẻ TikiCard",
+            "icon": "https://salt.tikicdn.com/ts/upload/73/4d/f7/f86e767bffc14aa3d6abed348630100b.png",
+            "summary": "Ưu đãi đến 600k với thẻ TikiCard.",
+            "title": "Ưu đãi đến 600k với thẻ TikiCard",
+            "type": "other",
+            "url": "https://tiki.vn/san-pham-so/the-dong-thuong-hieu-tiki-co-card"
+        },
+        {
+            "display_text": "Mua trước trả sau",
+            "icon": "https://salt.tikicdn.com/ts/upload/2a/27/6a/7bbba1f6c93a1a42a3c314e7b5825f4c.png",
+            "summary": "Duyệt hồ sơ nhanh chóng qua công ty tài chính.",
+            "title": "Mua trước trả sau",
+            "type": "postpaid",
+            "url": "https://tiki.vn/mua-truoc-tra-sau/thanh-toan?src=pdp&masterId=201067649&pid=252852431&seller_id=106499&qty=1"
+        }
+    ]
+}

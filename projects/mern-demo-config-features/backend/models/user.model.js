@@ -1,0 +1,69 @@
+import { Schema } from "mongoose";
+import { testMongodb } from "../configs/database.config.js";
+
+const userModel =
+  testMongodb.models.User ||
+  testMongodb.model(
+    `User`,
+    new Schema(
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        email: {
+          type: String,
+          unique: true,
+          required: true,
+        },
+        password: {
+          type: String,
+          required: true,
+        },
+        role: {
+          type: String,
+          enum: ["admin", "member"],
+          default: "member",
+          required: true,
+        },
+        resetPasswordToken: {
+          type: String,
+        },
+        refreshToken: {
+          type: String,
+        },
+
+        avatar: {
+          type: Array,
+          default: "https://avatar.iran.liara.run/public",
+        },
+        phone: {
+          type: String,
+        },
+        address: {
+          type: String,
+        },
+        city: {
+          type: String,
+        },
+        country: {
+          type: String,
+        },
+        zip: {
+          type: String,
+        },
+        state: {
+          type: String,
+        },
+        bod: {
+          type: String,
+        },
+        content: {
+          type: String,
+        },
+      },
+      { timestamps: true }
+    )
+  );
+
+export default userModel;
