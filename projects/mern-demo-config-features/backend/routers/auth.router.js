@@ -327,7 +327,7 @@ authRouter.get(`/signin/success`, async (req, res, next) => {
       }
 
       const respData = await userModel
-        .findOne({ provider_id: user.id })
+        .findOne({ provider_id: user.id, provider: user.provider })
         .select([`-resetPasswordToken`, `-refreshToken`]);
 
       const { accessToken } = await generateToken(
