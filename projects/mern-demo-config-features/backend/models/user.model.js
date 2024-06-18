@@ -13,12 +13,16 @@ const userModel =
         },
         email: {
           type: String,
-          unique: true,
-          required: true,
         },
         password: {
           type: String,
           required: true,
+        },
+        provider_id: {
+          type: Schema.Types.Mixed,
+        },
+        provider: {
+          type: Schema.Types.Mixed,
         },
         role: {
           type: String,
@@ -26,6 +30,7 @@ const userModel =
           default: "member",
           required: true,
         },
+
         resetPasswordToken: {
           type: String,
         },

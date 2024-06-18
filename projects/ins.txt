@@ -38,6 +38,11 @@ npm i bcryptjs
 npm i nodemailer
 npm i axios
 npm i slug
+npm i cookie-session
+npm install passport@0.5
+npm install passport-google-oauth20
+npm install passport-github2
+npm install passport-facebook
 
 npm i --save-dev @types/cors
 npm i --save-dev @types/cookie-parser
@@ -49,3 +54,9 @@ npm i --save-dev @types/bcryptjs
 npm i --save-dev @types/crypto-js
 npm i --save-dev @types/slug
 npm i --save-dev @types/nodemailer
+npm i --save-dev @types/cookie-session
+npm i --save-dev @types/passport
+npm i --save-dev @types/passport-google-oauth20
+npm i --save-dev @types/passport-github2
+npm i --save-dev @types/passport-facebook
+

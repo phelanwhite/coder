@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCurrentUser } from "./authSlice";
+
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/",
   credentials: "include",
@@ -94,6 +95,13 @@ export const authApi = createApi({
       invalidatesTags: ["authApi"],
     }),
 
+    signinPassportSuccess: builder.query({
+      query: () => ({
+        url: `auth/signin/success`,
+        method: "GET",
+      }),
+      providesTags: ["authApi"],
+    }),
     getListMe: builder.query({
       query: () => ({
         url: `auth/get-list-user`,
@@ -128,4 +136,5 @@ export const {
   useGetMeQuery,
   useGetListMeQuery,
   useUpdateMeMutation,
+  useSigninPassportSuccessQuery,
 } = authApi;

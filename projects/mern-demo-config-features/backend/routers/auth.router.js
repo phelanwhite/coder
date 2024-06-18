@@ -14,8 +14,7 @@ import {
   forgot_password_validate,
   reset_password_validate,
   signin_validate,
-  generateAccessToken,
-  generateRefreshToken,
+  generateToken,
 } from "../services/auth.service.js";
 import { verifyToken } from "../middlewares/verifyToken.middleware.js";
 import multerConfig from "../configs/multer.config.js";
@@ -23,6 +22,7 @@ import {
   cloudinary_deleteFile,
   cloudinary_uploadFile,
 } from "../configs/cloudinary.config.js";
+import passport from "passport";
 
 const clientURL = `http://localhost:3000`;
 
@@ -81,12 +81,11 @@ authRouter.post(`/signin`, async (req, res, next) => {
       throw createHttpError("Invalid email or password");
     }
 
-    const accessToken = await generateAccessToken({
-      _id: userExists._id,
-      role: userExists.role,
-    });
-    const refreshToken = await generateRefreshToken(
-      { _id: userExists._id },
+    const { accessToken } = await generateToken(
+      {
+        _id: userExists._id,
+        role: userExists.role,
+      },
       res
     );
 
@@ -103,36 +102,33 @@ authRouter.post(`/signin`, async (req, res, next) => {
 authRouter.post(`/refresh-token`, async (req, res, next) => {
   try {
     const refreshTokenCookie = req.cookies.refreshToken;
-
     if (!refreshTokenCookie) {
       throw createHttpError.Forbidden(`Refresh token is required`);
     }
+
     jwt.verify(
       refreshTokenCookie,
       envConfig.JWT_REFRESH_SECRET,
-      async function (err, decode) {
+      function (err, decode) {
         if (err) {
+          res.clearCookie("refreshToken");
           throw createHttpError.Unauthorized(err?.message);
         }
-
-        const userExists = await userModel.findById(decode._id);
-
-        const accessToken = await generateAccessToken({
-          _id: userExists._id,
-          role: userExists.role,
-        });
-        const refreshToken = await generateRefreshToken(
-          { _id: userExists._id },
-          res
-        );
-
-        return responseHandle(res, {
-          status: StatusCodes.OK,
-          message: `Refresh token successfully`,
-          result: accessToken,
-        });
       }
     );
+    const userExists = await userModel.findOne({
+      refreshToken: refreshTokenCookie,
+    });
+    const { accessToken } = await generateToken(
+      { _id: userExists._id, role: userExists.role },
+      res
+    );
+
+    return responseHandle(res, {
+      status: StatusCodes.OK,
+      message: `Refresh token successfully`,
+      result: accessToken,
+    });
   } catch (error) {
     next(error);
   }
@@ -141,31 +137,20 @@ authRouter.post(`/refresh-token`, async (req, res, next) => {
 authRouter.post(`/signout`, async (req, res, next) => {
   try {
     const refreshTokenCookie = req.cookies.refreshToken;
-    if (!refreshTokenCookie) {
-      throw createHttpError.Forbidden(`Refresh token is required`);
-    }
 
-    jwt.verify(
-      refreshTokenCookie,
-      envConfig.JWT_REFRESH_SECRET,
-      async function (err, decode) {
-        if (err) {
-          throw createHttpError.Unauthorized(err?.message);
-        }
-        // clear refreshToken in database and cookie
-        await userModel.findByIdAndUpdate(
-          decode?._id,
-          { refreshToken: "" },
-          { new: true }
-        );
-        res.clearCookie(`refreshToken`);
-
-        return responseHandle(res, {
-          status: StatusCodes.OK,
-          message: `Signout successfully`,
-        });
-      }
+    // clear refreshToken in database and cookie
+    await userModel.findOneAndUpdate(
+      { refreshToken: refreshTokenCookie },
+      { refreshToken: "" },
+      { new: true }
     );
+    res.clearCookie(`refreshToken`);
+
+    req.logout();
+    return responseHandle(res, {
+      status: StatusCodes.OK,
+      message: `Signout successfully`,
+    });
   } catch (error) {
     next(error);
   }
@@ -304,4 +289,111 @@ authRouter.get(`/get-list-user`, async (req, res, next) => {
   }
 });
 
+// passport
+authRouter.get(`/signin/success`, async (req, res, next) => {
+  try {
+    const user = req.user;
+    // console.log({ user });
+    if (user) {
+      const userExists = await userModel
+        .findOne({ provider_id: user.id })
+        .select([`-resetPasswordToken`, `-refreshToken`]);
+
+      if (!userExists) {
+        const salt = await bcryptjs.genSalt(12);
+        const hashPassword = await bcryptjs.hash(user?.id, salt);
+
+        if (user.provider === "google") {
+          const newUser = {
+            name: user._json?.given_name,
+            password: hashPassword,
+            provider_id: user?.id,
+            provider: user?.provider,
+            avatar: user._json?.picture,
+          };
+          await userModel.create(newUser);
+        }
+
+        if (user.provider === "github") {
+          const newUser = {
+            name: user._json?.login,
+            password: hashPassword,
+            provider_id: user?.id,
+            provider: user?.provider,
+            avatar: user._json?.avatar_url,
+          };
+          await userModel.create(newUser);
+        }
+      }
+
+      const respData = await userModel
+        .findOne({ provider_id: user.id })
+        .select([`-resetPasswordToken`, `-refreshToken`]);
+
+      const { accessToken } = await generateToken(
+        {
+          _id: respData._id,
+          role: respData.role,
+        },
+        res
+      );
+
+      return responseHandle(res, {
+        status: StatusCodes.OK,
+        message: `Login with ${respData.provider} successfully`,
+        result: { data: respData, accessToken, user },
+      });
+    }
+
+    // throw createHttpError(`Login google failed. User does not exists`);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+authRouter.get("/signin/failed", (req, res) => {
+  return responseHandle(res, {
+    status: StatusCodes.OK,
+    message: "Signin failure",
+  });
+});
+
+// google
+authRouter.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+authRouter.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: clientURL,
+    failureRedirect: "/signin/failed",
+  })
+);
+
+// github
+authRouter.get(
+  "/github",
+  passport.authenticate("github", { scope: ["profile", "email"] })
+);
+authRouter.get(
+  "/github/callback",
+  passport.authenticate("github", {
+    successRedirect: clientURL,
+    failureRedirect: "/signin/failed",
+  })
+);
+
+// facebook
+authRouter.get(
+  "/facebook",
+  passport.authenticate("facebook", { scope: ["profile", "email"] })
+);
+authRouter.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: clientURL,
+    failureRedirect: "/signin/failed",
+  })
+);
 export default authRouter;

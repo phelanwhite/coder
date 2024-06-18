@@ -23,13 +23,10 @@ export const reset_password_validate = Joi.object({
 });
 
 // generate jwt
-export const generateAccessToken = async (token) => {
-  return jwt.sign({ ...token }, envConfig.JWT_SECRET, {
+export const generateToken = async (token, res) => {
+  const accessToken = jwt.sign({ ...token }, envConfig.JWT_SECRET, {
     expiresIn: envConfig.JWT_EXPIRE,
   });
-};
-
-export const generateRefreshToken = async (token, res) => {
   const refreshToken = jwt.sign({ ...token }, envConfig.JWT_REFRESH_SECRET, {
     expiresIn: envConfig.JWT_REFRESH_EXPIRE,
   });
@@ -43,5 +40,6 @@ export const generateRefreshToken = async (token, res) => {
   });
 
   await userModel.findByIdAndUpdate(token._id, { refreshToken }, { new: true });
-  return refreshToken;
+
+  return { accessToken, refreshToken };
 };

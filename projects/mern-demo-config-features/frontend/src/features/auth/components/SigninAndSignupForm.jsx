@@ -1,11 +1,12 @@
 import React, { memo, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { FaFacebook, FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useSigninMutation, useSignupMutation } from "../services/authApi";
 import { setCurrentUser } from "../services/authSlice";
 import Loader from "components/ui/loader";
+import { usePassportContext } from "../contexts/passport.context";
 
 const SigninAndSignupForm = () => {
   const navigate = useNavigate();
@@ -71,6 +72,12 @@ const SigninAndSignupForm = () => {
     }
   }, [signupResult]);
 
+  const {
+    handleSigninWithGoogle,
+    handleSigninWithFacebook,
+    handleSigninWithGithub,
+  } = usePassportContext();
+
   if (signinResult.isLoading || signupResult.isLoading) return <Loader />;
 
   return (
@@ -112,7 +119,7 @@ const SigninAndSignupForm = () => {
             <input
               type="password"
               className="input-box"
-              placeholder="Cf password"
+              placeholder="Confirm  password"
               name="cf_password"
               value={formValue.cf_password}
               onChange={handleChangeInput}
@@ -130,28 +137,35 @@ const SigninAndSignupForm = () => {
           >
             Submit
           </button>
-          <div className="text-center font-semibold">or</div>
-          <button className="btn btn-primary">
-            <FaFacebookF />
-            Signin With Facebook
-          </button>
-          <button className="btn btn-danger">
-            <FaGoogle />
-            Signin With Google
-          </button>
-          <div className="flex items-center justify-center">
-            {isSignup ? (
-              <Link className="text-link text-xs" to={`/signin`}>
-                Signin
-              </Link>
-            ) : (
-              <Link className="text-link text-xs" to={`/signup`}>
-                Signup
-              </Link>
-            )}
-          </div>
         </div>
       </form>
+      <div className="mt-4 flex flex-col gap-4">
+        <div className="text-center font-semibold">or</div>
+        <button onClick={handleSigninWithGoogle} className="btn btn-danger">
+          <FaGoogle />
+          Signin With Google
+        </button>
+        <button onClick={handleSigninWithFacebook} className="btn btn-primary">
+          <FaFacebook />
+          Signin With Facebook
+        </button>
+        <button onClick={handleSigninWithGithub} className="btn btn-dark">
+          <FaGithub />
+          Signin With Github
+        </button>
+
+        <div className="flex items-center justify-center">
+          {isSignup ? (
+            <Link className="text-link text-xs" to={`/signin`}>
+              Signin
+            </Link>
+          ) : (
+            <Link className="text-link text-xs" to={`/signup`}>
+              Signup
+            </Link>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

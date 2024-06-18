@@ -10,7 +10,7 @@ export const verifyToken = async (req, res, next) => {
     }
     jwt.verify(token, envConfig.JWT_SECRET, function (err, decoded) {
       if (err) {
-        throw createHttpError.Unauthorized(err);
+        throw createHttpError.Unauthorized(err.message);
       }
       req.user = decoded;
       next();
