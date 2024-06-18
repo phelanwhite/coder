@@ -4,6 +4,9 @@ import { setCurrentUser } from "../services/authSlice";
 import { useSigninPassportSuccessQuery } from "../services/authApi";
 import { toast } from "react-toastify";
 
+// const clientUrl = `http://localhost:5000/`;
+const clientUrl = `/`;
+
 const PassportContext = createContext();
 
 export const PassportProvider = ({ children }) => {
@@ -22,13 +25,13 @@ export const PassportProvider = ({ children }) => {
   }, [getPassport]);
 
   const handleSigninWithGoogle = () => {
-    window.open(`http://localhost:5000/auth/google`, "_self");
+    window.open(`${clientUrl}auth/google`, "_self");
   };
   const handleSigninWithFacebook = () => {
-    window.open(`http://localhost:5000/auth/facebook`, "_self");
+    window.open(`${clientUrl}auth/facebook`, "_self");
   };
   const handleSigninWithGithub = () => {
-    window.open(`http://localhost:5000/auth/github`, "_self");
+    window.open(`${clientUrl}auth/github`, "_self");
   };
 
   return (
