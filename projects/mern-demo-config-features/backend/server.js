@@ -36,12 +36,8 @@ app.use(routes);
 // deploy
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, `/frontend/dist`)));
-app.get(`*`, async (req, res, next) => {
-  try {
-    res.sendFile(path.join(__dirname, `frontend`, `dist`, `index.html`));
-  } catch (error) {
-    next(error);
-  }
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
 app.use(errorHandle);
