@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -31,27 +31,33 @@ const ForgotPasswordAndResetPasswordForm = () => {
   const [resetPassword, resetPasswordResult] = useResetPasswordMutation();
 
   // handle input change and from submit
-  const handleChangeInput = (e) => {
-    setFormValue({
-      ...formValue,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (isForgotPassword) {
-      forgotPassword({ email: formValue.email });
-    } else {
-      resetPassword({
-        token: searchParams.toString(),
-        data: {
-          password: formValue.password,
-          cf_password: formValue.cf_password,
-        },
+  const handleChangeInput = useCallback(
+    (e) => {
+      setFormValue({
+        ...formValue,
+        [e.target.name]: e.target.value,
       });
-    }
-  };
+    },
+    [formValue]
+  );
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (isForgotPassword) {
+        forgotPassword({ email: formValue.email });
+      } else {
+        resetPassword({
+          token: searchParams.toString(),
+          data: {
+            password: formValue.password,
+            cf_password: formValue.cf_password,
+          },
+        });
+      }
+    },
+    [formValue, isForgotPassword]
+  );
 
   // forgotPasswordResult
   useEffect(() => {

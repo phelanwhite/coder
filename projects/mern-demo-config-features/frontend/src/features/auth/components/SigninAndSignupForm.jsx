@@ -1,12 +1,14 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaFacebook, FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useSigninMutation, useSignupMutation } from "../services/authApi";
 import { setCurrentUser } from "../services/authSlice";
 import Loader from "components/ui/loader";
-import { usePassportContext } from "../contexts/passport.context";
+import envConfig from "configs/envConfig";
+
+const clientUrl = envConfig.serverUrl;
 
 const SigninAndSignupForm = () => {
   const navigate = useNavigate();
@@ -34,28 +36,35 @@ const SigninAndSignupForm = () => {
   const [signup, signupResult] = useSignupMutation();
 
   // handle input change and from submit
-  const handleChangeInput = (e) => {
-    setFormValue({
-      ...formValue,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleChangeInput = useCallback(
+    (e) => {
+      setFormValue({
+        ...formValue,
+        [e.target.name]: e.target.value,
+      });
+    },
+    [formValue]
+  );
 
-    if (isSignup) {
-      signup(formValue);
-    } else {
-      signin({ email: formValue.email, password: formValue.password });
-    }
-  };
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (isSignup) {
+        signup(formValue);
+      } else {
+        signin({ email: formValue.email, password: formValue.password });
+      }
+    },
+    [formValue, isSignup]
+  );
 
   // signinResult
   useEffect(() => {
     if (signinResult.isSuccess) {
       toast.success(signinResult.data?.message);
       dispatch(setCurrentUser(signinResult.data?.result));
-      navigate("/");
+      navigate(-1);
     }
     if (signinResult.isError) {
       toast.error(signinResult.error?.data?.message);
@@ -72,11 +81,15 @@ const SigninAndSignupForm = () => {
     }
   }, [signupResult]);
 
-  const {
-    handleSigninWithGoogle,
-    handleSigninWithFacebook,
-    handleSigninWithGithub,
-  } = usePassportContext();
+  const handleSigninWithGoogle = () => {
+    window.open(`${clientUrl}auth/google`, "_self");
+  };
+  const handleSigninWithFacebook = () => {
+    window.open(`${clientUrl}auth/facebook`, "_self");
+  };
+  const handleSigninWithGithub = () => {
+    window.open(`${clientUrl}auth/github`, "_self");
+  };
 
   if (signinResult.isLoading || signupResult.isLoading) return <Loader />;
 

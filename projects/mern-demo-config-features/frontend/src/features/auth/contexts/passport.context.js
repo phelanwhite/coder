@@ -4,46 +4,25 @@ import { setCurrentUser } from "../services/authSlice";
 import { useSigninPassportSuccessQuery } from "../services/authApi";
 import { toast } from "react-toastify";
 
-// const clientUrl = `http://localhost:5000/`;
-const clientUrl = `/`;
-
 const PassportContext = createContext();
 
 export const PassportProvider = ({ children }) => {
   const dispatch = useDispatch();
   const getPassport = useSigninPassportSuccessQuery();
 
-  // getPassport
+  // // getPassport
   useEffect(() => {
     if (getPassport.isSuccess) {
       dispatch(setCurrentUser(getPassport.data?.result));
-      //   toast.success(getPassport.data?.message);
+      // toast.success(getPassport.data?.message);
     }
     if (getPassport.isError) {
-      //   toast.error(getPassport.error?.data?.message);
+      // toast.error(getPassport.error?.data?.message);
     }
-  }, [getPassport]);
-
-  const handleSigninWithGoogle = () => {
-    window.open(`${clientUrl}auth/google`, "_self");
-  };
-  const handleSigninWithFacebook = () => {
-    window.open(`${clientUrl}auth/facebook`, "_self");
-  };
-  const handleSigninWithGithub = () => {
-    window.open(`${clientUrl}auth/github`, "_self");
-  };
+  }, [getPassport.data]);
 
   return (
-    <PassportContext.Provider
-      value={{
-        handleSigninWithGoogle,
-        handleSigninWithFacebook,
-        handleSigninWithGithub,
-      }}
-    >
-      {children}
-    </PassportContext.Provider>
+    <PassportContext.Provider value={{}}>{children}</PassportContext.Provider>
   );
 };
 

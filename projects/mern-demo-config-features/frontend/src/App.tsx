@@ -11,6 +11,8 @@ import ForgotPasswordPage from "pages/auth/forgot-password";
 import ResetPasswordPage from "pages/auth/reset-password";
 import UpdateMePage from "pages/auth/update-me";
 import Footer from "layouts/footer";
+import AboutPage from "pages/about";
+import ContactPage from "pages/contact";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <div>
           <Routes>
             <Route index element={<HomePage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="contact" element={<ContactPage />} />
 
             {/* auth routes */}
             <Route path="signin" element={<SigninPage />} />

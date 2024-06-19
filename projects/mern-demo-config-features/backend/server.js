@@ -18,13 +18,6 @@ app.listen(port, () => {
 });
 
 app.use(cookieSessionConfig);
-// app.use(
-//   cookieSession({
-//     name: "session",
-//     keys: ["lama"],
-//     maxAge: 24 * 60 * 60 * 1000,
-//   })
-// );
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -35,9 +28,9 @@ app.use(routes);
 
 // deploy
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, `/frontend/dist`)));
+app.use(express.static(path.join(__dirname, `/frontend/build`)));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+  res.sendFile(path.join(process.cwd(), "frontend", "build", "index.html"));
 });
 
 app.use(errorHandle);

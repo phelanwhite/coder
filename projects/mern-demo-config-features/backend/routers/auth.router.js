@@ -24,7 +24,7 @@ import {
 } from "../configs/cloudinary.config.js";
 import passport from "passport";
 
-const clientURL = `http://localhost:3000`;
+const clientURL = envConfig.CLIENT_URL;
 
 const authRouter = express.Router();
 authRouter.post(`/signup`, async (req, res, next) => {
@@ -134,10 +134,9 @@ authRouter.post(`/refresh-token`, async (req, res, next) => {
   }
 });
 
-authRouter.post(`/signout`, async (req, res, next) => {
+authRouter.delete(`/signout`, async (req, res, next) => {
   try {
     const refreshTokenCookie = req.cookies.refreshToken;
-
     // clear refreshToken in database and cookie
     await userModel.findOneAndUpdate(
       { refreshToken: refreshTokenCookie },
@@ -146,7 +145,10 @@ authRouter.post(`/signout`, async (req, res, next) => {
     );
     res.clearCookie(`refreshToken`);
 
-    req.logout();
+    req.logOut();
+    // res.redirect(`/signin`);
+    // window.location.href(`/signin`);
+
     return responseHandle(res, {
       status: StatusCodes.OK,
       message: `Signout successfully`,

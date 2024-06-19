@@ -3,6 +3,8 @@ dotenv.config();
 
 const envConfig = {
   // PUBLIC
+  // CLIENT_URL : `http://localhost:3000/`,
+  CLIENT_URL: `/`,
   PORT: process.env.PORT,
   MONGO_URI: process.env.MONGO_URI,
 
