@@ -1,27 +1,43 @@
 import dotenv from "dotenv";
 dotenv.config();
-const env = {
-  NODE_ENV: process.env.NODE_ENV,
-  PORT: process.env.PORT,
-  MONGODB_URI: process.env.MONGODB_URI,
-  TMDB_TOKEN: process.env.TMDB_TOKEN,
-  HOST: process.env.HOST,
-  passport: {
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  },
-  jwt: {
-    JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET,
-    JWT_ACCESS_TOKEN_EXPIRES_IN: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
-    // SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
-    // EMAIL_FROM: process.env.EMAIL_FROM,
-    // EMAIL_TO: process.env.EMAIL_TO,
-  },
-  cloudinary: {
-    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
-  },
-};
 
-export default env;
+const envConfig = {
+  // PUBLIC
+  // CLIENT_URL: `http://localhost:3000/`,
+  CLIENT_URL: `/`,
+  PORT: process.env.PORT,
+  MONGO_URI: process.env.MONGO_URI,
+
+  // JWT
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_EXPIRE: process.env.JWT_EXPIRE,
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+  JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE,
+
+  // SENDGRID
+  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+  SENDGRID_EMAIL: process.env.SENDGRID_EMAIL,
+  SENDGRID_NAME: process.env.SENDGRID_NAME,
+
+  // CLOUDINARY
+  CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  CLOUDINARY_URL: process.env.CLOUDINARY_URL,
+
+  // SERVICE_GOOGLE
+  GOOGLE_EMAIL: process.env.GOOGLE_EMAIL,
+  GOOGLE_PASSWORD: process.env.GOOGLE_PASSWORD,
+
+  // PASSPORT
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+  FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
+  FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
+
+  // TMDB_TOKEN
+  TMDB_TOKEN: process.env.TMDB_TOKEN,
+};
+export default envConfig;

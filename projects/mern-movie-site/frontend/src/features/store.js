@@ -4,11 +4,11 @@ import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import { authApi } from "./authApi";
-import { authSlice } from "./authSlice";
-import { myMovieApi } from "./myMovieApi";
-import { myActorApi } from "./myActorApi";
-import { reviewApi } from "./reviewApi";
+import { authSlice } from "./auth/services/authSlice";
+import { authApi } from "./auth/services/authApi";
+import { myMovieApi } from "./my-movie/services/myMovieApi";
+import { myPersonApi } from "./person/services/myPersonApi";
+import { reviewApi } from "./review/services/reviewApi";
 
 const persistConfig = {
   key: "root",
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   authSlice: authSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [myMovieApi.reducerPath]: myMovieApi.reducer,
-  [myActorApi.reducerPath]: myActorApi.reducer,
+  [myPersonApi.reducerPath]: myPersonApi.reducer,
   [reviewApi.reducerPath]: reviewApi.reducer,
 });
 
@@ -33,11 +33,8 @@ export let store = configureStore({
       serializableCheck: false,
     })
       .concat(authApi.middleware)
-      .concat(myMovieApi.middleware)
-      .concat(myActorApi.middleware)
-      .concat(reviewApi.middleware),
-  //   devTools: process.env.NODE_ENV !== "production",
-  //   preloadedState: {},
-  //   enhancers: [],
+      .concat(myPersonApi.middleware)
+      .concat(reviewApi.middleware)
+      .concat(myMovieApi.middleware),
 });
 export let persistor = persistStore(store);

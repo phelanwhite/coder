@@ -1,23 +1,26 @@
-import "./App.css";
+import "assets/styles/App.css";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import Home from "pages/Home";
-import Header from "layouts/Header";
-import Footer from "layouts/Footer";
-import MediaId from "pages/MediaId";
-import ActorId from "pages/ActorId";
-import Search from "pages/Search";
-import Movie from "pages/Movie";
-import TvSeries from "pages/TvSeries";
-import SigninAndSignup from "pages/SigninAndSignup";
-import ViewMore from "pages/ViewMore";
-import MediaFavorites from "pages/MediaFavorites";
-import ActorFavorites from "pages/ActorFavorites";
-import UpdateProfile from "pages/UpdateProfile";
+import Toastify from "components/ui/toastify";
+import HomePage from "pages/home";
+import Wrapper from "components/ui/wrapper";
+import Header from "layouts/header";
+import ProtectedWithAuth from "features/auth/components/ProtectedWithAuth";
+import SigninPage from "pages/auth/signin";
+import SignupPage from "pages/auth/signup";
+import ForgotPasswordPage from "pages/auth/forgot-password";
+import ResetPasswordPage from "pages/auth/reset-password";
+import UpdateMePage from "pages/auth/update-me";
+import Footer from "layouts/footer";
+import AboutPage from "pages/about";
+import ContactPage from "pages/contact";
+import MediaId from "pages/media-id";
+import PersonId from "pages/person-id";
+import Search from "pages/search";
+import TvSeries from "pages/tv-series";
+import Movie from "pages/movie";
+import MediaFavorites from "pages/media-favorite";
+import PersonFavorites from "pages/person-favorite";
 import { useEffect } from "react";
-import ProtectedWithAuth from "components/ProtectedWithAuth";
 
 function App() {
   const location = useLocation();
@@ -32,26 +35,30 @@ function App() {
       <Header />
       <div className="min-h-screen">
         <Routes>
-          <Route index element={<Home />} />
-          <Route path="/media-id/:id" element={<MediaId />} />
-          <Route path="/actor-id/:id" element={<ActorId />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/movies" element={<Movie />} />
-          <Route path="/tv-series" element={<TvSeries />} />
-          <Route path="/view-more" element={<ViewMore />} />
-          <Route path="/signin" element={<SigninAndSignup />} />
-          <Route path="/signup" element={<SigninAndSignup />} />
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="media-id/:id" element={<MediaId />} />
+          <Route path="person-id/:id" element={<PersonId />} />
+          <Route path="search" element={<Search />} />
+          <Route path="tv-series" element={<TvSeries />} />
+          <Route path="movies" element={<Movie />} />
+
+          {/* auth routes */}
+          <Route path="signin" element={<SigninPage />} />
+          <Route path="signup" element={<SignupPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
+          {/* protected routes */}
           <Route path="/" element={<ProtectedWithAuth />}>
-            <Route path="/media-favorites" element={<MediaFavorites />} />
-            <Route path="/actor-favorites" element={<ActorFavorites />} />
-            <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="update-profile" element={<UpdateMePage />} />
+            <Route path="media-favorites" element={<MediaFavorites />} />
+            <Route path="person-favorites" element={<PersonFavorites />} />
           </Route>
-          {/* <Route path="/contact" element={<Contact />} />
-      <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </div>
       <Footer />
-      <ToastContainer position="top-center" />
+      <Toastify />
     </div>
   );
 }

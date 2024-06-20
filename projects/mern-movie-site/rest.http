@@ -1,0 +1,45 @@
+POST http://localhost:5000/auth/signup
+Content-Type: application/json
+
+{
+    "name":"test user 1",
+    "email":"tr.trungnghia2001@gmail.com",
+    "password":"123456",
+    "cf_password":"123456"
+}
+
+###
+POST http://localhost:5000/auth/signin
+Content-Type: application/json
+
+{
+    "email":"tr.trungnghia2001@gmail.com",
+    "password":"123456"
+}
+
+###
+GET http://localhost:5000/auth/get-me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZlODBkMjBjNWM3YTYyMGVlMGVhZTAiLCJyb2xlIjoibWVtYmVyIiwiaWF0IjoxNzE4Njc0NTMzLCJleHAiOjE3MTg2NzQ1NDN9.pdgjVnmaM5MgM26e4kJw6f-Jkl93VXerxFstx5on60M
+
+###
+POST http://localhost:5000/auth/refresh-token
+
+###
+POST http://localhost:5000/auth/signout
+
+###
+POST http://localhost:5000/auth/forgot-password
+Content-Type: application/json
+
+{
+    "email":"tr.trungnghia2001@gmail.com"
+}
+
+###
+POST http://localhost:5000/auth/reset-password?token=$2a$12$RwuXfLKb4aXa6NvRBq6DXOELWpddHWCVNnmyzYhYodQJfXUcqai/q
+Content-Type: application/json
+
+{
+    "password":"123456",
+    "cf_password":"123456"
+}

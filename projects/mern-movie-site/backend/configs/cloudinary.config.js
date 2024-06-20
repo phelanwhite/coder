@@ -1,30 +1,30 @@
 import { v2 as cloudinaryConfig } from "cloudinary";
-import env from "./env.config.js";
+import envConfig from "./env.config.js";
 
 cloudinaryConfig.config({
-  api_key: env.cloudinary.CLOUDINARY_API_KEY,
-  api_secret: env.cloudinary.CLOUDINARY_API_SECRET,
-  cloud_name: env.cloudinary.CLOUDINARY_CLOUD_NAME,
+  cloud_name: envConfig.CLOUDINARY_NAME,
+  api_key: envConfig.CLOUDINARY_API_KEY,
+  api_secret: envConfig.CLOUDINARY_API_SECRET,
 });
+
 export default cloudinaryConfig;
 
-export async function cloudinary_uploadFile(file, folderUpload = `upload`) {
+const folderSite = `test-mongodb`;
+
+export async function cloudinary_uploadFile(file, folder = ``) {
   const b64 = Buffer.from(file.buffer).toString("base64");
   let dataURI = "data:" + file.mimetype + ";base64," + b64;
   const fileUri = await cloudinaryConfig.uploader.upload(dataURI, {
-    folder: `mern-movie-site/${folderUpload}`,
+    folder: `${folderSite}/${folder}`,
   });
 
   return fileUri;
 }
 
-export async function cloudinary_deleteFile(
-  fileDeleteUrl,
-  folderDelete = `upload`
-) {
+export async function cloudinary_deleteFile(fileDeleteUrl, folder = ``) {
   const public_id = fileDeleteUrl?.split("/")?.pop()?.split(".")?.[0];
-  console.log(public_id);
+
   await cloudinaryConfig.uploader.destroy(
-    `mern-movie-site/${folderDelete}/` + public_id
+    `${folderSite}/${folder}/` + public_id
   );
 }

@@ -1,0 +1,11 @@
+.containerClassName {
+  @apply flex justify-center items-center flex-wrap gap-4 py-8 px-4;
+}
+.pageClassName {
+}
+.pageLinkClassName {
+  @apply p-2 flex items-center justify-center;
+}
+.activeLinkClassName {
+  @apply text-red-500 font-semibold;
+}

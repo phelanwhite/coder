@@ -1,27 +1,45 @@
 import { Schema } from "mongoose";
-import { mongodb_connect_mern_movie_site } from "../configs/db.config.js";
+import { mongodb_movie_site } from "../configs/database.config.js";
 
 const userModel =
-  mongodb_connect_mern_movie_site.models.user ||
-  mongodb_connect_mern_movie_site.model(
-    "user",
+  mongodb_movie_site.models.user ||
+  mongodb_movie_site.model(
+    `user`,
     new Schema(
       {
-        email: {
+        name: {
           type: String,
           required: true,
+        },
+        email: {
+          type: String,
         },
         password: {
           type: String,
           required: true,
         },
-
-        name: {
+        provider_id: {
+          type: Schema.Types.Mixed,
+        },
+        provider: {
+          type: Schema.Types.Mixed,
+        },
+        role: {
           type: String,
+          enum: ["admin", "member"],
+          default: "member",
           required: true,
         },
-        avatar: {
+
+        resetPasswordToken: {
           type: String,
+        },
+        refreshToken: {
+          type: String,
+        },
+
+        avatar: {
+          type: Array,
           default: "https://avatar.iran.liara.run/public",
         },
         phone: {
@@ -52,4 +70,5 @@ const userModel =
       { timestamps: true }
     )
   );
+
 export default userModel;

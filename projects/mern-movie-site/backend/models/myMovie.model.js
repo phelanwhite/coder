@@ -1,9 +1,9 @@
 import { Schema } from "mongoose";
-import { mongodb_connect_mern_movie_site } from "../configs/db.config.js";
+import { mongodb_movie_site } from "../configs/database.config.js";
 
 const myMovieModel =
-  mongodb_connect_mern_movie_site.models.myMovie ||
-  mongodb_connect_mern_movie_site.model(
+  mongodb_movie_site.models.myMovie ||
+  mongodb_movie_site.model(
     "myMovie",
     new Schema(
       {

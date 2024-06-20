@@ -1,9 +1,9 @@
 import { Schema } from "mongoose";
-import { mongodb_connect_mern_movie_site } from "../configs/db.config.js";
+import { mongodb_movie_site } from "../configs/database.config.js";
 
 const reviewModel =
-  mongodb_connect_mern_movie_site.models.review ||
-  mongodb_connect_mern_movie_site.model(
+  mongodb_movie_site.models.review ||
+  mongodb_movie_site.model(
     "review",
     new Schema(
       {
@@ -14,7 +14,7 @@ const reviewModel =
         user: {
           type: Schema.Types.ObjectId,
           required: true,
-          ref: "user",
+          ref: `user`,
         },
         comment: {
           type: String,
