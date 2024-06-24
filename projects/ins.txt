@@ -15,6 +15,7 @@ npm i react-circular-progressbar
 npm i redux-persist
 npm i react-data-table-component
 npm i react-tooltip
+npm i react-paginate
 
 
 
