@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  location    String?
+  education   String?
+  bio         String?
+  dateofbirth String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  userId String
+}
+
+model Board {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String  @default("New Board")
+  description String?
+
+  position  Int
+  columns   Column[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  userId     String
+  isFavorite Boolean @default(false)
+}
+
+model Column {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @default("New Column")
+  description String?
+  position    Int
+  boardId     String   @db.ObjectId
+  cards       Task[]
+  board       Board    @relation(fields: [boardId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  userId String
+}
+
+model Task {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @default("New Card")
+  description String?
+  position    Int
+  columnId    String   @db.ObjectId
+  column      Column   @relation(fields: [columnId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  userId   String
+  comments Comment[]
+  files    File[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  userId String
+  taskId String @db.ObjectId
+  task   Task   @relation(fields: [taskId], references: [id])
+}
+
+model File {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  file      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  userId String
+  taskId String @db.ObjectId
+  task   Task   @relation(fields: [taskId], references: [id])
+}

@@ -1,0 +1,8 @@
+/* react-quill style  */
+@import "react-quill/dist/quill.core.css";
+@import "react-quill/dist/quill.snow.css";
+@import "react-quill/dist/quill.bubble.css";
+
+.ql-editor {
+  min-height: 100px;
+}

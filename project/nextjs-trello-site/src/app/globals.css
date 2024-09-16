@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-board: rgb(0, 121, 191);
+  --bg-item-board: rgb(0, 91, 143);
+  --bg-item-column: #f1f2f4;
+  --bg-item-card: #ffffff;
+  --text-color: #172b4d;
+
+  --bg-form: #f1f2f4;
+}
+
+@layer base {
+  body {
+    @apply text-sm;
+  }
+  img {
+    @apply w-full h-full object-cover object-center block;
+  }
+}
+@layer utilities {
+  .form-field {
+    @apply w-full block px-4 py-2 rounded-md border outline-blue-500 hover:border-blue-500;
+  }
+}
