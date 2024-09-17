@@ -7,7 +7,7 @@ import { memo, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const CommentForm = ({ id }: { id: string }) => {
-  const { isEdit, dataEdit } = useCommentContext();
+  const { isEdit, dataEdit, setIsEdit, setDataEdit } = useCommentContext();
   const { createComment, updateCommentById } = useCommentStore();
   const createUpdateCommentResult = useMutation({
     mutationFn: async (comment: string) => {
@@ -27,6 +27,8 @@ const CommentForm = ({ id }: { id: string }) => {
         ? toast.success("Comment updated successfully!")
         : toast.success("Comment created successfully!");
       setComment("");
+      setIsEdit(false);
+      setDataEdit(null);
     },
     onError: (error) => {
       console.log({ error });
@@ -55,13 +57,26 @@ const CommentForm = ({ id }: { id: string }) => {
         className="form-field"
         placeholder="Write comment..."
       />
-      <div>
+      <div className="space-x-4">
         <button
           type="submit"
           className="px-3 py-1.5 inline-block rounded bg-blue-500 text-white"
         >
           Comment
         </button>
+        {isEdit && (
+          <button
+            onClick={() => {
+              setComment("");
+              setIsEdit(false);
+              setDataEdit(null);
+            }}
+            type="button"
+            className="px-3 py-1.5 inline-block rounded bg-red-500 text-white"
+          >
+            Close
+          </button>
+        )}
       </div>
     </form>
   );

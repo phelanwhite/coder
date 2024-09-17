@@ -18,13 +18,22 @@ const BoardsPage = () => {
 
   if (getBoardsResult.isLoading) return <Loader />;
 
-  return (
-    <div className="p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {boards.map((item) => (
-        <BoardCard key={item.id} data={item} />
-      ))}
-    </div>
-  );
+  {
+    if (boards.length === 0)
+      return (
+        <div className="text-center font-medium p-4">
+          No boards found. Create a new board to get started.
+        </div>
+      );
+    else
+      return (
+        <div className="p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {boards.map((item) => (
+            <BoardCard key={item.id} data={item} />
+          ))}
+        </div>
+      );
+  }
 };
 
 export default BoardsPage;

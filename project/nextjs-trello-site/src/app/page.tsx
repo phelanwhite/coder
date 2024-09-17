@@ -6,21 +6,15 @@ import clsx from "clsx";
 const data1 = [
   {
     title: "Boards",
-    content: `Trello boards keep tasks organized and work moving forward. In
-                  a glance, see everything from “things to do” to “aww yeah, we
-                  did it!”`,
+    content: `Trello boards keep tasks organized and work moving forward. In a glance, see everything from “things to do” to “aww yeah, we did it!”`,
   },
   {
     title: "Columns",
-    content: `The different stages of a task. Start as simple as To Do,
-                  Doing or Done—or build a workflow custom fit to your team’s
-                  needs. There’s no wrong way to Trello.`,
+    content: `The different stages of a task. Start as simple as To Do, Doing or Done—or build a workflow custom fit to your team’s needs. There’s no wrong way to Trello.`,
   },
   {
     title: "Tasks",
-    content: `Tasks represent tasks and ideas and hold all the information
-                  to get the job done. As you make progress, move cards across
-                  lists to show their status.`,
+    content: `Tasks represent tasks and ideas and hold all the information to get the job done. As you make progress, move cards across lists to show their status.`,
   },
 ];
 
