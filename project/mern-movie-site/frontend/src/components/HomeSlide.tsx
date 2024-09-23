@@ -1,5 +1,5 @@
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperProps, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -9,7 +9,7 @@ import { Autoplay } from "swiper/modules";
 import { getTmdbImage } from "../services/tmdb";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import { FaBookmark, FaPlay } from "react-icons/fa";
-import { memo, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonFavorite from "./ButtonFavorite";
 import ButtonList from "./ButtonList";
