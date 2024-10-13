@@ -1,9 +1,19 @@
-import { createRef, FC, memo, useMemo, useRef } from "react";
+import React, { FC, memo, useEffect, useMemo, useRef } from "react";
 import "./style.css";
 import ReactQuill, { ReactQuillProps } from "react-quill";
+import styled from "styled-components";
 
+const EditorContainer = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+`;
 const Quill: FC<ReactQuillProps> = ({ ...props }) => {
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+    // input.select();
+  }, []);
   const toolbarOptions = useMemo(() => {
     return [
       ["bold", "italic", "underline", "strike"], // toggled buttons

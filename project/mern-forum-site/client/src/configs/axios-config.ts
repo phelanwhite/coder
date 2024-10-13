@@ -1,7 +1,12 @@
 import axios from "axios";
 import env from "./env-config";
+
 const axiosConfig = axios.create({
   baseURL: env.PORT_SERVER,
+  params: {
+    // _tracking_id: `66d904a1cbe4e2e3c1c56507`,
+    _tracking_id: localStorage.getItem(`_tracking_id`),
+  },
   headers: {
     // "Content-Type": "application/json",
   },

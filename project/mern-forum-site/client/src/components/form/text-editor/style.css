@@ -4,8 +4,8 @@
 @import "react-quill/dist/quill.bubble.css";
 
 .ql-editor {
-  min-height: 100vh;
+  min-height: 30vh;
 }
 .ql-toolbar {
-  @apply sticky top-[50px] bg-white z-[1] shadow;
+  @apply sticky top-[64px] bg-white z-[1] shadow;
 }

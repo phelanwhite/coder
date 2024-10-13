@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 
 const useSearchParamsValue = (defaultInit?: URLSearchParamsInit) => {
@@ -10,8 +10,8 @@ const useSearchParamsValue = (defaultInit?: URLSearchParamsInit) => {
         (prev) => {
           prev.set(name, value as unknown as string);
           return prev;
-        },
-        { replace: true }
+        }
+        // { replace: true }
       );
     },
     [searchParams]
