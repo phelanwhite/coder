@@ -27,7 +27,7 @@ export const useHistoryStore = create<Type>()((set, get) => ({
     return response;
   },
   getHistoriesByMe: async (query?: string) => {
-    const url = `history/get-histories-by-me?query=${query}`;
+    const url = `history/get-histories-by-me?${query}`;
     const response = await (await axiosConfig.get(url)).data;
     set({
       histories: response.data?.result,

@@ -30,6 +30,7 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+  // console.log({ _tracking_id: localStorage.getItem(`_tracking_id`) });
   return (
     <>
       <div>

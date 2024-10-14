@@ -5,7 +5,8 @@ type Type = {
   comments: any[];
   total_comments: number;
   createComment: (data: any) => any;
-  //   updateCommentById: (id: any, data: any) => any;
+  // updateCommentById: (id: any, data: any) => any;
+  likeDislikeByCommentId: (id: any) => any;
   deleteCommentById: (id: any) => any;
   getCommentsByPostId: (postId: string, query?: string) => any;
   getCommentsByMe: (query?: string) => any;
@@ -19,7 +20,7 @@ export const useCommentStore = create<Type>()((set, get) => ({
     const url = `/comment/create`;
     const response = await (await axiosConfig.post(url, data)).data;
     set({
-      comments: [response.data, ...get().comments],
+      comments: [response.data?.blog && response.data, ...get().comments],
       total_comments: get().total_comments + 1,
     });
     return response;
@@ -29,6 +30,16 @@ export const useCommentStore = create<Type>()((set, get) => ({
     const response = (await axiosConfig.delete(url)).data;
     set({
       comments: get().comments.filter((comment) => comment._id !== id),
+    });
+    return response;
+  },
+  likeDislikeByCommentId: async (id) => {
+    const url = `/comment/like-dislike-by-comment-id/${id}`;
+    const response = (await axiosConfig.put(url)).data;
+    set({
+      comments: get().comments.map((comment) =>
+        comment._id === id ? { ...comment, ...response?.data } : comment
+      ),
     });
     return response;
   },

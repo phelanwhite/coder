@@ -14,17 +14,21 @@ const CommentListByBlogId = ({ id }: { id: string }) => {
     },
     enabled: !!id,
   });
-  if (getCommentByBlogIdResult.isLoading) return <Loader />;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="font-semibold text-xl ">
         Comment top ({total_comments})
       </div>
-      <CommentForm id={id as string} />
+      <CommentForm blogId={id as string} />
       {comments.length > 0 ? (
         <>
           {comments?.map((item: any) => {
-            return <CommentCard1 key={item._id} data={item} />;
+            return (
+              <div key={item._id}>
+                <CommentCard1 data={item} />
+              </div>
+            );
           })}
           <div className="text-center text-sm">
             <Link to={`comment`}>View more</Link>

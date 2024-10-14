@@ -55,7 +55,7 @@ const CommentByBlogIdPage = () => {
         Read full post
       </button>
       <div className="space-y-6">
-        <CommentForm id={id as string} />
+        <CommentForm blogId={id as string} />
         {comments.length > 0 ? (
           <>
             {comments?.map((item: any) => {

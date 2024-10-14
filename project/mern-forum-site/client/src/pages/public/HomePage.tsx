@@ -6,16 +6,6 @@ import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  // const getBlogsResult = useQuery({
-  //   queryKey: ["blogs"],
-  //   queryFn: async () => {
-  //     const url = `blog/get-all`;
-  //     const response = (await axiosConfig.get(url)).data;
-  //     return response;
-  //   },
-  //   placeholderData: keepPreviousData,
-  // });
-
   const getBlogsResult = useInfiniteQuery({
     queryKey: ["blogs"],
     queryFn: async ({ pageParam }) => {
@@ -26,10 +16,7 @@ const HomePage = () => {
 
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
-      // console.log({ lastPage, allPages, lastPageParam, allPageParams });
       if (lastPage?.data?.result?.length) {
-        // console.log(lastPage?.data?.result?.length > 0);
-
         return lastPageParam + 1;
       } else {
         return undefined;
@@ -38,13 +25,12 @@ const HomePage = () => {
     placeholderData: keepPreviousData,
   });
 
-  // if (getBlogsResult.isPending) return <Loader />;
+  if (getBlogsResult.isPending) return <Loader />;
 
   return (
     <div className="flex max-w-[1332px] w-full mx-auto px-3 ">
       {/* Left  */}
       <div className="flex-1 space-y-4">
-        {getBlogsResult.isPending && <Loader />}
         {getBlogsResult.data?.pages?.map((item: any) => {
           return item?.data?.result?.map((blog: any) => {
             return <BlogCard1 key={blog?._id} data={blog} />;

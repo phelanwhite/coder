@@ -70,8 +70,10 @@ const BlogItemButtonMenu = ({ data }: { data: any }) => {
           </Link>
           <button
             onClick={() => {
-              deleteBlogByIdResult.mutate();
-              setIsOpen(false);
+              if (window.confirm(`You definitely want to delete`)) {
+                deleteBlogByIdResult.mutate();
+                setIsOpen(false);
+              }
             }}
             className="flex gap-4 items-center px-5 py-3 hover:bg-gray-100 w-full"
           >

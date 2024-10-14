@@ -36,8 +36,6 @@ authRouter.put(
 
       let avatar = body.avatar;
       let banner = body.banner;
-      console.log({ avatar: files?.avatar?.[0] });
-      console.log({ banner: files?.banner?.[0] });
 
       if (files?.avatar?.[0]) {
         avatar = (await cloudinary_uploadImageFile(files?.avatar?.[0]))

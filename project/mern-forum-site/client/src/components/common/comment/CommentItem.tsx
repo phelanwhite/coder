@@ -9,10 +9,25 @@ const CommentItem = ({ data }: { data: any }) => {
       <div className="flex items-center gap-4 justify-between pb-2">
         <div className="text-text-secondary-color-2">
           {user?._id === data?.author?._id ? `You` : data?.author?.name}{" "}
-          commented on the article{" "}
-          <Link to={`/blog/${data?.blog?._id}`} className="font-medium">
-            {data?.blog?.title}
-          </Link>
+          {data?.parentCommentIdOfBlogId ? (
+            <>
+              responded to {data?.parentCommentIdOfBlogId?.author?.name}'s
+              comment on the article{" "}
+              <Link
+                to={`/blog/${data?.parentCommentIdOfBlogId?._id}`}
+                className="font-medium"
+              >
+                {data?.parentCommentIdOfBlogId?.title}
+              </Link>
+            </>
+          ) : (
+            <>
+              commented on the article{" "}
+              <Link to={`/blog/${data?.blog?._id}`} className="font-medium">
+                {data?.blog?.title}
+              </Link>
+            </>
+          )}
         </div>
         <CommentItemButtonMenu data={data} />
       </div>

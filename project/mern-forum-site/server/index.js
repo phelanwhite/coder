@@ -4,6 +4,7 @@ import session from "express-session";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import path from "path";
 import passportConfig from "./config/passport-config.js";
 import env from "./config/env-config.js";
 import { handleError } from "./helper/response.js";
@@ -40,5 +41,15 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(router);
+app.use(`/api`, router);
+
+// deploy
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, `/client/dist`)));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
+
 app.use(handleError);

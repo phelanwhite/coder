@@ -94,6 +94,23 @@ favoriteRouter.get(
           createdAt: -1,
         });
 
+      let datas = [];
+      for (const element of getDatas) {
+        const isBookmark = (await bookmarkModel.findOne({
+          author: user?._id,
+          blog: element?.blog?._id,
+        }))
+          ? true
+          : false;
+
+        const item = {
+          ...element?._doc,
+          blog: { ...element?._doc?.blog?._doc, isBookmark },
+        };
+
+        datas.push(item);
+      }
+
       const total_row = await favoriteModel.countDocuments(filter);
       const total_page = Math.ceil(total_row / _limit);
 
@@ -101,7 +118,7 @@ favoriteRouter.get(
         status: StatusCodes.OK,
         message: "Get favorites successfully",
         data: {
-          result: getDatas,
+          result: datas,
           total_row,
           total_page,
           page: _page,

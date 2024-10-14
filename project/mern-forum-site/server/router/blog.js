@@ -164,6 +164,7 @@ blogRouter.get(`/get-blogs-by-author-id/:id`, async (req, res, next) => {
     const _page = parseInt(req.query._page) || QUERY.PAGE;
     const _skip = (_page - 1) * _limit;
     const _status = true;
+    const _tracking_id = req.query._tracking_id;
 
     const filter = {
       $and: [
@@ -187,11 +188,25 @@ blogRouter.get(`/get-blogs-by-author-id/:id`, async (req, res, next) => {
     const total_row = await blogModel.countDocuments(filter);
     const total_page = Math.ceil(total_row / _limit);
 
+    let datas = [];
+    for (const element of getDatas) {
+      const isBookmark = (await bookmarkModel.findOne({
+        author: _tracking_id,
+        blog: element._id,
+      }))
+        ? true
+        : false;
+
+      const item = { ...element?._doc, isBookmark };
+
+      datas.push(item);
+    }
+
     return handleResponse(res, {
       status: StatusCodes.OK,
       message: "Blogs retrieved successfully",
       data: {
-        result: getDatas,
+        result: datas,
         total_row,
         total_page,
         page: _page,
