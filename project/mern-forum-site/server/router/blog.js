@@ -173,20 +173,6 @@ blogRouter.get(`/get-blogs-by-author-id/:id`, async (req, res, next) => {
         {
           status: _status,
         },
-        {
-          $or: [
-            {
-              title: {
-                $regex: _q,
-                $options: "i",
-              },
-              topic: {
-                $regex: _q,
-                $options: "i",
-              },
-            },
-          ],
-        },
       ],
     };
 
@@ -411,7 +397,7 @@ blogRouter.get(`/get-id/:id/similar`, async (req, res, next) => {
       .limit(_limit)
       .skip(_skip)
       .sort({
-        createdAt: -1,
+        views: -1,
       });
 
     let datas = [];

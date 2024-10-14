@@ -17,6 +17,9 @@ const SigninSignupModal: FC<Prop> = ({ isOpen, onClose }) => {
   const handleGoogleLogin = () => {
     const url = env.PORT_SERVER + `/passport/google`;
     window.open(url, "_self");
+    // window.open(url, "_parent");
+    // window.open(url, "_top");
+    // window.open(url, "_blank");
   };
 
   // signin with passport

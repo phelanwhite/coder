@@ -41,18 +41,20 @@ export const useAuthStore = create<Type>()(
         if (response) {
           localStorage.setItem(`_tracking_id`, response.data?._id);
         }
+        window.location.reload();
       },
       loggout: async () => {
         const url = `/auth/signout`;
         const response = await axiosConfig.delete(url);
         set({ user: null, isAuthenticated: false });
         localStorage.removeItem(`_tracking_id`);
-        return response;
+
+        window.location.reload();
       },
     }),
     {
       name: "auth",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

@@ -3,7 +3,7 @@
 @import "react-quill/dist/quill.snow.css";
 @import "react-quill/dist/quill.bubble.css";
 
-.ql-editor {
+.ql-editor.ql-blank {
   min-height: 30vh;
 }
 .ql-toolbar {

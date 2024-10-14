@@ -22,13 +22,13 @@ const CommentCard1 = ({ data }: { data: any }) => {
         {data?.comment}
       </div>
       <div className="px-4 py-2 flex items-center gap-3 text-sm">
-        <button className="flex items-center">
+        <button className="flex items-center gap-1">
           {/* <AiFillLike /> */}
-          <AiOutlineLike /> <span>12</span>
+          <AiOutlineLike /> <span>{data?.likes}</span>
         </button>
-        <button className="flex items-center">
+        <button className="flex items-center gap-1">
           <AiOutlineDislike />
-          <span>12</span>
+          <span>{data?.dislikes}</span>
         </button>
       </div>
     </div>
