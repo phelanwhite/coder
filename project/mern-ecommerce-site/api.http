@@ -1,0 +1,22 @@
+
+GET http://localhost:5000/api/category/get-all
+
+### 
+POST http://localhost:5000/api/auth/resgister
+Content-Type: application/json
+
+{
+    "name":"admin",
+    "email":"admin@gmail.com",
+    "password":"admin123",
+    "confirmPassword":"admin123"
+}
+
+### 
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "email":"admin@gmail.com",
+    "password":"admin123"
+}
