@@ -26,7 +26,13 @@ categoryRouter.get(`/get-all`, async (req, res, next) => {
       },
     };
 
-    const getDatas = await categoryModel.find(query).limit(_limit).skip(_skip);
+    const getDatas = await categoryModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
 
     const total_row = await categoryModel.countDocuments(query);
 

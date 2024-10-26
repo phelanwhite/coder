@@ -1,14 +1,10 @@
 import { FaOpencart } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import SigninSignupModal from "../common/auth/SigninSignupModal";
-import { useState } from "react";
+import AuthButtonMenu from "../common/auth/AuthButtonMenu";
+import { memo } from "react";
 
 const Header = () => {
-  const [isOpenSigninSignupModal, setIsOpenSigninSignupModal] = useState(false);
-  const handleOpenSigninSignupModal = () => setIsOpenSigninSignupModal(true);
-  const handleCloseSigninSignupModal = () => setIsOpenSigninSignupModal(false);
-
   return (
     <>
       <div className="p-4 shadow bg-white flex items-center justify-between">
@@ -21,23 +17,14 @@ const Header = () => {
         </Link>
         <div></div>
         <div className="flex items-center gap-4">
-          <button>
+          <Link to={`/cart`}>
             <IoCartOutline size={24} />
-          </button>
-          <button
-            onClick={handleOpenSigninSignupModal}
-            className="btn btn-primary"
-          >
-            Signin
-          </button>
+          </Link>
+          <AuthButtonMenu />
         </div>
       </div>
-      <SigninSignupModal
-        isOpen={isOpenSigninSignupModal}
-        onClose={handleCloseSigninSignupModal}
-      />
     </>
   );
 };
 
-export default Header;
+export default memo(Header);

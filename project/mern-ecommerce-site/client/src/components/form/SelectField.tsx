@@ -1,14 +1,35 @@
+import clsx from "clsx";
 import React, { FC, SelectHTMLAttributes } from "react";
+
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  options?: [{ value: string; label: string }];
+  layout?: "horizontal" | "vertical";
+  options?: { value: string; label: string }[];
 }
-const SelectField: FC<Props> = ({ name, label, options, ...props }) => {
+
+const SelectField: FC<Props> = ({
+  name,
+  label,
+  options,
+  className,
+  layout,
+  ...props
+}) => {
   return (
-    <div className="flex flex-col gap-1 w-full">
-      <label htmlFor={name} className="capitalize">
-        {label}
-      </label>
+    <div
+      className={clsx([
+        `flex gap-1 w-full`,
+        !layout && `flex-col`,
+        layout === "horizontal" && `flex-row items-center`,
+        layout === "vertical" && `flex-col`,
+        className,
+      ])}
+    >
+      {label && (
+        <label htmlFor={name} className="capitalize">
+          {label}
+        </label>
+      )}
       <select
         name={name}
         id={name}

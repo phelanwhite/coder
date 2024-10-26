@@ -6,7 +6,7 @@ const productModel =
     `product`,
     new Schema(
       {
-        title: {
+        name: {
           type: String,
         },
         slug: {
@@ -42,6 +42,9 @@ const productModel =
         category: {
           type: Schema.Types.ObjectId,
           ref: "category",
+        },
+        imported: {
+          type: String,
         },
         quantity_sold: {
           type: Number,

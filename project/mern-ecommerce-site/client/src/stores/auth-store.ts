@@ -12,6 +12,9 @@ type Type = {
   changePassword: (data: any) => any;
   logginWithPassportSuccess: () => any;
   loggout: () => any;
+
+  //admin
+  createUser: (data: any) => any;
 };
 
 export const useAuthStore = create<Type>()(
@@ -73,6 +76,13 @@ export const useAuthStore = create<Type>()(
 
         window.location.reload();
 
+        return response;
+      },
+
+      //admin
+      createUser: async (data) => {
+        const url = `/auth/create`;
+        const response = await (await axiosConfig.post(url, data)).data;
         return response;
       },
     }),

@@ -1,7 +1,10 @@
-import React from "react";
+import { useAuthStore } from "@/stores/auth-store";
+import { memo } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
-const AuthProtected = ({ children }: { children: React.ReactNode }) => {
-  return <div>{children}</div>;
+const AuthProtected = () => {
+  const { isAuthenticated } = useAuthStore();
+  return <div>{isAuthenticated ? <Outlet /> : <Navigate to={`/`} />}</div>;
 };
 
-export default AuthProtected;
+export default memo(AuthProtected);

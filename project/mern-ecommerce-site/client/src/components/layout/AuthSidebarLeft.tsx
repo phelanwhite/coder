@@ -1,6 +1,7 @@
 import { authLinks } from "@/assets/constants/links";
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
+import { memo } from "react";
 
 const AuthSidebarLeft = () => {
   return (
@@ -13,8 +14,8 @@ const AuthSidebarLeft = () => {
                 to={`/customer` + item.path}
                 className={({ isActive }) =>
                   clsx([
-                    `flex items-center gap-5 px-4 py-2 text-secondary-1 rounded-lg`,
-                    isActive && `bg-gray-100 text-black`,
+                    `flex items-center gap-5 px-4 py-2 text-secondary-1 rounded-lg hover:bg-gray-100`,
+                    isActive && `bg-gray-200 text-black`,
                   ])
                 }
               >
@@ -29,4 +30,4 @@ const AuthSidebarLeft = () => {
   );
 };
 
-export default AuthSidebarLeft;
+export default memo(AuthSidebarLeft);

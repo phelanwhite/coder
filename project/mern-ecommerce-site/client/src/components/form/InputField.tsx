@@ -8,9 +8,11 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 const InputField: FC<Props> = ({ name, label, required, ...props }) => {
   return (
     <div className="flex flex-col gap-1 w-full">
-      <label htmlFor={name} className={clsx(`capitalize`)}>
-        {required && "*"} {label}
-      </label>
+      {label && (
+        <label htmlFor={name} className={clsx(`capitalize`)}>
+          {required && "*"} {label}
+        </label>
+      )}
       <input
         name={name}
         id={name}

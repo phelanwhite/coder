@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import Loader from "../../form/loader";
+import { memo } from "react";
 
 const AddressCard = ({ data }: { data: any }) => {
   const { deleteAddressById } = useAddressStore();
@@ -68,4 +69,4 @@ const AddressCard = ({ data }: { data: any }) => {
   );
 };
 
-export default AddressCard;
+export default memo(AddressCard);

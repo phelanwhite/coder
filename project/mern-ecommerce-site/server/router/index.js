@@ -9,6 +9,8 @@ import wishlistRouter from "./wishlist.js";
 import bookmarkRouter from "./bookmark.js";
 import cartRouter from "./cart.js";
 import reviewRouter from "./review.js";
+import productRouter from "./product.js";
+import userRouter from "./user.js";
 
 const router = express.Router();
 
@@ -22,7 +24,9 @@ router.use(`/wishlist`, verifyToken, wishlistRouter);
 router.use(`/review`, reviewRouter);
 
 // admin
+router.use(`/user`, verifyTokenAdmin, userRouter);
 router.use(`/brand`, verifyTokenAdmin, brandRouter);
 router.use(`/category`, verifyTokenAdmin, categoryRouter);
+router.use(`/product`, verifyTokenAdmin, productRouter);
 
 export default router;

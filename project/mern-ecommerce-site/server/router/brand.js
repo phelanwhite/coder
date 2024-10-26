@@ -26,7 +26,13 @@ brandRouter.get(`/get-all`, async (req, res, next) => {
       },
     };
 
-    const getDatas = await brandModel.find(query).limit(_limit).skip(_skip);
+    const getDatas = await brandModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
 
     const total_row = await brandModel.countDocuments(query);
 

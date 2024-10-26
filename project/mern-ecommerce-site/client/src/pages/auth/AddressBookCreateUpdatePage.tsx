@@ -9,7 +9,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useParams } from "react-router-dom";
 
-const AddressBookAddUpdatePage = () => {
+const AddressBookCreateUpdatePage = () => {
   const { id } = useParams();
 
   const { createAddress, updateAddressById } = useAddressStore();
@@ -149,4 +149,4 @@ const AddressBookAddUpdatePage = () => {
   );
 };
 
-export default AddressBookAddUpdatePage;
+export default AddressBookCreateUpdatePage;

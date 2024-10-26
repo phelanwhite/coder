@@ -29,6 +29,7 @@ const AccountInformationPage = () => {
       toast.error(error?.message);
     },
   });
+
   const getMeResult = useQuery({
     queryKey: ["getMe"],
     queryFn: async () => {
@@ -36,7 +37,6 @@ const AccountInformationPage = () => {
     },
     enabled: !!user,
   });
-  console.log(getMeResult);
   useEffect(() => {
     if (getMeResult.data) {
       setFormValue(getMeResult.data?.data);

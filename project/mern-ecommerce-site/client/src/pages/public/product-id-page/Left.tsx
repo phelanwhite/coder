@@ -9,16 +9,12 @@ import "swiper/css/navigation";
 // import required modules
 import { Navigation } from "swiper/modules";
 
-const Left = () => {
+const Left = ({ data }: { data: any }) => {
   return (
     <div className="md:max-w-[320px] lg:max-w-[400px] w-full">
       <div className="bg-white rounded-lg p-4">
         <div className="border rounded-lg overflow-hidden aspect-square">
-          <img
-            src="https://salt.tikicdn.com/cache/750x750/ts/product/a2/38/6c/ce008c63f4ac771550439da44f5f8ee8.png.webp"
-            loading="lazy"
-            alt=""
-          />
+          <img src={data?.thumbnail} loading="lazy" alt="" />
         </div>
         <div className="my-4">
           <Swiper
@@ -27,19 +23,13 @@ const Left = () => {
             navigation={true}
             modules={[Navigation]}
           >
-            {Array(20)
-              .fill(0)
-              .map((item, index) => (
-                <SwiperSlide key={index}>
-                  <div className="p-0.5 border rounded-lg cursor-pointer">
-                    <img
-                      loading="lazy"
-                      src="https://salt.tikicdn.com/cache/100x100/ts/product/57/02/a3/827d061b7f9437c03561e2c810bfed27.jpg.webp"
-                      alt=""
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
+            {data?.images?.map((item: any) => (
+              <SwiperSlide key={item}>
+                <div className="p-0.5 border rounded-lg cursor-pointer">
+                  <img loading="lazy" src={item} alt="" />
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
         <div>

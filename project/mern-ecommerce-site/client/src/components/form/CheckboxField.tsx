@@ -7,7 +7,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 const CheckboxField: FC<Props> = ({ name, label, required, ...props }) => {
   return (
-    <div className="flex items-center gap-2 cursor-pointer">
+    <div className="flex items-center gap-2 cursor-pointer w-max">
       <input
         name={name}
         id={name}

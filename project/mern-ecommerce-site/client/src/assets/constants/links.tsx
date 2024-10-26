@@ -1,3 +1,4 @@
+import path from "path";
 import { FaUser } from "react-icons/fa";
 
 export const authLinks = [
@@ -52,5 +53,128 @@ export const authLinks = [
     label: `My Comment`,
     path: `/my-comment`,
     icon: <FaUser />,
+  },
+  {
+    label: `Customer Support`,
+    path: `/help-center`,
+    icon: <FaUser />,
+  },
+];
+export const authMenuLinks = [
+  {
+    label: `Account Information`,
+    path: `/account`,
+    icon: <FaUser />,
+  },
+  {
+    label: `My Order`,
+    path: `/order-management`,
+    icon: <FaUser />,
+  },
+  {
+    label: `Support Center`,
+    path: `/help-center`,
+    icon: <FaUser />,
+  },
+];
+export const adminLinks = [
+  {
+    label: `Dashboard`,
+    path: ``,
+    list: [
+      {
+        label: `Dashboard`,
+        path: ``,
+        icon: <FaUser />,
+      },
+      {
+        label: `Account Information`,
+        path: `/account`,
+        icon: <FaUser />,
+      },
+    ],
+  },
+  {
+    label: `Management`,
+    path: `/management`,
+    list: [
+      {
+        label: `Product Management`,
+        path: `/product`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Category Management`,
+        path: `/category`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Brand Management`,
+        path: `/brand`,
+        icon: <FaUser />,
+      },
+      {
+        label: `User Management`,
+        path: `/user`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Order Management`,
+        path: `/order`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Return Management`,
+        path: `/return`,
+        icon: <FaUser />,
+      },
+    ],
+  },
+  {
+    label: `Report`,
+    path: `/report`,
+    list: [
+      {
+        label: `Product Report`,
+        path: `/product`,
+        icon: <FaUser />,
+      },
+      {
+        label: `User Report`,
+        path: `/user`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Order Report`,
+        path: `/order`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Return Report`,
+        path: `/return`,
+        icon: <FaUser />,
+      },
+    ],
+  },
+  {
+    label: `Setting`,
+    path: `/setting`,
+    list: [
+      {
+        label: `Site Setting`,
+        path: `/site`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Email Setting`,
+        path: `/email`,
+        icon: <FaUser />,
+      },
+      {
+        label: `Social Media Setting`,
+        path: `/social-media`,
+        icon: <FaUser />,
+      },
+    ],
   },
 ];

@@ -16,7 +16,7 @@ interface Props {
   datas: any[];
 }
 
-const ProductSlide: FC<Props> = ({ title }) => {
+const ProductSlide: FC<Props> = ({ title, datas }) => {
   return (
     <div className="bg-white rounded-lg p-4">
       <div className="text-base font-medium mb-4">{title}</div>
@@ -35,13 +35,11 @@ const ProductSlide: FC<Props> = ({ title }) => {
           navigation={true}
           modules={[Navigation]}
         >
-          {Array(20)
-            .fill(0)
-            .map((item, index) => (
-              <SwiperSlide key={index}>
-                <ProductCard />
-              </SwiperSlide>
-            ))}
+          {datas?.map((item) => (
+            <SwiperSlide key={item?._id}>
+              <ProductCard data={item} />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>

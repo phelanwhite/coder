@@ -3,7 +3,7 @@ import Modal from "@/components/form/Modal";
 import env from "@/configs/env-config";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation } from "@tanstack/react-query";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, memo, useEffect, useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Loader from "../../form/loader";
@@ -145,4 +145,4 @@ const SigninSignupModal: FC<Props> = ({ isOpen, onClose }) => {
   );
 };
 
-export default SigninSignupModal;
+export default memo(SigninSignupModal);

@@ -15,7 +15,13 @@ const BannerSide = () => {
     <div className="bg-white rounded-lg p-4">
       <Swiper
         spaceBetween={12}
-        slidesPerView={2}
+        slidesPerView={1}
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+        }}
         autoplay={{
           delay: 2500,
           disableOnInteraction: false,

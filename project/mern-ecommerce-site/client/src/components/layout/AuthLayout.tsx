@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import AuthSidebarLeft from "./AuthSidebarLeft";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { authLinks } from "@/assets/constants/links";
 
 const AuthLayout = () => {
@@ -11,18 +11,20 @@ const AuthLayout = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex gap-6">
-      <div className="md:block hidden">
-        <AuthSidebarLeft />
-      </div>
-      <div className="flex-1 py-4 overflow-hidden">
-        <div className="text-xl mb-4">{title}</div>
-        <div className="rounded-lg bg-white p-4 ">
-          <Outlet />
+    <>
+      <div className="flex gap-6">
+        <div className="hidden md:block ">
+          <AuthSidebarLeft />
+        </div>
+        <div className="flex-1 py-4 overflow-hidden">
+          <div className="text-xl mb-4">{title}</div>
+          <div className="rounded-lg bg-white p-4 ">
+            <Outlet />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default AuthLayout;
+export default memo(AuthLayout);

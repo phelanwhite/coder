@@ -4,7 +4,15 @@ import { Link } from "react-router-dom";
 import IMAGES_DEFAULT from "@/assets/constants/image";
 import { currencyChange } from "@/libs/utils/currency";
 
-const Main = () => {
+const Main = ({
+  data,
+  similar,
+  top_deals,
+}: {
+  data: any;
+  similar: [];
+  top_deals: [];
+}) => {
   return (
     <div className="w-full space-y-4 overflow-hidden">
       <div className="bg-white rounded-lg p-4 space-y-1">
@@ -22,22 +30,28 @@ const Main = () => {
             </Link>
           </div>
         </div>
-        <div className="text-2xl font-medium">Apple iPhone 13</div>
+        <div className="text-2xl font-medium">{data?.name}</div>
         <div className="flex items-center gap-2">
-          <span>2</span>
-          <Rate disabled defaultValue={2} className="text-xs flex gap-0" />
+          <span>{data?.rating_average}</span>
+          <Rate
+            disabled
+            defaultValue={data?.rating_average}
+            className="text-xs flex gap-0"
+          />
           <span className="text-secondary-2">(1999)</span>
-          <span className="border-l pl-2 text-secondary-2">Sold 7k</span>
+          <span className="border-l pl-2 text-secondary-2">
+            Sold {data?.quantity_sold}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-2xl font-medium">
-            {currencyChange({ value: 29000000 })}
+            {currencyChange({ value: data?.price })}
           </span>
           <span className="inline-block p-0.5 bg-gray-100 text-xs rounded">
-            -45%
+            -{data?.discount}%
           </span>
           <span className="line-through text-secondary-2 font-medium">
-            13.650.000
+            {currencyChange({ value: data?.original_price })}
           </span>
         </div>
       </div>
@@ -45,7 +59,8 @@ const Main = () => {
         <button className="btn btn-danger w-full">By now</button>
         <button className="btn btn-primary w-full">Add to cart</button>
       </div>
-      <ProductSlide title="Top Deals" datas={[]} />
+      <ProductSlide title="Similar products" datas={similar} />
+      <ProductSlide title="Top Deals" datas={top_deals} />
       <div className="bg-white rounded-lg p-4">
         <div className="text-base font-medium mb-4">Warranty information</div>
         <div>
@@ -108,9 +123,18 @@ const Main = () => {
           </ul>
         </div>
       </div>
+      {/* description  */}
       <div className="bg-white rounded-lg p-4">
         <div className="text-base font-medium mb-4">Product description</div>
-        <div>
+        <div className="space-y-6 overflow-hidden">
+          <div className="ql-snow">
+            <div
+              className="ql-editor p-0 leading-8"
+              dangerouslySetInnerHTML={{ __html: data?.description }}
+            ></div>
+          </div>
+        </div>
+        {/* <div>
           <div>
             iPhone 13. Hệ thống camera kép tiên tiến nhất từng có trên iPhone.
             Chip A15 Bionic thần tốc. Bước nhảy vọt về thời lượng pin. Thiết kế
@@ -124,7 +148,7 @@ const Main = () => {
             kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị
             trên 1 triệu đồng).....
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -19,10 +19,6 @@ const categoryModel =
         description: {
           type: String,
         },
-        isActive: {
-          type: Boolean,
-          default: true,
-        },
       },
       {
         timestamps: true,

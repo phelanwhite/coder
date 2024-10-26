@@ -20,7 +20,13 @@ reviewRouter.get(`/get-reviews-by-product/:id`, async (req, res, next) => {
       product: id,
     };
 
-    const getDatas = await reviewModel.find(query).limit(_limit).skip(_skip);
+    const getDatas = await reviewModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
 
     const total_row = await reviewModel.countDocuments(query);
 
