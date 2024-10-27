@@ -2,17 +2,16 @@ import IMAGES_DEFAULT from "@/assets/constants/image";
 import { currencyChange } from "@/libs/utils/currency";
 import { Rate } from "antd";
 import { memo } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import ProductCardOption from "./ProductCardOption";
 
 const ProductCard = ({ data }: { data: any }) => {
   return (
-    <Link to={`/product-id/${data?._id}`}>
-      <div className="bg-white relative overflow-hidden border rounded-lg hover:shadow group">
-        <div className="z-10 group-hover:block hidden">
-          <ProductCardOption />
-        </div>
+    <div className="relative bg-white overflow-hidden border rounded-lg hover:shadow group">
+      <div className="z-10 group-hover:block hidden">
+        <ProductCardOption data={data} />
+      </div>
+      <Link to={`/product-id/${data?._id}`} className="block">
         <div className="aspect-square">
           <img loading="lazy" src={data?.thumbnail} alt="" />
         </div>
@@ -46,22 +45,7 @@ const ProductCard = ({ data }: { data: any }) => {
             <span>Giao siêu tốc</span>
           </div>
         </div>
-      </div>
-    </Link>
-  );
-};
-
-const ProductCardOption = () => {
-  return (
-    <div className="absolute top-1.5 right-1.5 border flex flex-col items-center gap-3 overflow-hidden rounded-md  bg-white shadow p-1.5">
-      <button>
-        {/* <IoBookmark size={16}/> */}
-        <IoBookmarkOutline size={16} />
-      </button>
-      <button>
-        {/* <FaHeart /> */}
-        <FaRegHeart />
-      </button>
+      </Link>
     </div>
   );
 };

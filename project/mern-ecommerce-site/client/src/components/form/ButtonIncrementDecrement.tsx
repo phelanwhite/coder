@@ -25,13 +25,13 @@ const ButtonIncrementDecrement: FC<Props> = ({
       <button
         disabled={min && Number(value) <= min ? true : false}
         onClick={handleDecrement}
-        className="border rounded p-1 px-2"
+        className="border rounded p-1 px-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <IoIosRemove />
       </button>
       <input
         type="number"
-        className="flex-1 border rounded p-1"
+        className="flex-1 border rounded px-2 py-1"
         value={value}
         min={min}
         max={max}
@@ -40,7 +40,7 @@ const ButtonIncrementDecrement: FC<Props> = ({
       <button
         disabled={max && Number(value) >= max ? true : false}
         onClick={handleIncrement}
-        className="border rounded p-1 px-2"
+        className="border rounded p-1 px-2 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <IoIosAdd />
       </button>

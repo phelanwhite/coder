@@ -3,6 +3,10 @@ import ProductSlide from "./ProductSlide";
 import { Link } from "react-router-dom";
 import IMAGES_DEFAULT from "@/assets/constants/image";
 import { currencyChange } from "@/libs/utils/currency";
+import toast from "react-hot-toast";
+import { useCartStore } from "@/stores/cart-store";
+import { useMutation } from "@tanstack/react-query";
+import Loader from "@/components/form/loader";
 
 const Main = ({
   data,
@@ -13,54 +17,87 @@ const Main = ({
   similar: [];
   top_deals: [];
 }) => {
+  const { createCart } = useCartStore();
+  const createCartResult = useMutation({
+    mutationFn: async () => {
+      return await createCart({
+        product: data._id,
+        quantity: 1,
+      });
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  if (createCartResult.isPending) return <Loader />;
+
   return (
     <div className="w-full space-y-4 overflow-hidden">
-      <div className="bg-white rounded-lg p-4 space-y-1">
-        <div className="flex items-center gap-3">
-          <div className="max-w-24">
-            <img src={IMAGES_DEFAULT.policy_icon} loading="lazy" alt="" />
+      {/* top  */}
+      <div className="bg-white rounded-lg p-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-3">
+            <div className="max-w-24">
+              <img src={IMAGES_DEFAULT.policy_icon} loading="lazy" alt="" />
+            </div>
+            <div className="max-w-24">
+              <img src={IMAGES_DEFAULT.authentic_icon} loading="lazy" alt="" />
+            </div>
+            <div className="text-[13px]">
+              <span>Brand: </span>
+              <Link to={`/`} className="text-link">
+                Apple
+              </Link>
+            </div>
           </div>
-          <div className="max-w-24">
-            <img src={IMAGES_DEFAULT.authentic_icon} loading="lazy" alt="" />
+          <div className="text-xl font-medium">{data?.name}</div>
+          <div className="flex items-center gap-2">
+            <span>{data?.rating_average}</span>
+            <Rate
+              disabled
+              defaultValue={data?.rating_average}
+              className="text-xs flex gap-0"
+            />
+            <span className="text-secondary-2">(1999)</span>
+            <span className="border-l pl-2 text-secondary-2">
+              Sold {data?.quantity_sold}
+            </span>
           </div>
-          <div className="text-[13px]">
-            <span>Brand: </span>
-            <Link to={`/`} className="text-link">
-              Apple
-            </Link>
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-medium">
+              {currencyChange({ value: data?.price })}
+            </span>
+            <span className="inline-block p-0.5 bg-gray-100 text-xs rounded">
+              -{data?.discount}%
+            </span>
+            <span className="line-through text-secondary-2 font-medium">
+              {currencyChange({ value: data?.original_price })}
+            </span>
           </div>
         </div>
-        <div className="text-2xl font-medium">{data?.name}</div>
-        <div className="flex items-center gap-2">
-          <span>{data?.rating_average}</span>
-          <Rate
-            disabled
-            defaultValue={data?.rating_average}
-            className="text-xs flex gap-0"
-          />
-          <span className="text-secondary-2">(1999)</span>
-          <span className="border-l pl-2 text-secondary-2">
-            Sold {data?.quantity_sold}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-medium">
-            {currencyChange({ value: data?.price })}
-          </span>
-          <span className="inline-block p-0.5 bg-gray-100 text-xs rounded">
-            -{data?.discount}%
-          </span>
-          <span className="line-through text-secondary-2 font-medium">
-            {currencyChange({ value: data?.original_price })}
-          </span>
+        <div className="mt-4">
+          <div className="text-base font-medium mb-4">Options</div>
         </div>
       </div>
+      {/* By now */}
       <div className="bg-white rounded-lg p-4 space-y-1 xl:hidden">
         <button className="btn btn-danger w-full">By now</button>
-        <button className="btn btn-primary w-full">Add to cart</button>
+        <button
+          onClick={() => createCartResult.mutate()}
+          className="btn btn-primary w-full"
+        >
+          Add to cart
+        </button>
       </div>
+      {/* similar */}
       <ProductSlide title="Similar products" datas={similar} />
+      {/* top_deals */}
       <ProductSlide title="Top Deals" datas={top_deals} />
+      {/* Warranty information */}
       <div className="bg-white rounded-lg p-4">
         <div className="text-base font-medium mb-4">Warranty information</div>
         <div>
@@ -84,6 +121,7 @@ const Main = ({
           </ul>
         </div>
       </div>
+      {/* Shop with confidence */}
       <div className="bg-white rounded-lg p-4">
         <div className="text-base font-medium mb-4">Shop with confidence</div>
         <div>
@@ -100,6 +138,7 @@ const Main = ({
           </ul>
         </div>
       </div>
+      {/* Detailed information */}
       <div className="bg-white rounded-lg p-4">
         <div className="text-base font-medium mb-4">Detailed information</div>
         <div>

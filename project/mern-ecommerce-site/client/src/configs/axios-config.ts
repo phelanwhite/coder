@@ -37,6 +37,8 @@ axiosConfig.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log({ error });
+
     if (error.status === 401) {
       localStorage.removeItem("auth");
       // window.location.replace(`/signin`);

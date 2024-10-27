@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { QUERY } from "../helper/constants.js";
 import wishlistModel from "../model/wishlist.js";
 import { handleResponse } from "../helper/response.js";
+import { customDataUserProducts } from "../helper/data.js";
 
 const wishlistRouter = express.Router();
 
@@ -19,7 +20,16 @@ wishlistRouter.get(`/get-all`, async (req, res, next) => {
       user: user._id,
     };
 
-    const getDatas = await wishlistModel.find(query).limit(_limit).skip(_skip);
+    const getDatas = await wishlistModel
+      .find(query)
+      .populate([`product`])
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
+
+    let datas = await customDataUserProducts(user, getDatas);
 
     const total_row = await wishlistModel.countDocuments(query);
 
@@ -29,7 +39,7 @@ wishlistRouter.get(`/get-all`, async (req, res, next) => {
       status: StatusCodes.OK,
       message: "Get all wishlist successfully",
       data: {
-        results: getDatas,
+        results: datas,
         total_row,
         total_page,
         _page,
@@ -105,6 +115,31 @@ wishlistRouter.delete(`/delete-id/:id`, async (req, res, next) => {
     const deleteDataById = await wishlistModel.findByIdAndDelete(id, {
       new: true,
     });
+    s;
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Delete wishlist successfully",
+      data: deleteDataById,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+wishlistRouter.delete(`/delete-product-id/:id`, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const user = req.user;
+
+    const deleteDataById = await wishlistModel.findOneAndDelete(
+      {
+        product: id,
+        user: user._id,
+      },
+      {
+        new: true,
+      }
+    );
 
     return handleResponse(res, {
       status: StatusCodes.OK,

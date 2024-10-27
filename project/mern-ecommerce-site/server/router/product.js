@@ -9,6 +9,7 @@ import {
   cloudinary_uploadImageFile,
 } from "../config/cloudinary-config.js";
 import slug from "slug";
+import { verifyTokenAdmin } from "../middleware/verifyToken.js";
 
 const productRouter = express.Router();
 
@@ -72,6 +73,7 @@ productRouter.get(`/get-id/:id`, async (req, res, next) => {
 });
 productRouter.post(
   `/create`,
+  verifyTokenAdmin,
   upload.fields([
     {
       name: "file_thumbnail",
@@ -134,6 +136,7 @@ productRouter.post(
 );
 productRouter.put(
   `/update-id/:id`,
+  verifyTokenAdmin,
   upload.fields([
     {
       name: "file_thumbnail",
@@ -199,26 +202,30 @@ productRouter.put(
     }
   }
 );
-productRouter.delete(`/delete-id/:id`, async (req, res, next) => {
-  try {
-    const id = req.params.id;
+productRouter.delete(
+  `/delete-id/:id`,
+  verifyTokenAdmin,
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
 
-    const deleteDataById = await productModel.findByIdAndDelete(id, {
-      new: true,
-    });
+      const deleteDataById = await productModel.findByIdAndDelete(id, {
+        new: true,
+      });
 
-    if (deleteDataById?.thumbnail) {
-      await cloudinary_deleteFile(deleteDataById?.thumbnail);
+      if (deleteDataById?.thumbnail) {
+        await cloudinary_deleteFile(deleteDataById?.thumbnail);
+      }
+
+      return handleResponse(res, {
+        status: StatusCodes.OK,
+        message: "Delete product successfully",
+        data: deleteDataById,
+      });
+    } catch (error) {
+      next(error);
     }
-
-    return handleResponse(res, {
-      status: StatusCodes.OK,
-      message: "Delete product successfully",
-      data: deleteDataById,
-    });
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 export default productRouter;

@@ -45,8 +45,13 @@ export const authLinks = [
     icon: <FaUser />,
   },
   {
-    label: `Favorite product`,
-    path: `/favorite-product`,
+    label: `Product Wishlist`,
+    path: `/product-wishlist`,
+    icon: <FaUser />,
+  },
+  {
+    label: `Product Bookmark`,
+    path: `/product-bookmark`,
     icon: <FaUser />,
   },
   {

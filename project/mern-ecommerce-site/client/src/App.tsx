@@ -10,7 +10,6 @@ import ReturnManagementPage from "./pages/auth/ReturnManagementPage";
 import ProductReviewsPage from "./pages/auth/ProductReviewsPage";
 import ProductsYouViewedPage from "./pages/auth/ProductsYouViewedPage";
 import MyCommentPage from "./pages/auth/MyCommentPage";
-import FavoriteProductsPage from "./pages/auth/FavoriteProductsPage";
 import AddressBookCreateUpdatePage from "./pages/auth/AddressBookCreateUpdatePage";
 import Header from "./components/layout/Header";
 import { Toaster } from "react-hot-toast";
@@ -28,6 +27,8 @@ import BrandPage from "./pages/admin/BrandPage";
 import BrandPageCreateUpdatePage from "./pages/admin/BrandPageCreateUpdatePage";
 import UserPage from "./pages/admin/UserPage";
 import UserCreatePage from "./pages/admin/UserCreatePage";
+import WishlistProductsPage from "./pages/auth/WishlistProductsPage";
+import BookmarkProductsPage from "./pages/auth/BookmarkProductsPage";
 
 function App() {
   return (
@@ -65,7 +66,8 @@ function App() {
               path="product-you-viewed"
               element={<ProductsYouViewedPage />}
             />
-            <Route path="favorite-product" element={<FavoriteProductsPage />} />
+            <Route path="product-wishlist" element={<WishlistProductsPage />} />
+            <Route path="product-bookmark" element={<BookmarkProductsPage />} />
             <Route path="my-comment" element={<MyCommentPage />} />
             <Route path="help-center" element={<CustomerSupportPage />} />
           </Route>

@@ -1,13 +1,13 @@
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import { QUERY } from "../helper/constants.js";
-import bookmarkModel from "../model/bookmark.js";
+import viewedModel from "../model/viewed.js";
 import { handleResponse } from "../helper/response.js";
 import { customDataUserProducts } from "../helper/data.js";
 
-const bookmarkRouter = express.Router();
+const viewedRouter = express.Router();
 
-bookmarkRouter.get(`/get-all`, async (req, res, next) => {
+viewedRouter.get(`/get-all`, async (req, res, next) => {
   try {
     const _q = req.query._q || QUERY._Q;
     const _limit = parseInt(req.query._limit) || QUERY._LIMIT;
@@ -20,7 +20,7 @@ bookmarkRouter.get(`/get-all`, async (req, res, next) => {
       user: user._id,
     };
 
-    const getDatas = await bookmarkModel
+    const getDatas = await viewedModel
       .find(query)
       .populate([`product`])
       .limit(_limit)
@@ -29,15 +29,15 @@ bookmarkRouter.get(`/get-all`, async (req, res, next) => {
         createdAt: -1,
       });
 
-    const datas = await customDataUserProducts(user, getDatas);
+    let datas = await customDataUserProducts(user, getDatas);
 
-    const total_row = await bookmarkModel.countDocuments(query);
+    const total_row = await viewedModel.countDocuments(query);
 
     const total_page = Math.ceil(total_row / _limit);
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Get all bookmark successfully",
+      message: "Get all viewed successfully",
       data: {
         results: datas,
         total_row,
@@ -51,47 +51,56 @@ bookmarkRouter.get(`/get-all`, async (req, res, next) => {
     next(error);
   }
 });
-bookmarkRouter.get(`/get-id/:id`, async (req, res, next) => {
+viewedRouter.get(`/get-id/:id`, async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const getData = await bookmarkModel.findById(id);
+    const getData = await viewedModel.findById(id);
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Get bookmark by id successfully",
+      message: "Get viewed by id successfully",
       data: getData,
     });
   } catch (error) {
     next(error);
   }
 });
-bookmarkRouter.post(`/create`, async (req, res, next) => {
+viewedRouter.post(`/create`, async (req, res, next) => {
   try {
     const body = req.body;
 
     const user = req.user;
 
-    const newData = await bookmarkModel.create({
+    const checkItem = await viewedModel.findOne({
+      product: body.product,
+      user: user._id,
+    });
+
+    if (checkItem) {
+      await viewedModel.findByIdAndDelete(checkItem._id, { new: true });
+    }
+
+    const newData = await viewedModel.create({
       ...body,
       user: user._id,
     });
 
     return handleResponse(res, {
       status: StatusCodes.CREATED,
-      message: "Create bookmark successfully",
+      message: "Add to viewed successfully",
       data: newData,
     });
   } catch (error) {
     next(error);
   }
 });
-bookmarkRouter.put(`/update-id/:id`, async (req, res, next) => {
+viewedRouter.put(`/update-id/:id`, async (req, res, next) => {
   try {
     const id = req.params.id;
     const body = req.body;
 
-    const updateDataById = await bookmarkModel.findByIdAndUpdate(
+    const updateDataById = await viewedModel.findByIdAndUpdate(
       id,
       {
         ...body,
@@ -101,39 +110,35 @@ bookmarkRouter.put(`/update-id/:id`, async (req, res, next) => {
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Update bookmark successfully",
+      message: "Update viewed successfully",
       data: updateDataById,
     });
   } catch (error) {
     next(error);
   }
 });
-bookmarkRouter.delete(`/delete-id/:id`, async (req, res, next) => {
+viewedRouter.delete(`/delete-id/:id`, async (req, res, next) => {
   try {
     const id = req.params.id;
-    const user = req.user;
 
-    const deleteDataById = await bookmarkModel.findByIdAndDelete(id, {
+    const deleteDataById = await viewedModel.findByIdAndDelete(id, {
       new: true,
     });
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Delete bookmark successfully",
+      message: "Delete viewed successfully",
       data: deleteDataById,
     });
   } catch (error) {
     next(error);
   }
 });
-bookmarkRouter.delete(`/delete-product-id/:id`, async (req, res, next) => {
+viewedRouter.delete(`/delete-all`, async (req, res, next) => {
   try {
-    const id = req.params.id;
     const user = req.user;
-
-    const deleteDataById = await bookmarkModel.findOneAndDelete(
+    const deleteDataById = await viewedModel.deleteMany(
       {
-        product: id,
         user: user._id,
       },
       {
@@ -143,7 +148,7 @@ bookmarkRouter.delete(`/delete-product-id/:id`, async (req, res, next) => {
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Delete bookmark successfully",
+      message: "Delete all viewed successfully",
       data: deleteDataById,
     });
   } catch (error) {
@@ -151,4 +156,4 @@ bookmarkRouter.delete(`/delete-product-id/:id`, async (req, res, next) => {
   }
 });
 
-export default bookmarkRouter;
+export default viewedRouter;

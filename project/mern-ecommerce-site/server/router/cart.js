@@ -56,11 +56,35 @@ cartRouter.get(`/get-id/:id`, async (req, res, next) => {
     next(error);
   }
 });
-cartRouter.post(`/add`, async (req, res, next) => {
+cartRouter.post(`/create`, async (req, res, next) => {
   try {
     const body = req.body;
 
     const user = req.user;
+
+    const checkItem = await cartModel.findOne({
+      product: body.product,
+      user: user._id,
+    });
+
+    if (checkItem) {
+      const updateData = await cartModel.findOneAndUpdate(
+        {
+          product: body.product,
+          user: user._id,
+        },
+        {
+          ...body,
+        },
+        { new: true }
+      );
+
+      return handleResponse(res, {
+        status: StatusCodes.CREATED,
+        message: "Add to cart successfully",
+        data: updateData,
+      });
+    }
 
     const newData = await cartModel.create({
       ...body,

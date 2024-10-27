@@ -11,7 +11,7 @@ const bookmarkModel =
           ref: "user",
           required: true,
         },
-        products: {
+        product: {
           type: Schema.Types.ObjectId,
           ref: "product",
           required: true,

@@ -1,14 +1,37 @@
 import ButtonIncrementDecrement from "@/components/form/ButtonIncrementDecrement";
+import Loader from "@/components/form/loader";
 import { currencyChange } from "@/libs/utils/currency";
+import { useCartStore } from "@/stores/cart-store";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-const Right = () => {
-  const [quantity, setQuantity] = useState(0);
+const Right = ({ data }: { data: any }) => {
+  const { createCart } = useCartStore();
+  const createCartResult = useMutation({
+    mutationFn: async () => {
+      return await createCart({
+        product: data._id,
+        quantity,
+      });
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
-    setPrice((prev) => quantity * 19000000);
+    setPrice((prev) => quantity * data?.price);
   }, [quantity]);
+
+  if (createCartResult.isPending) return <Loader />;
+
   return (
     <div className="max-w-[360px] w-full hidden xl:block">
       <div className="bg-white rounded-lg p-4">
@@ -25,9 +48,11 @@ const Right = () => {
         </div>
         <div className="mt-4 text-base font-medium mb-2">Quantity</div>
         <ButtonIncrementDecrement
-          min={0}
+          min={1}
           number={quantity}
           onChangeNumber={(e) => {
+            console.log({ e });
+
             setQuantity(e);
           }}
         />
@@ -37,7 +62,12 @@ const Right = () => {
         </div>
         <div className="mt-8 flex flex-col gap-1">
           <button className="btn btn-danger w-full">By now</button>
-          <button className="btn btn-primary w-full">Add to cart</button>
+          <button
+            onClick={() => createCartResult.mutate()}
+            className="btn btn-primary w-full"
+          >
+            Add to cart
+          </button>
         </div>
       </div>
     </div>

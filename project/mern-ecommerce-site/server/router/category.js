@@ -9,6 +9,7 @@ import {
   cloudinary_uploadImageFile,
 } from "../config/cloudinary-config.js";
 import slug from "slug";
+import { verifyTokenAdmin } from "../middleware/verifyToken.js";
 
 const categoryRouter = express.Router();
 
@@ -71,6 +72,7 @@ categoryRouter.get(`/get-id/:id`, async (req, res, next) => {
 });
 categoryRouter.post(
   `/create`,
+  verifyTokenAdmin,
   upload.single("file"),
   async (req, res, next) => {
     try {
@@ -99,6 +101,7 @@ categoryRouter.post(
 );
 categoryRouter.put(
   `/update-id/:id`,
+  verifyTokenAdmin,
   upload.single("file"),
   async (req, res, next) => {
     try {
@@ -131,26 +134,30 @@ categoryRouter.put(
     }
   }
 );
-categoryRouter.delete(`/delete-id/:id`, async (req, res, next) => {
-  try {
-    const id = req.params.id;
+categoryRouter.delete(
+  `/delete-id/:id`,
+  verifyTokenAdmin,
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
 
-    const deleteDataById = await categoryModel.findByIdAndDelete(id, {
-      new: true,
-    });
+      const deleteDataById = await categoryModel.findByIdAndDelete(id, {
+        new: true,
+      });
 
-    if (deleteDataById?.thumbnail) {
-      await cloudinary_deleteFile(deleteDataById?.thumbnail);
+      if (deleteDataById?.thumbnail) {
+        await cloudinary_deleteFile(deleteDataById?.thumbnail);
+      }
+
+      return handleResponse(res, {
+        status: StatusCodes.OK,
+        message: "Delete category successfully",
+        data: deleteDataById,
+      });
+    } catch (error) {
+      next(error);
     }
-
-    return handleResponse(res, {
-      status: StatusCodes.OK,
-      message: "Delete category successfully",
-      data: deleteDataById,
-    });
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 export default categoryRouter;

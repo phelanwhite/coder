@@ -9,6 +9,7 @@ import {
   cloudinary_uploadImageFile,
 } from "../config/cloudinary-config.js";
 import slug from "slug";
+import { verifyTokenAdmin } from "../middleware/verifyToken.js";
 
 const brandRouter = express.Router();
 
@@ -69,32 +70,38 @@ brandRouter.get(`/get-id/:id`, async (req, res, next) => {
     next(error);
   }
 });
-brandRouter.post(`/create`, upload.single("file"), async (req, res, next) => {
-  try {
-    const body = req.body;
+brandRouter.post(
+  `/create`,
+  verifyTokenAdmin,
+  upload.single("file"),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
 
-    let thumbnail = "";
-    if (req.file) {
-      thumbnail = (await cloudinary_uploadImageFile(req.file))?.secure_url;
+      let thumbnail = "";
+      if (req.file) {
+        thumbnail = (await cloudinary_uploadImageFile(req.file))?.secure_url;
+      }
+
+      const newData = await brandModel.create({
+        ...body,
+        slug: slug(body.name),
+        thumbnail,
+      });
+
+      return handleResponse(res, {
+        status: StatusCodes.CREATED,
+        message: "Create new brand successfully",
+        data: newData,
+      });
+    } catch (error) {
+      next(error);
     }
-
-    const newData = await brandModel.create({
-      ...body,
-      slug: slug(body.name),
-      thumbnail,
-    });
-
-    return handleResponse(res, {
-      status: StatusCodes.CREATED,
-      message: "Create new brand successfully",
-      data: newData,
-    });
-  } catch (error) {
-    next(error);
   }
-});
+);
 brandRouter.put(
   `/update-id/:id`,
+  verifyTokenAdmin,
   upload.single("file"),
   async (req, res, next) => {
     try {
@@ -127,26 +134,30 @@ brandRouter.put(
     }
   }
 );
-brandRouter.delete(`/delete-id/:id`, async (req, res, next) => {
-  try {
-    const id = req.params.id;
+brandRouter.delete(
+  `/delete-id/:id`,
+  verifyTokenAdmin,
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
 
-    const deleteDataById = await brandModel.findByIdAndDelete(id, {
-      new: true,
-    });
+      const deleteDataById = await brandModel.findByIdAndDelete(id, {
+        new: true,
+      });
 
-    if (deleteDataById?.thumbnail) {
-      await cloudinary_deleteFile(deleteDataById?.thumbnail);
+      if (deleteDataById?.thumbnail) {
+        await cloudinary_deleteFile(deleteDataById?.thumbnail);
+      }
+
+      return handleResponse(res, {
+        status: StatusCodes.OK,
+        message: "Delete brand successfully",
+        data: deleteDataById,
+      });
+    } catch (error) {
+      next(error);
     }
-
-    return handleResponse(res, {
-      status: StatusCodes.OK,
-      message: "Delete brand successfully",
-      data: deleteDataById,
-    });
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 export default brandRouter;

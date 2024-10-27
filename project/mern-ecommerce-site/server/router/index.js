@@ -11,6 +11,7 @@ import cartRouter from "./cart.js";
 import reviewRouter from "./review.js";
 import productRouter from "./product.js";
 import userRouter from "./user.js";
+import viewedRouter from "./viewed.js";
 
 const router = express.Router();
 
@@ -21,12 +22,13 @@ router.use(`/address`, verifyToken, addressRouter);
 router.use(`/bookmark`, verifyToken, bookmarkRouter);
 router.use(`/cart`, verifyToken, cartRouter);
 router.use(`/wishlist`, verifyToken, wishlistRouter);
+router.use(`/viewed`, verifyToken, viewedRouter);
 router.use(`/review`, reviewRouter);
 
 // admin
 router.use(`/user`, verifyTokenAdmin, userRouter);
-router.use(`/brand`, verifyTokenAdmin, brandRouter);
-router.use(`/category`, verifyTokenAdmin, categoryRouter);
-router.use(`/product`, verifyTokenAdmin, productRouter);
+router.use(`/brand`, brandRouter);
+router.use(`/category`, categoryRouter);
+router.use(`/product`, productRouter);
 
 export default router;
