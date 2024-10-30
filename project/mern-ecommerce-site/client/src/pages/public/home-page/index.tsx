@@ -5,6 +5,7 @@ import ProductSlide from "./ProductSlide";
 import SuggestionToday from "./SuggestionToday";
 import axiosConfig from "@/configs/axios-config";
 import Loader from "@/components/form/loader";
+import Categories from "./Categories";
 
 const HomePage = () => {
   const getCategoriesResult = useQuery({
@@ -50,12 +51,10 @@ const HomePage = () => {
 
   return (
     <div className="flex gap-6">
-      <div className="md:block hidden">
-        <HomeSideLeft data={getCategoriesResult.data?.data?.results} />
-      </div>
       <div className="flex-1 overflow-hidden">
         <div className="space-y-3">
           <BannerSide />
+          <Categories data={getCategoriesResult.data?.data?.results} />
           <ProductSlide
             title="
 You may be interested"

@@ -11,10 +11,13 @@ const reviewModel =
           ref: "user",
           required: true,
         },
+        review: {
+          type: Schema.Types.ObjectId,
+          ref: "review",
+        },
         product: {
           type: Schema.Types.ObjectId,
           ref: "product",
-          required: true,
         },
         rating: {
           type: Number,

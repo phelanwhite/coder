@@ -10,6 +10,7 @@ import {
 } from "../config/cloudinary-config.js";
 import slug from "slug";
 import { verifyTokenAdmin } from "../middleware/verifyToken.js";
+import { customDataTrackingIDProducts } from "../helper/data.js";
 
 const productRouter = express.Router();
 
@@ -19,6 +20,7 @@ productRouter.get(`/get-all`, async (req, res, next) => {
     const _limit = parseInt(req.query._limit) || QUERY._LIMIT;
     const _page = parseInt(req.query._page) || QUERY._PAGE;
     const _skip = (_page - 1) * _limit;
+    const _tracking_id = req.query._tracking_id;
 
     const query = {
       name: {
@@ -36,15 +38,113 @@ productRouter.get(`/get-all`, async (req, res, next) => {
         createdAt: -1,
       });
 
+    const datas = await customDataTrackingIDProducts(_tracking_id, getDatas);
+
     const total_row = await productModel.countDocuments(query);
 
     const total_page = Math.ceil(total_row / _limit);
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Get all brands successfully",
+      message: "Get all products successfully",
       data: {
-        results: getDatas,
+        results: datas,
+        total_row,
+        total_page,
+        _page,
+        _limit,
+        _q,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+productRouter.get(`/get-all-by-category-id/:id`, async (req, res, next) => {
+  try {
+    const _q = req.query._q || QUERY._Q;
+    const _limit = parseInt(req.query._limit) || QUERY._LIMIT;
+    const _page = parseInt(req.query._page) || QUERY._PAGE;
+    const _skip = (_page - 1) * _limit;
+    const _tracking_id = req.query._tracking_id;
+
+    const { id } = req.params;
+
+    const query = {
+      name: {
+        $regex: _q,
+        $options: "i",
+      },
+      category: id,
+    };
+
+    const getDatas = await productModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
+
+    const datas = await customDataTrackingIDProducts(_tracking_id, getDatas);
+
+    const total_row = await productModel.countDocuments(query);
+
+    const total_page = Math.ceil(total_row / _limit);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Get all products successfully by category ID",
+      data: {
+        results: datas,
+        total_row,
+        total_page,
+        _page,
+        _limit,
+        _q,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+productRouter.get(`/get-all-by-brand-id/:id`, async (req, res, next) => {
+  try {
+    const _q = req.query._q || QUERY._Q;
+    const _limit = parseInt(req.query._limit) || QUERY._LIMIT;
+    const _page = parseInt(req.query._page) || QUERY._PAGE;
+    const _skip = (_page - 1) * _limit;
+    const _tracking_id = req.query._tracking_id;
+
+    const { id } = req.params;
+
+    const query = {
+      name: {
+        $regex: _q,
+        $options: "i",
+      },
+      brand: id,
+    };
+
+    const getDatas = await productModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
+
+    const datas = await customDataTrackingIDProducts(_tracking_id, getDatas);
+
+    const total_row = await productModel.countDocuments(query);
+
+    const total_page = Math.ceil(total_row / _limit);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Get all products successfully by brand ID",
+      data: {
+        results: datas,
         total_row,
         total_page,
         _page,
@@ -60,12 +160,131 @@ productRouter.get(`/get-id/:id`, async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const getData = await productModel.findById(id);
+    const getData = await productModel
+      .findById(id)
+      .populate([`brand`, `category`]);
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Get brand by ID successfully",
+      message: "Get product by ID successfully",
       data: getData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+productRouter.get(`/get-id/:id/similar`, async (req, res, next) => {
+  try {
+    const _q = req.query._q || QUERY._Q;
+    const _limit = parseInt(req.query._limit) || QUERY._LIMIT;
+    const _page = parseInt(req.query._page) || QUERY._PAGE;
+    const _skip = (_page - 1) * _limit;
+    const _tracking_id = req.query._tracking_id;
+
+    const { id } = req.params;
+
+    const getData = await productModel.findById(id);
+
+    const query = {
+      $and: [
+        {
+          name: {
+            $regex: _q,
+            $options: "i",
+          },
+        },
+        {
+          $nor: [{ _id: getData?._id }],
+        },
+        { category: getData?.category },
+        { brand: getData?.brand },
+      ],
+    };
+
+    const getDatas = await productModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
+
+    const datas = await customDataTrackingIDProducts(_tracking_id, getDatas);
+
+    const total_row = await productModel.countDocuments(query);
+
+    const total_page = Math.ceil(total_row / _limit);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Get similar products successfully",
+      data: {
+        results: datas,
+        total_row,
+        total_page,
+        _page,
+        _limit,
+        _q,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+productRouter.get(`/get-id/:id/top-deal`, async (req, res, next) => {
+  try {
+    const _q = req.query._q || QUERY._Q;
+    const _limit = parseInt(req.query._limit) || QUERY._LIMIT;
+    const _page = parseInt(req.query._page) || QUERY._PAGE;
+    const _skip = (_page - 1) * _limit;
+    const _tracking_id = req.query._tracking_id;
+
+    const { id } = req.params;
+
+    const getData = await productModel.findById(id);
+
+    const query = {
+      $and: [
+        {
+          name: {
+            $regex: _q,
+            $options: "i",
+          },
+        },
+        {
+          $nor: [{ _id: getData?._id }],
+        },
+        { category: getData?.category },
+        { brand: getData?.brand },
+      ],
+    };
+
+    const getDatas = await productModel
+      .find(query)
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        discount: -1,
+        createdAt: -1,
+      });
+
+    const datas = await customDataTrackingIDProducts(_tracking_id, getDatas);
+
+    const total_row = await productModel.countDocuments(query);
+
+    const total_page = Math.ceil(total_row / _limit);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Get similar products successfully",
+      data: {
+        results: datas,
+        total_row,
+        total_page,
+        _page,
+        _limit,
+        _q,
+      },
     });
   } catch (error) {
     next(error);

@@ -40,7 +40,7 @@ const Main = ({
       {/* top  */}
       <div className="bg-white rounded-lg p-4">
         <div className="space-y-1">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <div className="max-w-24">
               <img src={IMAGES_DEFAULT.policy_icon} loading="lazy" alt="" />
             </div>
@@ -49,8 +49,8 @@ const Main = ({
             </div>
             <div className="text-[13px]">
               <span>Brand: </span>
-              <Link to={`/`} className="text-link">
-                Apple
+              <Link to={`/brand/${data?.brand?._id}`} className="text-link">
+                {data?.brand?.name}
               </Link>
             </div>
           </div>
@@ -68,19 +68,61 @@ const Main = ({
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-medium">
+            <span className="text-2xl font-medium text-red-500">
               {currencyChange({ value: data?.price })}
             </span>
             <span className="inline-block p-0.5 bg-gray-100 text-xs rounded">
               -{data?.discount}%
             </span>
-            <span className="line-through text-secondary-2 font-medium">
+            <span className="line-through text-secondary-2">
               {currencyChange({ value: data?.original_price })}
             </span>
           </div>
         </div>
         <div className="mt-4">
           <div className="text-base font-medium mb-4">Options</div>
+          <div className="flex gap-4 flex-wrap">
+            <button className="btn px-2 font-medium">
+              <div className="w-6">
+                <img
+                  src={`https://salt.tikicdn.com/cache/750x750/ts/product/a2/38/6c/ce008c63f4ac771550439da44f5f8ee8.png.webp`}
+                  alt=""
+                />
+              </div>
+              <span>Hong</span>
+              <span>128GB</span>
+            </button>
+            <button className="btn px-2 font-medium">
+              <div className="w-6">
+                <img
+                  src={`https://salt.tikicdn.com/cache/750x750/ts/product/a2/38/6c/ce008c63f4ac771550439da44f5f8ee8.png.webp`}
+                  alt=""
+                />
+              </div>
+              <span>Hong</span>
+              <span>128GB</span>
+            </button>
+            <button className="btn px-2 font-medium">
+              <div className="w-6">
+                <img
+                  src={`https://salt.tikicdn.com/cache/750x750/ts/product/a2/38/6c/ce008c63f4ac771550439da44f5f8ee8.png.webp`}
+                  alt=""
+                />
+              </div>
+              <span>Hong</span>
+              <span>128GB</span>
+            </button>
+            <button className="btn px-2 font-medium">
+              <div className="w-6">
+                <img
+                  src={`https://salt.tikicdn.com/cache/750x750/ts/product/a2/38/6c/ce008c63f4ac771550439da44f5f8ee8.png.webp`}
+                  alt=""
+                />
+              </div>
+              <span>Hong</span>
+              <span>128GB</span>
+            </button>
+          </div>
         </div>
       </div>
       {/* By now */}

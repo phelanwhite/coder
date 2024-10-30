@@ -1,4 +1,5 @@
 import IMAGES_DEFAULT from "@/assets/constants/image";
+import ButtonHighlight from "@/components/form/ButtonHighlight";
 import CheckboxField from "@/components/form/CheckboxField";
 import InputField from "@/components/form/InputField";
 import Loader from "@/components/form/loader";
@@ -23,7 +24,7 @@ const ProductCreateUpdatePage = () => {
           item[1].forEach((value) => {
             formData.append(item[0], value);
           });
-        } else if (item[1] !== "") {
+        } else if (item[1]) {
           formData.append(item[0], item[1] as string);
         }
       });
@@ -58,7 +59,13 @@ const ProductCreateUpdatePage = () => {
     enabled: !!id,
   });
   useEffect(() => {
-    getDataByIdResult.data && setFormValue(getDataByIdResult.data?.data);
+    getDataByIdResult.data &&
+      setFormValue((prev) => ({
+        ...prev,
+        ...getDataByIdResult.data?.data,
+        brand: getDataByIdResult.data?.data?.brand?._id,
+        category: getDataByIdResult.data?.data?.category?._id,
+      }));
   }, [getDataByIdResult.data]);
 
   const location = useLocation();
@@ -87,9 +94,12 @@ const ProductCreateUpdatePage = () => {
 
     configurable_options: ``,
     specifications: ``,
-    highlight: ``,
+    highlight: [],
+
     isActive: true,
   });
+  console.log({ formValue });
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -155,7 +165,7 @@ const ProductCreateUpdatePage = () => {
         {/* file_thumbnail */}
         <label
           htmlFor="file_thumbnail"
-          className="block w-[150px] aspect-video overflow-hidden rounded cursor-pointer"
+          className="block p-1 border w-[150px] aspect-video overflow-hidden rounded cursor-pointer"
         >
           <img
             src={
@@ -247,7 +257,7 @@ const ProductCreateUpdatePage = () => {
               {formValue.images?.map((file, index) => (
                 <div
                   key={index}
-                  className="block w-[150px] aspect-video overflow-hidden rounded cursor-pointer p-1 border"
+                  className="block w-[100px] md:w-[150px] aspect-video overflow-hidden rounded cursor-pointer p-1 border"
                 >
                   <img src={file} loading="lazy" alt="" />
                 </div>
@@ -262,6 +272,13 @@ const ProductCreateUpdatePage = () => {
           onChange={(e) =>
             setFormValue((prev) => ({ ...prev, isActive: e.target.checked }))
           }
+        />
+        <ButtonHighlight
+          label="Highlight"
+          datas={formValue.highlight}
+          setDatas={(e) => {
+            setFormValue((prev) => ({ ...prev, highlight: e }));
+          }}
         />
         <TextEditor
           label="description"

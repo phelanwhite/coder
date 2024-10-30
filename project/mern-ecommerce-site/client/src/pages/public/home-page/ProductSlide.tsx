@@ -37,6 +37,9 @@ const ProductSlide: FC<Props> = ({ title, datas }) => {
             1200: {
               slidesPerView: 6,
             },
+            1456: {
+              slidesPerView: 7,
+            },
           }}
           navigation={true}
           modules={[Navigation]}

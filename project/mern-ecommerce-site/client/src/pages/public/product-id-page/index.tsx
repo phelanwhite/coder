@@ -7,6 +7,7 @@ import axiosConfig from "@/configs/axios-config";
 import Loader from "@/components/form/loader";
 import { useViewedStore } from "@/stores/viewed-store";
 import { useAuthStore } from "@/stores/auth-store";
+import ReviewCard from "@/components/common/review/ReviewCard";
 
 const ProductByIdPage = () => {
   const { id } = useParams();
@@ -25,19 +26,21 @@ const ProductByIdPage = () => {
   const getSimilarResult = useQuery({
     queryKey: ["similar", id],
     queryFn: async () => {
-      const url = `product/get-all`;
+      const url = `product/get-id/${id}/similar`;
       return (await axiosConfig.get(url)).data;
     },
     placeholderData: keepPreviousData,
+    enabled: !!id,
   });
 
   const getTopDealsResult = useQuery({
     queryKey: ["topDeal", id],
     queryFn: async () => {
-      const url = `product/get-all`;
+      const url = `product/get-id/${id}/top-deal`;
       return (await axiosConfig.get(url)).data;
     },
     placeholderData: keepPreviousData,
+    enabled: !!id,
   });
 
   const { user } = useAuthStore();
@@ -57,14 +60,23 @@ const ProductByIdPage = () => {
     return <Loader />;
 
   return (
-    <div className="flex items-start gap-6 flex-col md:flex-row">
-      <Left data={getProductByIdResult.data?.data} />
-      <Main
-        data={getProductByIdResult.data?.data}
-        similar={getSimilarResult.data?.data?.results}
-        top_deals={getTopDealsResult.data?.data?.results}
-      />
-      <Right data={getProductByIdResult.data?.data} />
+    <div>
+      <div className="flex items-start gap-6 flex-col md:flex-row">
+        <Left data={getProductByIdResult.data?.data} />
+        <Main
+          data={getProductByIdResult.data?.data}
+          similar={getSimilarResult.data?.data?.results}
+          top_deals={getTopDealsResult.data?.data?.results}
+        />
+        <Right data={getProductByIdResult.data?.data} />
+      </div>
+      <div className="bg-white rounded-lg p-4 space-y-4">
+        <div className="text-base font-medium">Customer reviews</div>
+        <ReviewCard />
+        <ReviewCard />
+        <ReviewCard />
+        <ReviewCard />
+      </div>
     </div>
   );
 };

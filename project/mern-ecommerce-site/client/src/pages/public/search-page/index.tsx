@@ -7,14 +7,11 @@ import axiosConfig from "@/configs/axios-config";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-const SearchPage = () => {
-  const { searchParams, handleSearchParams } = useSearchParamsValue({
-    // _limit: `100`,
-    // _q: `iphon`,
-  });
+const BrandPage = () => {
+  const { searchParams, handleSearchParams } = useSearchParamsValue();
 
   const getSearchResult = useQuery({
-    queryKey: ["search", searchParams.toString()],
+    queryKey: ["brand", searchParams.toString()],
     queryFn: async () => {
       const url = `product/get-all?${searchParams.toString()}`;
       return (await axiosConfig.get(url)).data;
@@ -45,4 +42,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default BrandPage;

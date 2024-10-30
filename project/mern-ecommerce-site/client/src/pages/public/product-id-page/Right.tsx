@@ -50,11 +50,10 @@ const Right = ({ data }: { data: any }) => {
         <ButtonIncrementDecrement
           min={1}
           number={quantity}
-          onChangeNumber={(e) => {
-            console.log({ e });
-
-            setQuantity(e);
-          }}
+          // onChangeNumber={(e) => {
+          //   // console.log({ e });
+          //   // setQuantity(e);
+          // }}
         />
         <div className="mt-4 text-base font-medium mb-2">Provisional</div>
         <div className="font-medium text-xl">

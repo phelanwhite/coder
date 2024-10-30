@@ -17,7 +17,7 @@ const Header = () => {
         </Link>
         <div></div>
         <div className="flex items-center gap-4">
-          <Link to={`/cart`}>
+          <Link to={`/customer/cart`}>
             <IoCartOutline size={24} />
           </Link>
           <AuthButtonMenu />

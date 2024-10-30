@@ -29,6 +29,10 @@ import UserPage from "./pages/admin/UserPage";
 import UserCreatePage from "./pages/admin/UserCreatePage";
 import WishlistProductsPage from "./pages/auth/WishlistProductsPage";
 import BookmarkProductsPage from "./pages/auth/BookmarkProductsPage";
+import CartPage from "./pages/auth/CartPage";
+import AuthProtected from "./components/layout/AuthProtected";
+import CategoryIdPage from "./pages/public/category-id-page";
+import BrandIdPage from "./pages/public/brand-id-page";
 
 function App() {
   return (
@@ -37,39 +41,53 @@ function App() {
       <div className="my-4 max-w-[1416px] w-full px-2 mx-auto">
         <Routes>
           {/* public  */}
-          <Route path="/" element={<PublicLayout />}>
+          <Route path="/*" element={<PublicLayout />}>
             <Route index element={<HomePage />} />
             <Route path="product-id/:id" element={<ProductByIdPage />} />
             <Route path="search" element={<SearchPage />} />
+            <Route path="brand/:id" element={<BrandIdPage />} />
+            <Route path="category/:id" element={<CategoryIdPage />} />
           </Route>
           {/* auth  */}
-          <Route path="customer" element={<AuthLayout />}>
-            <Route path="account" element={<AccountInformationPage />} />
-            <Route path="notification" element={<MyNoticePage />} />
-            <Route path="address-book" element={<AddressBookPage />} />
-            <Route
-              path="address-book/add"
-              element={<AddressBookCreateUpdatePage />}
-            />
-            <Route
-              path="address-book/edit/:id"
-              element={<AddressBookCreateUpdatePage />}
-            />
-            <Route path="change-password" element={<ChangePasswordPage />} />
-            <Route path="order-management" element={<OrderManagementPage />} />
-            <Route
-              path="return-management"
-              element={<ReturnManagementPage />}
-            />
-            <Route path="product-reviews" element={<ProductReviewsPage />} />
-            <Route
-              path="product-you-viewed"
-              element={<ProductsYouViewedPage />}
-            />
-            <Route path="product-wishlist" element={<WishlistProductsPage />} />
-            <Route path="product-bookmark" element={<BookmarkProductsPage />} />
-            <Route path="my-comment" element={<MyCommentPage />} />
-            <Route path="help-center" element={<CustomerSupportPage />} />
+          <Route path="customer/*" element={<AuthProtected />}>
+            <Route path="cart" element={<CartPage />} />
+            <Route element={<AuthLayout />}>
+              <Route path="account" element={<AccountInformationPage />} />
+              <Route path="notification" element={<MyNoticePage />} />
+              <Route path="address-book" element={<AddressBookPage />} />
+              <Route
+                path="address-book/add"
+                element={<AddressBookCreateUpdatePage />}
+              />
+              <Route
+                path="address-book/edit/:id"
+                element={<AddressBookCreateUpdatePage />}
+              />
+              <Route path="change-password" element={<ChangePasswordPage />} />
+              <Route
+                path="order-management"
+                element={<OrderManagementPage />}
+              />
+              <Route
+                path="return-management"
+                element={<ReturnManagementPage />}
+              />
+              <Route path="product-reviews" element={<ProductReviewsPage />} />
+              <Route
+                path="product-you-viewed"
+                element={<ProductsYouViewedPage />}
+              />
+              <Route
+                path="product-wishlist"
+                element={<WishlistProductsPage />}
+              />
+              <Route
+                path="product-bookmark"
+                element={<BookmarkProductsPage />}
+              />
+              <Route path="my-comment" element={<MyCommentPage />} />
+              <Route path="help-center" element={<CustomerSupportPage />} />
+            </Route>
           </Route>
           {/* admin */}
           <Route path="admin/*" element={<AdminLayout />}>

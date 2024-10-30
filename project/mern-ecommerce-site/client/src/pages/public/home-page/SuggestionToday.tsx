@@ -26,7 +26,7 @@ const SuggestionToday: FC<Props> = ({ datas }) => {
           </div>
         </div>
       </div>
-      <div className="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      <div className="mt-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
         {datas?.map((item, index) => {
           return <ProductCard key={item?._id} data={item} />;
         })}

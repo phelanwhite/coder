@@ -17,7 +17,7 @@ wishlistRouter.get(`/get-all`, async (req, res, next) => {
     const user = req.user;
 
     const query = {
-      user: user._id,
+      user: user?._id,
     };
 
     const getDatas = await wishlistModel
@@ -29,7 +29,7 @@ wishlistRouter.get(`/get-all`, async (req, res, next) => {
         createdAt: -1,
       });
 
-    let datas = await customDataUserProducts(user, getDatas);
+    let datas = await customDataUserProducts(user?._id, getDatas);
 
     const total_row = await wishlistModel.countDocuments(query);
 

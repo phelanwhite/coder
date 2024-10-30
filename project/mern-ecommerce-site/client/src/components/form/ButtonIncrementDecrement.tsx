@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { FC, useEffect, useState } from "react";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 interface Props {
@@ -5,23 +6,40 @@ interface Props {
   onChangeNumber?: (value: number) => void;
   min?: number;
   max?: number;
+  className?: string;
+  size?: "sm";
 }
 const ButtonIncrementDecrement: FC<Props> = ({
   max,
   min,
   number,
+  className,
   onChangeNumber,
+  size,
 }) => {
-  const [value, setValue] = useState(() => number || 0);
+  const [value, setValue] = useState(0);
   const handleIncrement = () =>
     setValue((prev: number) => (prev === max ? prev : prev + 1));
   const handleDecrement = () =>
     setValue((prev: number) => (prev === min ? prev : prev - 1));
+  const newNumber = number === min ? min : number - 1;
+  onChangeNumber && onChangeNumber(newNumber);
   useEffect(() => {
     onChangeNumber && onChangeNumber(value);
   }, [value]);
+
+  useEffect(() => {
+    number && setValue(number);
+  }, [number]);
+
   return (
-    <div className="flex items-stretch gap-1">
+    <div
+      className={clsx([
+        `flex items-stretch gap-1`,
+        size === `sm` && `text-xs`,
+        className,
+      ])}
+    >
       <button
         disabled={min && Number(value) <= min ? true : false}
         onClick={handleDecrement}
@@ -31,7 +49,7 @@ const ButtonIncrementDecrement: FC<Props> = ({
       </button>
       <input
         type="number"
-        className="flex-1 border rounded px-2 py-1"
+        className="w-full border rounded px-2 py-1"
         value={value}
         min={min}
         max={max}

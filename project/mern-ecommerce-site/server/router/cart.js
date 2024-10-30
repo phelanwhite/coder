@@ -19,7 +19,14 @@ cartRouter.get(`/get-all`, async (req, res, next) => {
       user: user._id,
     };
 
-    const getDatas = await cartModel.find(query).limit(_limit).skip(_skip);
+    const getDatas = await cartModel
+      .find(query)
+      .populate([`product`])
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
 
     const total_row = await cartModel.countDocuments(query);
 

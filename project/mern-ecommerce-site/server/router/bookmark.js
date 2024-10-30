@@ -17,7 +17,7 @@ bookmarkRouter.get(`/get-all`, async (req, res, next) => {
     const user = req.user;
 
     const query = {
-      user: user._id,
+      user: user?._id,
     };
 
     const getDatas = await bookmarkModel
@@ -29,7 +29,7 @@ bookmarkRouter.get(`/get-all`, async (req, res, next) => {
         createdAt: -1,
       });
 
-    const datas = await customDataUserProducts(user, getDatas);
+    const datas = await customDataUserProducts(user?._id, getDatas);
 
     const total_row = await bookmarkModel.countDocuments(query);
 
