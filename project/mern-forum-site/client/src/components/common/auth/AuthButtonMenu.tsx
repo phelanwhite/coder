@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import SigninSignupModal from "./SigninSignupModal";
 
 const AuthButtonMenu = () => {
-  const { user, loggout } = useAuthStore();
+  const { user, loggout, isAuthenticated } = useAuthStore();
   //
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +28,7 @@ const AuthButtonMenu = () => {
 
   return (
     <>
-      {user ? (
+      {isAuthenticated ? (
         <div className="relative" ref={menuRef}>
           <div
             onClick={() => setIsOpen(!isOpen)}

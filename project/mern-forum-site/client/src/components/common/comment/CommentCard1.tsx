@@ -1,6 +1,6 @@
 import IMAGES_DEFAULT from "@/assets/constants/image";
 import { useCommentStore } from "@/stores/comment-store";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { AiOutlineComment, AiOutlineLike } from "react-icons/ai";
 import CommentForm from "./CommentForm";
 import {
@@ -14,7 +14,8 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 const CommentCard1 = ({ data }: { data: any }) => {
-  const { likeDislikeByCommentId } = useCommentStore();
+  const { replies, likeDislikeByCommentId, getRepliesByCommentId } =
+    useCommentStore();
   const [count_like, setCount_like] = useState(0);
   useEffect(() => {
     data?.likes?.length && setCount_like(data?.likes?.length);
@@ -38,9 +39,7 @@ const CommentCard1 = ({ data }: { data: any }) => {
   const getRepliesResult = useInfiniteQuery({
     queryKey: ["replies", data?._id],
     queryFn: async ({ pageParam }) => {
-      const url = `comment/get-comments-by-comment-id/${data?._id}?_page=${pageParam}`;
-      const response = (await axiosConfig.get(url)).data;
-      return response;
+      return await getRepliesByCommentId(data?._id);
     },
 
     initialPageParam: 1,
@@ -54,6 +53,12 @@ const CommentCard1 = ({ data }: { data: any }) => {
     placeholderData: keepPreviousData,
     enabled: !!isReplyView,
   });
+
+  const [repliesData, setRepliesData] = useState<any[]>([]);
+  useEffect(() => {
+    setRepliesData(replies);
+  }, []);
+  console.log({ repliesData });
 
   const { id } = useParams();
 
@@ -109,17 +114,17 @@ const CommentCard1 = ({ data }: { data: any }) => {
         {isReplyComment && (
           <div className="mb-3">
             <CommentForm
+              isReply={true}
               parentCommentId={data?._id}
               parentCommentIdOfBlogId={id}
             />
           </div>
         )}
+
         {isReplyView && (
           <div className="">
-            {getRepliesResult.data?.pages?.map((item: any) => {
-              return item?.data?.result?.map((comment: any) => {
-                return <CommentCard1 key={comment?._id} data={comment} />;
-              });
+            {repliesData?.map((item: any) => {
+              return <CommentCard1 key={item?._id} data={item} />;
             })}
           </div>
         )}

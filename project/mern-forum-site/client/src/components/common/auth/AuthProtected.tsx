@@ -8,8 +8,11 @@ const AuthProtected = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    !isAuthenticated && setIsOpen(true);
+    if (!isAuthenticated) {
+      setIsOpen(true);
+    }
   }, [isAuthenticated]);
+
   return isAuthenticated ? (
     <Outlet />
   ) : (

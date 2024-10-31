@@ -5,31 +5,36 @@ import toast from "react-hot-toast";
 import Loader from "../loader";
 
 interface Props {
+  isReply?: boolean;
   blogId?: string;
   parentCommentId?: string;
   parentCommentIdOfBlogId?: string;
 }
 const CommentForm: FC<Props> = ({
+  isReply,
   blogId,
   parentCommentId,
   parentCommentIdOfBlogId,
 }) => {
-  const { createComment } = useCommentStore();
+  const { createComment, createReply } = useCommentStore();
   const createCommentResult = useMutation({
     mutationFn: async () => {
-      return await createComment({
-        comment,
-        ...(blogId && { blog: blogId }),
-        ...(parentCommentId && { parentCommentId: parentCommentId }),
-        ...(parentCommentIdOfBlogId && {
-          parentCommentIdOfBlogId: parentCommentIdOfBlogId,
-        }),
-      });
+      if (isReply) {
+        return await createReply({
+          comment,
+          parentCommentId,
+          parentCommentIdOfBlogId,
+        });
+      } else {
+        return await createComment({
+          comment,
+          blog: blogId,
+        });
+      }
     },
     onSuccess: (data) => {
       toast.success(data?.message);
       setComment("");
-      parentCommentId && window.location.reload();
     },
     onError: (error) => {
       toast.error(error?.message);

@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosConfig from "@/configs/axios-config";
 import Loader from "@/components/common/loader";
 import { useMemo } from "react";
-import { getReadTimeToString } from "@/libs/utils/time";
+import { getReadTimeToString, getTimeDisplayBlog } from "@/libs/utils/time";
 import { useAuthStore } from "@/stores/auth-store";
 import BookmarkButtonAddRemove from "@/components/common/bookmark/BookmarkButtonAddRemove";
 import FavoriteButtonAddRemove from "@/components/common/favorite/FavoriteButtonAddRemove";
@@ -94,7 +94,9 @@ const BlogIdPage = () => {
                   {blogData?.author?.name}
                 </div>
                 <div className="text-sm font-medium text-text-secondary-color-2 flex gap-4 items-center">
-                  <span>4 thang truoc</span>
+                  <span>
+                    {getTimeDisplayBlog(new Date(blogData?.createdAt))}
+                  </span>
                   <span>
                     {getReadTimeToString(blogData?.description)} min read
                   </span>

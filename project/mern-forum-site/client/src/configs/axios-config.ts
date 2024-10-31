@@ -4,7 +4,6 @@ import env from "./env-config";
 const axiosConfig = axios.create({
   baseURL: env.PORT_SERVER,
   params: {
-    // _tracking_id: `66d904a1cbe4e2e3c1c56507`,
     ...(localStorage.getItem(`_tracking_id`) && {
       _tracking_id: localStorage.getItem(`_tracking_id`),
     }),
@@ -34,18 +33,16 @@ axiosConfig.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log({ error });
     if (error.status === 401) {
       localStorage.removeItem("auth");
-      // window.location.replace(`/signin`);
-      // toast.error(
-      //   `Invalid credentials. Please check your credentials and try again later.`
-      // );
+      localStorage.removeItem("_tracking_id");
     }
+
+    const customError = error?.response?.data;
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error);
+    return Promise.reject(customError);
   }
 );
 

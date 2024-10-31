@@ -43,14 +43,14 @@ const SigninSignupModal: FC<Prop> = ({ isOpen, onClose }) => {
         className="absolute top-0 left-0 bottom-0 right-0"
       ></div>
       <div className="z-10 flex items-center justify-center p-4 h-full">
-        <div className="signin-signup-show-modal relative rounded-2xl max-w-[540px] max-h-full w-full bg-white">
+        <div className="signin-signup-show-modal relative rounded-2xl max-w-[540px] max-h-full w-full bg-white overflow-y-auto">
           <button
             onClick={onClose}
             className="z-10 absolute top-4 right-4 bg-gray-100 text-xl rounded-full p-1"
           >
             <MdClose />
           </button>
-          <div className="relative max-w-[400px] w-full mx-auto p-4 md:p-7 overflow-y-auto">
+          <div className="relative max-w-[400px] w-full mx-auto p-4 md:p-7 ">
             <div className="mx-auto w-max mt-12">
               <Link to={`/`}>
                 <span className="bg-blue-500 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl">
