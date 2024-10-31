@@ -230,7 +230,10 @@ blogRouter.get(`/get-blogs-by-topic-id/:id`, async (req, res, next) => {
           status: _status,
         },
         {
-          topic: req.params.id,
+          topic: {
+            $regex: req.params.id,
+            $options: "i",
+          },
         },
       ],
     };
