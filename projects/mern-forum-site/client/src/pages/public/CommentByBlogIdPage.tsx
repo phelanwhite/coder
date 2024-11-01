@@ -1,5 +1,4 @@
 import CommentCard from "@/components/common/comment/CommentCard";
-import CommentCard1 from "@/components/common/comment/CommentCard1";
 import CommentForm from "@/components/common/comment/CommentForm";
 import Loader from "@/components/common/loader";
 import Paginate from "@/components/form/paginate";
