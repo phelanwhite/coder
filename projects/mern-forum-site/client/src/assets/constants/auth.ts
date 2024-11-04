@@ -14,7 +14,15 @@ export const USER_MENU_LINKS = {
       path: `/me/activity`,
     },
   ],
-  menu3: [{ title: `Settings`, path: `/settings` }],
+  menu3: [
+    {
+      title: `
+    Website management
+    `,
+      path: `/admin/management`,
+    },
+  ],
+  menu4: [{ title: `Settings`, path: `/settings` }],
 };
 
 export const FORUM_MENU_LINKS = {
@@ -28,6 +36,10 @@ export const FORUM_MENU_LINKS = {
     { title: "Comment", path: "/me/activity/comment" },
     { title: "Bookmark", path: "/me/activity/bookmark" },
     { title: "Favorite", path: "/me/activity/favorite" },
+  ],
+  management: [
+    { title: "Topic", path: "/admin/management" },
+    { title: "Comment", path: "/admin/management/comment" },
   ],
 };
 

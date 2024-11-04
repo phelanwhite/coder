@@ -25,6 +25,11 @@ import ProfilePage from "./pages/auth/ProfilePage";
 import ResponsesPage from "./pages/auth/ResponsesPage";
 import TopicIdPage from "./pages/public/TopicIdPage";
 import TopicPage from "./pages/public/TopicPage";
+import ManagementPage from "./pages/auth/ManagementPage";
+import AdminTopicPage from "./pages/admin/AdminTopicPage";
+import AdminCommentPage from "./pages/admin/AdminCommentPage";
+import AdminProtected from "./components/common/admin/AdminProtected";
+import NotificationsPage from "./pages/auth/NotificationsPage";
 
 function App() {
   const location = useLocation();
@@ -54,6 +59,7 @@ function App() {
                 element={<BlogNewAndUpdatePage />}
               />
               <Route element={<AuthLayout />}>
+                <Route path="notifications" element={<NotificationsPage />} />
                 <Route path="my-blogs" element={<MyBlogPage />}>
                   <Route index element={<DraftPage />} />
                   <Route path="published" element={<PublishedPage />} />
@@ -64,6 +70,15 @@ function App() {
                   <Route path="comment" element={<CommentPage />} />
                   <Route path="bookmark" element={<BookmarkPage />} />
                   <Route path="favorite" element={<FavoritePage />} />
+                </Route>
+              </Route>
+            </Route>
+
+            <Route path="admin" element={<AdminProtected />}>
+              <Route element={<AuthLayout />}>
+                <Route path="management" element={<ManagementPage />}>
+                  <Route index element={<AdminTopicPage />} />
+                  <Route path="comment" element={<AdminCommentPage />} />
                 </Route>
               </Route>
             </Route>

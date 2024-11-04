@@ -34,8 +34,7 @@ axiosConfig.interceptors.response.use(
   },
   function (error) {
     if (error.status === 401) {
-      localStorage.removeItem("auth");
-      localStorage.removeItem("_tracking_id");
+      localStorage.clear();
     }
 
     const customError = error?.response?.data;

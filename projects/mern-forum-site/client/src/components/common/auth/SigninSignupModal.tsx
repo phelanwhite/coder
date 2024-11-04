@@ -3,7 +3,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { FC, memo, useEffect } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface Prop {
   isOpen: boolean;
@@ -11,6 +11,7 @@ interface Prop {
 }
 
 const SigninSignupModal: FC<Prop> = ({ isOpen, onClose }) => {
+  const location = useLocation();
   const { logginWithPassportSuccess, user } = useAuthStore();
 
   // signin with google
@@ -61,6 +62,11 @@ const SigninSignupModal: FC<Prop> = ({ isOpen, onClose }) => {
             <div className="font-bold text-xl text-center mt-3">
               Join the PLFORUM
             </div>
+            {user && location.pathname.includes(`admin`) && (
+              <div className="mt-3 text-red-500 text-center text-xs">
+                You are not an administrator. Log in as administrator
+              </div>
+            )}
             <div className="text-sm text-center mt-3">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
               Quisquam, neque aspernatur nobis minus minima ut delectus,

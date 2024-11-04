@@ -11,6 +11,9 @@ import { handleError } from "./helper/response.js";
 import router from "./router/index.js";
 import connectMongoDB from "./config/db-config.js";
 
+import http from "http";
+import { Server } from "socket.io";
+
 connectMongoDB();
 const app = express();
 app.listen(env.PORT_SERVER, () => {
@@ -41,6 +44,34 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+// socket
+const server = http.Server(app);
+server.listen(5001, () => {
+  console.log("Socket server is running on port 5001");
+});
+const io = new Server(server, {
+  cors: {
+    origin: [env.PORT_CLIENT],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+io.on("connection", (socket) => {
+  console.log("a user connected:", socket.id);
+  socket.on("sendMessage", (value) => {
+    io.emit("message", {
+      user: socket.id,
+      message: value,
+    });
+  });
+});
+app.use(function (req, res, next) {
+  req.io = io;
+  next();
+});
+
+// router
 app.use(`/api`, router);
 
 // deploy

@@ -6,10 +6,11 @@ import SidebarRight from "@/components/layout/SidebarRight";
 import axiosConfig from "@/configs/axios-config";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
 
 const TopicPage = () => {
-  const { searchParams, handleSearchParams } = useSearchParamsValue();
+  const { searchParams, handleSearchParams } = useSearchParamsValue({
+    _limit: `200`,
+  });
   const getTopicsResult = useQuery({
     queryKey: ["topic", searchParams.toString()],
     queryFn: async () => {

@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import InputSearch from "../common/InputSearch";
 import { FaBell } from "react-icons/fa";
 import AuthButtonMenu from "../common/auth/AuthButtonMenu";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import { useNotificationStore } from "@/stores/notification-store";
+import clsx from "clsx";
 
 const Header = () => {
   return (
@@ -14,7 +16,7 @@ const Header = () => {
       </Link>
       <InputSearch />
       <div className="flex items-center gap-4 text-text-secondary-color-1">
-        <Link to={`/`}>
+        <Link to={`/me/notifications`}>
           <FaBell size={18} />
         </Link>
         <AuthButtonMenu />

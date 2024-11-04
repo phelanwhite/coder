@@ -22,15 +22,9 @@ const SidebarRight = () => {
       return response.data;
     },
   });
-  const incrimentTopicResult = useMutation({
-    mutationFn: async (id) => {
-      const url = `topic/incriment-by-id/${id}`;
-      return await axiosConfig.put(url);
-    },
-  });
 
   return (
-    <div className="hidden lg:block w-[25%] pl-16 min-w-[320px]">
+    <div className="hidden lg:block w-[25%] pl-16 min-w-[320px] space-y-10">
       {/* Staff Picks  */}
       <div className="">
         <div className="font-medium text-text-secondary-color-2 mb-5">
@@ -52,10 +46,7 @@ const SidebarRight = () => {
         </div>
         <div className="flex items-center gap-2 flex-wrap mb-5">
           {getTopicsResult.data?.data?.result?.map((item: any) => (
-            <div
-              key={item?._id}
-              onClick={() => incrimentTopicResult.mutate(item?._id)}
-            >
+            <div key={item?._id}>
               <TopicCard key={item?._id} data={item?.title} />
             </div>
           ))}

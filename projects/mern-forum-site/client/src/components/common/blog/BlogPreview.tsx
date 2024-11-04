@@ -166,15 +166,20 @@ const BlogPreview: FC<BlogPreviewProp> = ({
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <TopicInput
-              listData={data?.topic}
-              setListData={(data) =>
-                setData((prev: any) => ({
-                  ...prev,
-                  topic: data,
-                }))
-              }
-            />
+            <div>
+              <div className="text-text-secondary-color-2 text-[0.8125rem] mb-1">
+                Topic:
+              </div>
+              <TopicInput
+                listData={data?.topic}
+                setListData={(data) =>
+                  setData((prev: any) => ({
+                    ...prev,
+                    topic: data,
+                  }))
+                }
+              />
+            </div>
             <div className="text-text-secondary-color-2">
               <div className="text-[0.8125rem] mb-1">Publication time:</div>
               <div>
@@ -188,6 +193,7 @@ const BlogPreview: FC<BlogPreviewProp> = ({
                       publication_time: e.target.value,
                     }))
                   }
+                  disabled={true}
                 />
               </div>
             </div>

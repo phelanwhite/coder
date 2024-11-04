@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 
 const TopicIdPage = () => {
   const { id } = useParams();
+
   const { searchParams, handleSearchParams } = useSearchParamsValue();
   const getBlogsResult = useQuery({
     queryKey: ["blogs", "topic", id, searchParams.toString()],
@@ -20,8 +21,16 @@ const TopicIdPage = () => {
     placeholderData: keepPreviousData,
     enabled: !!id,
   });
+  const incrimentTopicResult = useQuery({
+    queryKey: ["topic", "incriment", id],
+    queryFn: async () => {
+      const url = `topic/incriment?_title=${id}`;
+      return await axiosConfig.put(url);
+    },
+  });
 
-  if (getBlogsResult.isPending) <Loader />;
+  if (getBlogsResult.isPending || incrimentTopicResult.isLoading) <Loader />;
+
   return (
     <div className="flex max-w-[1332px] w-full mx-auto px-3 ">
       {/* Left  */}

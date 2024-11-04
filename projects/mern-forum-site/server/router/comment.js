@@ -330,5 +330,51 @@ commentRouter.get(
     }
   }
 );
+commentRouter.get(`/get-all`, verifyToken, async (req, res, next) => {
+  try {
+    const _q = req.query._q || QUERY.Q;
+    const _limit = parseInt(req.query._limit) || QUERY.LIMIT;
+    const _page = parseInt(req.query._page) || QUERY.PAGE;
+    const _skip = (_page - 1) * _limit;
+
+    const filter = {};
+
+    const getDatas = await commentModel
+      .find(filter)
+      .populate([
+        {
+          path: "author",
+        },
+        {
+          path: "blog",
+          populate: [`author`],
+        },
+        {
+          path: "parentCommentIdOfBlogId",
+          populate: [`author`],
+        },
+      ])
+      .limit(_limit)
+      .skip(_skip)
+      .sort({
+        createdAt: -1,
+      });
+    const total_row = await commentModel.countDocuments(filter);
+    const total_page = Math.ceil(total_row / _limit);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Comments retrieved successfully",
+      data: {
+        result: getDatas,
+        total_row,
+        total_page,
+        page: _page,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default commentRouter;

@@ -93,8 +93,10 @@ topicRouter.get(`/get-all`, async (req, res, next) => {
 
 topicRouter.put(`/incriment-by-id/:id`, async (req, res, next) => {
   try {
+    const { id } = req.params;
+
     const incrimentTopic = await topicModel.findByIdAndUpdate(
-      req.params.id,
+      id,
       {
         $inc: { count: 1 },
       },
@@ -105,6 +107,47 @@ topicRouter.put(`/incriment-by-id/:id`, async (req, res, next) => {
       status: StatusCodes.OK,
       message: "Topic incremented successfully",
       data: incrimentTopic,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+topicRouter.put(`/incriment`, async (req, res, next) => {
+  try {
+    const _title = req.query._title;
+
+    const incrimentTopic = await topicModel.findOneAndUpdate(
+      {
+        title: {
+          $regex: _title,
+          $options: "i",
+        },
+      },
+      {
+        $inc: { count: 1 },
+      },
+      { new: true }
+    );
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Topic incremented successfully",
+      data: incrimentTopic,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+topicRouter.delete(`/delete-id/:id`, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deleteTopic = await topicModel.findByIdAndDelete(id, { new: true });
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Topic deleted successfully",
+      data: deleteTopic,
     });
   } catch (error) {
     next(error);

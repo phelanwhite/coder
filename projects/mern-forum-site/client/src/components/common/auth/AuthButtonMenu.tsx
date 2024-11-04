@@ -93,8 +93,29 @@ const AuthButtonMenu = () => {
                   );
                 })}
               </div>
+              {
+                <div className="border-b py-2">
+                  {USER_MENU_LINKS.menu3.map((item) => {
+                    return (
+                      <NavLink
+                        onClick={() => setIsOpen(false)}
+                        to={item.path}
+                        key={item?.title}
+                        className={({ isActive }) =>
+                          clsx([
+                            "block py-2 hover:text-black",
+                            isActive && `text-black`,
+                          ])
+                        }
+                      >
+                        {item?.title}
+                      </NavLink>
+                    );
+                  })}
+                </div>
+              }
               <div className="py-2">
-                {USER_MENU_LINKS.menu3.map((item) => {
+                {USER_MENU_LINKS.menu4.map((item) => {
                   return (
                     <NavLink
                       onClick={() => setIsOpen(false)}

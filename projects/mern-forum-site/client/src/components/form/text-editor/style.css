@@ -1,11 +1,22 @@
 /* react-quill style  */
-@import "react-quill-new/dist/quill.core.css";
 @import "react-quill-new/dist/quill.snow.css";
+@import "react-quill-new/dist/quill.core.css";
 @import "react-quill-new/dist/quill.bubble.css";
+@import "react-quill/dist/quill.snow.css";
+@import "react-quill/dist/quill.core.css";
+@import "react-quill/dist/quill.bubble.css";
 
 .ql-editor.ql-blank {
   min-height: 30vh;
 }
 .ql-toolbar {
   @apply sticky top-[64px] bg-white z-[1] shadow;
+}
+
+/* heading  */
+.ql-snow .ql-editor h1 {
+  @apply font-semibold text-2xl my-2 !important;
+}
+.ql-snow.ql-editor h2 {
+  @apply font-semibold text-xl my-2 !important;
 }

@@ -4,6 +4,7 @@ import { handleResponse } from "../helper/response.js";
 import bookmarkModel from "../model/bookmark.js";
 import { StatusCodes } from "http-status-codes";
 import { QUERY } from "../helper/constants.js";
+import { customDataBlogWithUserId } from "../helper/customData.js";
 
 const bookmarkRouter = express.Router();
 
@@ -78,22 +79,7 @@ bookmarkRouter.get(
           createdAt: -1,
         });
 
-      let datas = [];
-      for (const element of getDatas) {
-        const isBookmark = (await bookmarkModel.findOne({
-          author: user?._id,
-          blog: element?.blog?._id,
-        }))
-          ? true
-          : false;
-
-        const item = {
-          ...element?._doc,
-          blog: { ...element?._doc?.blog?._doc, isBookmark },
-        };
-
-        datas.push(item);
-      }
+      const customData = await customDataBlogWithUserId(user?._id, getDatas);
 
       const total_row = await bookmarkModel.countDocuments(filter);
       const total_page = Math.ceil(total_row / _limit);
@@ -102,7 +88,7 @@ bookmarkRouter.get(
         status: StatusCodes.OK,
         message: "Get bookmarks successfully",
         data: {
-          result: datas,
+          result: customData,
           total_row,
           total_page,
           page: _page,

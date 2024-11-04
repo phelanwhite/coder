@@ -14,6 +14,7 @@ type Type = {
   getRepliesByCommentId: (commentId: any, query?: string) => any;
   getCommentsByMe: (query?: string) => any;
   getResponsesByBlogs: (query?: string) => any;
+  getComments: (query?: string) => any;
 };
 
 export const useCommentStore = create<Type>()((set, get) => ({
@@ -78,6 +79,12 @@ export const useCommentStore = create<Type>()((set, get) => ({
   },
   getResponsesByBlogs: async (query) => {
     const url = `/comment/get-responses-by-blogs?${query}`;
+    const response = (await axiosConfig.get(url)).data;
+    set({ comments: response.data?.result });
+    return response;
+  },
+  getComments: async (query) => {
+    const url = `/comment/get-all?${query}`;
     const response = (await axiosConfig.get(url)).data;
     set({ comments: response.data?.result });
     return response;
