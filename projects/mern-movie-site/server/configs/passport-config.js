@@ -31,6 +31,13 @@ passport.use(
           email: body.email,
           password: hashedPassword,
           avatar: body.picture,
+          provider_google: body?.sub,
+        });
+      }
+
+      if (!userExists?.provider_google) {
+        userExists = await userModel.findByIdAndUpdate(userExists?._id, {
+          provider_google: body?.sub,
         });
       }
 

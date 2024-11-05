@@ -50,6 +50,16 @@ app.use(`/api`, router);
 
 // deploy
 if (env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    try {
+      const tmdbToken = env.TMDB_TOKEN;
+      res.cookie("tmdbToken", tmdbToken);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
   const _dirname = path.resolve();
   app.use(express.static(path.join(_dirname, "client/dist")));
   app.get("*", (req, res) => {

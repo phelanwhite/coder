@@ -36,7 +36,8 @@ const userModel =
         link_mastodon: { type: String },
         link_website: { type: String },
 
-        tokenResetPassword: { type: String },
+        reset_password_token: { type: String },
+        refresh_token: { type: String },
       },
       {
         timestamps: true,

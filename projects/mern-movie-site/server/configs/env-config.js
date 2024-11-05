@@ -19,6 +19,7 @@ const env = {
   // JWT
   JWT: {
     JWT_SECRET: process.env.JWT_SECRET,
+    JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
   },
 
   // PASSPORT
@@ -46,6 +47,7 @@ const env = {
 
   // NODE_ENV
   NODE_ENV: process.env.NODE_ENV,
+  TMDB_TOKEN: process.env.TMDB_TOKEN,
 };
 
 export default env;
