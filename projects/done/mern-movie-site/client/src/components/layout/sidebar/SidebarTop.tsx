@@ -6,7 +6,7 @@ import { useAuthStore } from "@/stores/auth-store";
 const SidebarTop = ({ handleClose }: { handleClose: () => void }) => {
   const { user, loggout } = useAuthStore();
   return (
-    <div className="relative max-w-[500px] w-full p-6 py-10 rounded-lg bg-white text-black flex flex-col gap-2 items-center">
+    <div className="overflow-y-auto relative max-w-[500px] w-full h-a max-h-full p-6 py-10 rounded-lg bg-white text-black flex flex-col gap-2 items-center">
       <button onClick={handleClose} className="absolute top-4 right-4">
         <IoIosCloseCircle size={20} />
       </button>

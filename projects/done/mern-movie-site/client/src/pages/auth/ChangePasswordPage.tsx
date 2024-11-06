@@ -17,7 +17,6 @@ const ChangePasswordPage = () => {
     },
   });
   const [formValue, setFormValue] = useState({
-    oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -42,15 +41,6 @@ const ChangePasswordPage = () => {
         method="post"
         className="flex flex-col gap-4 "
       >
-        <input
-          placeholder="Old Password"
-          name="oldPassword"
-          value={formValue?.oldPassword || ""}
-          onChange={handleChange}
-          type="text"
-          required
-          className="input"
-        />
         <input
           placeholder="New Password"
           name="newPassword"

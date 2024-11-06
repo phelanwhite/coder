@@ -21,13 +21,15 @@ const Modal = ({ children, isOpen, onClose }: Type) => {
   if (!isOpen) return null;
 
   return (
-    <div className="z-[1300] fixed inset-0 px-4 flex items-center justify-center">
+    <div className="z-[1300] fixed inset-0">
       <div
         onMouseDown={onClose}
         aria-hidden="true"
         className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 transition -z-[1]"
       ></div>
-      {children}
+      <div className="absolute top-0 left-0 bottom-0 right-0 p-4 flex items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 };

@@ -27,7 +27,6 @@ export const authService = {
     password: Joi.string().required(),
   }),
   schemaChangePassword: Joi.object({
-    oldPassword: Joi.string().required(),
     newPassword: Joi.string().required(),
     confirmPassword: Joi.string().valid(Joi.ref("newPassword")).required(),
   }),

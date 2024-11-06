@@ -148,15 +148,6 @@ authRouter.put(`/change-password`, verifyToken, async (req, res, next) => {
       throw createHttpError.BadRequest(authValidate.error.message);
     }
 
-    // check old password
-    const isMatchPassword = await bcrypt.compare(
-      body.oldPassword,
-      getUser.password
-    );
-    if (!isMatchPassword) {
-      throw createHttpError.NotFound("Invalid old password");
-    }
-
     // hash new password
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(body.newPassword, salt);
