@@ -17,7 +17,6 @@ const BlogNewAndUpdatePage = () => {
     status: false,
     publication_time: getDateTimeLocalToString(new Date()),
   });
-  // console.log(Date.now());
 
   const { id } = useParams();
   const getBlogByIdResult = useQuery({

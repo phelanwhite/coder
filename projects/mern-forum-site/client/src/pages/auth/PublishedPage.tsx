@@ -1,6 +1,6 @@
-import BlogItem from "@/components/common/blog/BlogItem";
-import Loader from "@/components/common/loader";
-import Paginate from "@/components/form/paginate";
+import { BlogCard1 } from "@/components/common/blog/BlogCard";
+import { BlogList1 } from "@/components/common/blog/BlogList";
+import Paginate from "@/components/layout/paginate";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import { useBlogStore } from "@/stores/blog-store";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -17,28 +17,24 @@ const PublishedPage = () => {
     },
     placeholderData: keepPreviousData,
   });
-
-  if (getBlogsByMeResult.isPending) return <Loader />;
-  if (blogs.length > 0) {
-    return (
-      <div className="space-y-4">
-        {blogs.map((item) => {
-          return <BlogItem key={item._id} data={item} />;
-        })}
-        <Paginate
-          forcePage={Number(getBlogsByMeResult.data?.data?.page) - 1}
-          onPageChange={(e) => handleSearchParams(`_page`, e.selected + 1)}
-          pageCount={getBlogsByMeResult.data?.data?.total_page as number}
-        />
-      </div>
-    );
-  } else {
-    return (
-      <div className="flex flex-col items-center gap-3">
-        <div className="font-semibold">You have no published.</div>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <BlogList1
+        isLoading={getBlogsByMeResult.isLoading}
+        datas={blogs}
+        type="author"
+      />
+      {getBlogsByMeResult.data && blogs?.length > 0 && (
+        <div className="mt-4">
+          <Paginate
+            forcePage={Number(getBlogsByMeResult.data?.data?._page) - 1}
+            onPageChange={(e) => handleSearchParams(`_page`, e.selected + 1)}
+            pageCount={getBlogsByMeResult.data?.data?.total_page as number}
+          />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default PublishedPage;

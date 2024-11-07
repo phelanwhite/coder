@@ -6,7 +6,9 @@ type Type = {
   user: any;
   getMe: () => any;
   updateProfile: (data: any) => any;
-  loggin: (data: any) => any;
+  changePassword: (data: any) => any;
+  signup: (data: any) => any;
+  signin: (data: any) => any;
   logginWithPassportSuccess: () => any;
   loggout: () => any;
   isAuthenticated: boolean;
@@ -17,7 +19,17 @@ export const useAuthStore = create<Type>()(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
-      loggin: async (data) => {},
+      signup: async (data) => {
+        const url = `/auth/signup`;
+        const response = await (await axiosConfig.post(url, data)).data;
+        return response;
+      },
+      signin: async (data) => {
+        const url = `/auth/signin`;
+        const response = await (await axiosConfig.post(url, data)).data;
+        response.data && set({ user: response.data, isAuthenticated: true });
+        return response;
+      },
       getMe: async () => {
         const url = `/auth/get-me`;
         const response = await (await axiosConfig.get(url)).data;
@@ -30,18 +42,28 @@ export const useAuthStore = create<Type>()(
         set({ user: { ...get().user, ...response.data } });
         return response;
       },
+      changePassword: async (data) => {
+        const url = `/auth/change-password`;
+        const response = await (await axiosConfig.put(url, data)).data;
+        return response;
+      },
       logginWithPassportSuccess: async () => {
         const url = `/passport/signin-passport/success`;
         const response = (await axiosConfig.get(url)).data;
-
-        set({
-          user: response.data,
-          isAuthenticated: true,
-        });
-        if (response) {
-          localStorage.setItem(`_tracking_id`, response.data?._id);
+        if (response?.status === 200) {
+          set({
+            user: response.data,
+            isAuthenticated: true,
+          });
+          if (response) {
+            localStorage.setItem(`_tracking_id`, response.data?._id);
+          }
+        } else {
+          set({
+            user: null,
+            isAuthenticated: false,
+          });
         }
-        window.location.reload();
       },
       loggout: async () => {
         const url = `/auth/signout`;

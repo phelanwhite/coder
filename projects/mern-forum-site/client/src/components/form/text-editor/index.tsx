@@ -1,7 +1,6 @@
-import React, { FC, memo, useEffect, useMemo, useRef } from "react";
+import React, { FC, memo, useMemo } from "react";
 import "./style.css";
 import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
 
 interface ReactQuillProps {
   placeholder?: string;

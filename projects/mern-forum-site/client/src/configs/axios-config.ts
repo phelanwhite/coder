@@ -1,11 +1,11 @@
 import axios from "axios";
-import env from "./env-config";
+import ENV from "./env-config";
 
 const axiosConfig = axios.create({
-  baseURL: env.PORT_SERVER,
+  baseURL: ENV.PORT_SERVER,
   params: {
-    ...(localStorage.getItem(`_tracking_id`) && {
-      _tracking_id: localStorage.getItem(`_tracking_id`),
+    ...(localStorage.getItem("_tracking_id") && {
+      _tracking_id: localStorage.getItem("_tracking_id"),
     }),
   },
   headers: {
@@ -32,11 +32,10 @@ axiosConfig.interceptors.response.use(
     // Do something with response data
     return response;
   },
-  function (error) {
-    if (error.status === 401) {
-      localStorage.clear();
+  async function (error) {
+    if (error.status === 403) {
+      localStorage.removeItem("auth");
     }
-
     const customError = error?.response?.data;
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger

@@ -5,7 +5,7 @@ type Type = {
   favorites: any[];
   addRemoveFavorite: (data: any) => any;
   getFavoritesByMe: (query?: string) => any;
-  deleteFavoritesById: (id: any) => any;
+  deleteFavorite: (query?: string) => any;
 };
 
 export const useFavoriteStore = create<Type>()((set, get) => ({
@@ -24,11 +24,13 @@ export const useFavoriteStore = create<Type>()((set, get) => ({
 
     return response;
   },
-  deleteFavoritesById: async (id) => {
-    const url = `/favorite/delete-id/${id}`;
+  deleteFavorite: async (query) => {
+    const url = `/favorite/delete?${query}`;
     const response = (await axiosConfig.delete(url)).data;
     set({
-      favorites: get().favorites.filter((item) => item._id !== id),
+      favorites: get().favorites.filter(
+        (item) => item._id !== response?.data?._id
+      ),
     });
     return response;
   },

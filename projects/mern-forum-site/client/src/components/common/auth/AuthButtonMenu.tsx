@@ -1,15 +1,16 @@
-import { USER_MENU_LINKS } from "@/assets/constants/auth";
-import IMAGES_DEFAULT from "@/assets/constants/image";
+import { IMAGES_DEFAULT } from "@/assets/constants/images-constant";
+import { USER_MENU_LINKS } from "@/assets/constants/links-constant";
 import { useAuthStore } from "@/stores/auth-store";
 import clsx from "clsx";
-import { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import SigninSignupModal from "./SigninSignupModal";
 
 const AuthButtonMenu = () => {
   const { user, loggout, isAuthenticated } = useAuthStore();
-  //
+
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -17,14 +18,13 @@ const AuthButtonMenu = () => {
         setIsOpen(false);
       }
     }
-
     window.addEventListener("mousedown", handler);
-
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  //
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const customUserMenuLinks = useMemo(() => {
+    return Object.values(USER_MENU_LINKS);
+  }, []);
 
   return (
     <>
@@ -42,6 +42,7 @@ const AuthButtonMenu = () => {
           </div>
           {isOpen && (
             <div className="button-show-menu absolute top-8 right-0 z-[999] bg-white shadow-lg border py-2 rounded-lg w-[230px] text-sm px-6">
+              {/* auth  */}
               <div className="border-b pt-2 pb-4 flex items-center gap-3">
                 <div className="w-10 h-10 overflow-hidden rounded-full border">
                   <img
@@ -51,51 +52,14 @@ const AuthButtonMenu = () => {
                   />
                 </div>
                 <div>
-                  <div className="text-base font-medium">Phelan White</div>
-                  <div className="">@phelanwhite</div>
+                  <div className="text-base font-medium">{user?.name}</div>
+                  <div className="text-xs">@phelanwhite</div>
                 </div>
               </div>
-              <div className="border-b py-2">
-                {USER_MENU_LINKS.menu1.map((item) => {
-                  return (
-                    <NavLink
-                      onClick={() => setIsOpen(false)}
-                      to={item.path}
-                      key={item?.title}
-                      className={({ isActive }) =>
-                        clsx([
-                          "block py-2 hover:text-black",
-                          isActive && `text-black`,
-                        ])
-                      }
-                    >
-                      {item?.title}
-                    </NavLink>
-                  );
-                })}
-              </div>
-              <div className="border-b py-2">
-                {USER_MENU_LINKS.menu2.map((item) => {
-                  return (
-                    <NavLink
-                      onClick={() => setIsOpen(false)}
-                      to={item.path}
-                      key={item?.title}
-                      className={({ isActive }) =>
-                        clsx([
-                          "block py-2 hover:text-black",
-                          isActive && `text-black`,
-                        ])
-                      }
-                    >
-                      {item?.title}
-                    </NavLink>
-                  );
-                })}
-              </div>
-              {
-                <div className="border-b py-2">
-                  {USER_MENU_LINKS.menu3.map((item) => {
+              {/* links  */}
+              {customUserMenuLinks.map((item, index) => (
+                <div key={index} className="border-b py-2">
+                  {item.map((item) => {
                     return (
                       <NavLink
                         onClick={() => setIsOpen(false)}
@@ -113,25 +77,9 @@ const AuthButtonMenu = () => {
                     );
                   })}
                 </div>
-              }
+              ))}
+
               <div className="py-2">
-                {USER_MENU_LINKS.menu4.map((item) => {
-                  return (
-                    <NavLink
-                      onClick={() => setIsOpen(false)}
-                      to={item.path}
-                      key={item?.title}
-                      className={({ isActive }) =>
-                        clsx([
-                          "block py-2 hover:text-black",
-                          isActive && `text-black`,
-                        ])
-                      }
-                    >
-                      {item?.title}
-                    </NavLink>
-                  );
-                })}
                 <button
                   onClick={() => {
                     loggout();

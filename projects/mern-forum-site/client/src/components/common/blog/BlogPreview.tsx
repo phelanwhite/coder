@@ -4,10 +4,10 @@ import { FC, memo, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdClose } from "react-icons/md";
 import ReactTextareaAutosize from "react-textarea-autosize";
-import TopicInput from "../topic/TopicInput";
-import Loader from "../loader";
+
 import { useLocation, useParams } from "react-router-dom";
 import axiosConfig from "@/configs/axios-config";
+import TopicInput from "../topic/TopicInput";
 
 interface BlogPreviewProp {
   data: any;
@@ -93,7 +93,7 @@ const BlogPreview: FC<BlogPreviewProp> = ({
     }
   }, [createUpdateBlogResult.data]);
 
-  if (createUpdateBlogResult.isPending) return <Loader />;
+  //   if (createUpdateBlogResult.isPending) return <Loader />;
 
   if (!isOpen) return <></>;
   return (

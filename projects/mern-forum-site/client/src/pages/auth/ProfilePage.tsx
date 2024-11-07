@@ -1,14 +1,12 @@
-import IMAGES_DEFAULT from "@/assets/constants/image";
-import ProfileUpdateForm from "@/components/common/auth/ProfileUpdateForm";
-import axiosConfig from "@/configs/axios-config";
+import { IMAGES_DEFAULT } from "@/assets/constants/images-constant";
 import { useAuthStore } from "@/stores/auth-store";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo } from "react";
 import { MdEdit } from "react-icons/md";
 import { RiNewspaperLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { user, getMe } = useAuthStore();
   const getMeResult = useQuery({
     queryKey: ["me"],
@@ -17,10 +15,45 @@ const ProfilePage = () => {
     },
     enabled: !!user,
   });
+
+  const listData = useMemo(() => {
+    return [
+      {
+        title: `posts published`,
+        icon: <RiNewspaperLine />,
+        value: user?.count_blog,
+      },
+      {
+        title: `comments written`,
+        icon: <RiNewspaperLine />,
+        value: user?.count_comment,
+      },
+      {
+        title: `follower`,
+        icon: <RiNewspaperLine />,
+        value: user?.count_follower,
+      },
+      {
+        title: `following`,
+        icon: <RiNewspaperLine />,
+        value: user?.count_following,
+      },
+      {
+        title: `posts favorite`,
+        icon: <RiNewspaperLine />,
+        value: user?.count_favorite,
+      },
+      {
+        title: `posts bookmark`,
+        icon: <RiNewspaperLine />,
+        value: user?.count_bookmark,
+      },
+    ];
+  }, [getMeResult.data]);
   return (
     <>
-      <ProfileUpdateForm isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div className="max-w-[800px] w-full mx-auto px-3">
+        {/* image  */}
         <div className="relative">
           <div className="rounded-lg overflow-hidden h-[200px]">
             {user?.banner ? (
@@ -39,56 +72,33 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
+        {/* details  */}
         <div className="mt-12 ">
           <div className="font-medium text-xl">{user?.name}</div>
           <div className="">{user?.bio}</div>
           <div className="mt-4">
-            <button
-              onClick={() => setIsOpen(true)}
+            <Link
+              to={`/me/profile/update`}
               className="btn btn-success w-full md:w-max flex items-center justify-center gap-2"
             >
               <MdEdit />
               Update Profile
-            </button>
+            </Link>
           </div>
         </div>
+
+        {/* list  */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-gray-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
-              <RiNewspaperLine size={20} />
-              <span>{user?.count_blog} posts published</span>
+          {listData.map((item) => (
+            <div key={item.title} className="bg-gray-100 rounded-2xl p-4">
+              <div className="flex items-center gap-2">
+                <RiNewspaperLine size={20} />
+                <span>
+                  {item?.value} {item.title}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="bg-gray-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
-              <RiNewspaperLine size={20} />
-              <span>{user?.count_comment} comments written</span>
-            </div>
-          </div>
-          <div className="bg-gray-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
-              <RiNewspaperLine size={20} />
-              <span>{user?.count_follower} follower</span>
-            </div>
-          </div>
-          <div className="bg-gray-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
-              <RiNewspaperLine size={20} />
-              <span>{user?.count_following} following</span>
-            </div>
-          </div>
-          <div className="bg-gray-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
-              <RiNewspaperLine size={20} />
-              <span>{user?.count_favorite} posts favorite</span>
-            </div>
-          </div>
-          <div className="bg-gray-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
-              <RiNewspaperLine size={20} />
-              <span>{user?.count_bookmark} posts bookmark</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </>

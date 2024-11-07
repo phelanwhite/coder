@@ -230,7 +230,7 @@ authRouter.get(`/get-me`, verifyToken, async (req, res, next) => {
 
 authRouter.delete("/signout", async (req, res, next) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("access_token");
     res.clearCookie("connect.sid");
     return handleResponse(res, {
       status: StatusCodes.OK,

@@ -1,0 +1,35 @@
+POST http://localhost:5000/api/auth/signup
+Content-Type: application/json
+
+{
+    "name":"test",
+    "email":"test@gmail.com",
+    "password":"123456",
+    "confirmPassword":"123456"
+}
+
+###
+POST http://localhost:5000/api/auth/signin
+Content-Type: application/json
+
+{
+    "email":"test@gmail.com",
+    "password":"123456"
+}
+
+###
+PUT http://localhost:5000/api/auth/update-profile
+Content-Type: application/json
+Authorization: 
+
+{
+    "name":"test"
+}
+
+###
+GET http://localhost:5000/api/auth/get-me
+Content-Type: application/json
+Authorization: 
+
+###
+DELETE  http://localhost:5000/api/auth/signout
