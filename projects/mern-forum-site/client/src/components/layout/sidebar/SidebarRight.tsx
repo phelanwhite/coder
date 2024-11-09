@@ -23,7 +23,7 @@ const SidebarRight = () => {
   //   });
 
   return (
-    <div className="hidden lg:block w-[25%] pl-16 pr-5 min-w-[320px] space-y-10">
+    <section className="hidden lg:block w-[25%] pl-16 pr-5 min-w-[320px] space-y-10">
       {/* Staff Picks  */}
       <div className="space-y-5">
         <div className="font-medium text-text-secondary-color-2">
@@ -54,7 +54,7 @@ const SidebarRight = () => {
           <Link to={`/topic`}>See the full list</Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

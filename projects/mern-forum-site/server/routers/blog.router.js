@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { QUERY } from "../helpers/constants.js";
 import blogModel from "../models/blog.model.js";
 import { handleResponse } from "../helpers/responses.js";
-import { customDataBlogWithTrackingId } from "../services/customData.js";
+import { customDataBlog } from "../services/customData.js";
 import { verifyToken } from "../middlewares/verifyToken.middleware.js";
 import {
   cloudinary_deleteFile,
@@ -63,8 +63,8 @@ blogRouter.get(`/get-all`, async (req, res, next) => {
     const total_row = await blogModel.countDocuments(filter);
     const total_page = Math.ceil(total_row / _limit);
 
-    const customData = await customDataBlogWithTrackingId({
-      _tracking_id,
+    const customData = await customDataBlog({
+      author_id: _tracking_id,
       datas: getDatas,
     });
 
@@ -99,8 +99,8 @@ blogRouter.get(`/get-id/:id`, async (req, res, next) => {
 
     const getData = await blogModel.findById(id).populate([`author`]);
 
-    const customData = await customDataBlogWithTrackingId({
-      _tracking_id,
+    const customData = await customDataBlog({
+      author_id: _tracking_id,
       datas: [getData],
     });
 
@@ -154,8 +154,8 @@ blogRouter.get(`/get-id/:id/similar`, async (req, res, next) => {
         count_views: -1,
       });
 
-    const customData = await customDataBlogWithTrackingId({
-      _tracking_id,
+    const customData = await customDataBlog({
+      author_id: _tracking_id,
       datas: getDatas,
     });
 
@@ -207,8 +207,8 @@ blogRouter.get(`/get-blogs-by-author-id/:id`, async (req, res, next) => {
         createdAt: -1,
       });
 
-    const customData = await customDataBlogWithTrackingId({
-      _tracking_id,
+    const customData = await customDataBlog({
+      author_id: _tracking_id,
       datas: getDatas,
     });
 
@@ -262,8 +262,8 @@ blogRouter.get(`/get-blogs-by-topic`, async (req, res, next) => {
         createdAt: -1,
       });
 
-    const customData = await customDataBlogWithTrackingId({
-      _tracking_id,
+    const customData = await customDataBlog({
+      author_id: _tracking_id,
       datas: getDatas,
     });
 
@@ -326,8 +326,8 @@ blogRouter.get(`/get-blogs-by-me`, verifyToken, async (req, res, next) => {
     const total_row = await blogModel.countDocuments(filter);
     const total_page = Math.ceil(total_row / _limit);
 
-    const customData = await customDataBlogWithTrackingId({
-      _tracking_id: user?._id,
+    const customData = await customDataBlog({
+      author_id: user?._id,
       datas: getDatas,
     });
 

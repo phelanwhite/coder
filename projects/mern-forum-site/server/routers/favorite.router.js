@@ -1,6 +1,6 @@
 import express from "express";
 import { QUERY } from "../helpers/constants.js";
-import { customDataBlogWithUserId } from "../services/customData.js";
+import { customDataBlog } from "../services/customData.js";
 import favoriteModel from "../models/favorite.model.js";
 import { handleResponse } from "../helpers/responses.js";
 import { StatusCodes } from "http-status-codes";
@@ -102,7 +102,10 @@ favoriteRouter.get(
           createdAt: -1,
         });
 
-      const customData = await customDataBlogWithUserId(user?._id, getDatas);
+      const customData = await customDataBlog({
+        author_id: user._id,
+        datas: getDatas?.map((item) => item?.blog),
+      });
 
       const total_row = await favoriteModel.countDocuments(filter);
       const total_page = Math.ceil(total_row / _limit);

@@ -64,8 +64,11 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
         <span className="font-medium text-text-secondary-color-2">
           {data?.createdAt && getTimeDisplayBlog(new Date(data?.createdAt))}
         </span>
-        <span className="mr-4 font-medium text-text-secondary-color-2">
+        <span className="font-medium text-text-secondary-color-2">
           {data?.read_time}
+        </span>
+        <span className="mr-4 font-medium text-text-secondary-color-2">
+          {data?.total_comment} comment
         </span>
         {data?.topic?.map((item: any) => (
           <TopicCard key={item} data={item} />
@@ -76,7 +79,7 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
 };
 export const BlogCard1Skeleton = () => {
   return (
-    <div className="p-5 rounded-2xl border shadow-sm">
+    <div className="p-5">
       <Skeleton width={28} height={28} circle />
       <div className="mt-4 flex items-start gap-4">
         <div className="w-full">

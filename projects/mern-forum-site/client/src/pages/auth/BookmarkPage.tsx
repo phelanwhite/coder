@@ -20,7 +20,7 @@ const BookmarkPage = () => {
     <div>
       <BlogList1
         isLoading={getBookmarksByMeResult.isLoading}
-        datas={bookmarks?.map((item) => item.blog)}
+        datas={bookmarks}
       />
       {getBookmarksByMeResult.data && bookmarks?.length > 0 && (
         <div className="mt-4">

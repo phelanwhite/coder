@@ -6,9 +6,9 @@ const PublicLayout = () => {
   return (
     <div className="flex max-w-[1332px] w-full mx-auto">
       {/* left  */}
-      <div className="flex-1">
+      <section className="flex-1">
         <Outlet />
-      </div>
+      </section>
       {/* right  */}
       <SidebarRight />
     </div>

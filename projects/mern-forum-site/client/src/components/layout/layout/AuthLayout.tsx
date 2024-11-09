@@ -25,7 +25,7 @@ const AuthLayout = () => {
   return (
     <div className="flex max-w-[1332px] w-full mx-auto">
       {/* Left  */}
-      <div className="flex-1">
+      <section className="flex-1">
         <div className="px-5 mb-4">
           <div className="capitalize text-2xl font-bold mb-8">{title}</div>
           <div className="overflow-x-auto">
@@ -48,8 +48,10 @@ const AuthLayout = () => {
             </div>
           </div>
         </div>
-        <Outlet />
-      </div>
+        <section>
+          <Outlet />
+        </section>
+      </section>
       {/* Right  */}
       <SidebarRight />
     </div>

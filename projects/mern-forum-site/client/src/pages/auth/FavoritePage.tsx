@@ -21,7 +21,7 @@ const FavoritePage = () => {
     <div>
       <BlogList1
         isLoading={getFavoritesByMeResult.isLoading}
-        datas={favorites?.map((item) => item.blog)}
+        datas={favorites}
         type="favorite"
       />
       {getFavoritesByMeResult.data && favorites?.length > 0 && (

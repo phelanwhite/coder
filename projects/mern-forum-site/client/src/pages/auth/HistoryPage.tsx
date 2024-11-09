@@ -50,7 +50,7 @@ const HistoryPage = () => {
       <div>
         <BlogList1
           isLoading={getHistoriesByMeResult.isLoading}
-          datas={histories?.map((item) => item.blog)}
+          datas={histories}
         />
         {getHistoriesByMeResult.data && histories?.length > 0 && (
           <div className="mt-4">

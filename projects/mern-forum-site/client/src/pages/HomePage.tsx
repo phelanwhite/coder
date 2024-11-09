@@ -9,7 +9,7 @@ import {
   useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 const HomePage = () => {
   const getBlogsResult = useInfiniteQuery({
@@ -35,6 +35,24 @@ const HomePage = () => {
       getBlogsResult.data?.pages?.map((item) => item?.data?.result).flat() || []
     );
   }, [getBlogsResult.data]);
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     console.log(
+  //       document.body.scrollHeight,
+  //       window.scrollY,
+  //       window.innerHeight,
+  //       window.scrollY + window.innerHeight,
+  //       getBlogsResult.hasNextPage
+  //     );
+  //     // if (
+  //     //   document.body.scrollHeight - 100 <=
+  //     //   window.scrollY + window.innerHeight
+  //     // ) {
+  //     //   getBlogsResult.fetchNextPage();
+  //     // }
+  //   });
+  // }, []);
 
   return (
     <div className="space-y-4">

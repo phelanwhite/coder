@@ -26,6 +26,8 @@ import HistoryPage from "./pages/auth/HistoryPage";
 import BookmarkPage from "./pages/auth/BookmarkPage";
 import FavoritePage from "./pages/auth/FavoritePage";
 import BlogNewAndUpdatePage from "./pages/auth/BlogNewAndUpdatePage";
+import CommentPage from "./pages/auth/CommentPage";
+import BlogIdCommentPage from "./pages/BlogIdCommentPage";
 
 function App() {
   const { logginWithPassportSuccess } = useAuthStore();
@@ -55,6 +57,7 @@ function App() {
           <Route>
             <Route path="*" element={<NotFoundPage />} />
             <Route path="blog/:id" element={<BlogIdPage />} />
+            <Route path="blog/:id/comment" element={<BlogIdCommentPage />} />
             <Route path="author/:id" element={<AuthorIdPage />} />
           </Route>
           <Route path="me" element={<AuthProtectedRouter />}>
@@ -74,7 +77,7 @@ function App() {
                 <Route index element={<HistoryPage />} />
                 <Route path="bookmark" element={<BookmarkPage />} />
                 <Route path="favorite" element={<FavoritePage />} />
-                <Route path="responses" element={<ResponsesPage />} />
+                <Route path="comment" element={<CommentPage />} />
               </Route>
             </Route>
           </Route>

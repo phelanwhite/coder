@@ -13,6 +13,11 @@ import {
   cloudinary_uploadImageFile,
 } from "../configs/cloudinary-config.js";
 import env from "../configs/env-config.js";
+import blogModel from "../models/blog.model.js";
+import favoriteModel from "../models/favorite.model.js";
+import bookmarkModel from "../models/bookmark.model.js";
+import followModel from "../models/follow.model.js";
+import commentModel from "../models/comment.model.js";
 
 const authRouter = express.Router();
 
@@ -235,10 +240,35 @@ authRouter.get(`/get-me`, verifyToken, async (req, res, next) => {
     const user = req.user;
     const getUser = await userModel.findById(user?._id);
 
+    const count_blog = await blogModel.countDocuments({ author: user?._id });
+    const count_comment = await commentModel.countDocuments({
+      author: user?._id,
+    });
+    const count_favorite = await favoriteModel.countDocuments({
+      author: user?._id,
+    });
+    const count_bookmark = await bookmarkModel.countDocuments({
+      author: user?._id,
+    });
+    const count_follower = await followModel.countDocuments({
+      following: user?._id,
+    });
+    const count_following = await followModel.countDocuments({
+      follower: user?._id,
+    });
+
     return handleResponse(res, {
       status: StatusCodes.OK,
       message: "User fetched successfully",
-      data: getUser,
+      data: {
+        ...getUser?._doc,
+        count_blog,
+        count_comment,
+        count_favorite,
+        count_bookmark,
+        count_follower,
+        count_following,
+      },
     });
   } catch (error) {
     next(error);

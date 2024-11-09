@@ -7,6 +7,7 @@ import bookmarkRouter from "./bookmark.router.js";
 import historyRouter from "./history.router.js";
 import favoriteRouter from "./favorite.router.js";
 import followRouter from "./follow.router.js";
+import commentRouter from "./comment.router.js";
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use(`/bookmark`, bookmarkRouter);
 router.use(`/history`, historyRouter);
 router.use(`/favorite`, favoriteRouter);
 router.use(`/follow`, followRouter);
+router.use(`/comment`, commentRouter);
 
 export default router;

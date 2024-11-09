@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="h-16 sticky top-0 left-0 right-0 z-50 border-b bg-white p-3 flex items-center justify-between gap-4 ">
+    <header className="h-16 sticky top-0 left-0 right-0 z-50 border-b bg-white p-3 flex items-center justify-between gap-4 ">
       <Link to={`/`}>
         <span className="bg-blue-500 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl">
           PL
@@ -19,7 +19,7 @@ const Header = () => {
         </Link>
         <AuthButtonMenu />
       </div>
-    </div>
+    </header>
   );
 };
 

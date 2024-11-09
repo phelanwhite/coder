@@ -4,7 +4,7 @@ import { handleResponse } from "../helpers/responses.js";
 import { StatusCodes } from "http-status-codes";
 import { QUERY } from "../helpers/constants.js";
 import historyModel from "../models/history.model.js";
-import { customDataBlogWithUserId } from "../services/customData.js";
+import { customDataBlog } from "../services/customData.js";
 const historyRouter = express.Router();
 
 historyRouter.post(`/create`, verifyToken, async (req, res, next) => {
@@ -90,7 +90,10 @@ historyRouter.get(
           createdAt: -1,
         });
 
-      const customData = await customDataBlogWithUserId(user?._id, getDatas);
+      const customData = await customDataBlog({
+        author_id: user._id,
+        datas: getDatas?.map((item) => item?.blog),
+      });
 
       const total_row = await historyModel.countDocuments(filter);
       const total_page = Math.ceil(total_row / _limit);
