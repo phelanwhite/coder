@@ -416,5 +416,22 @@ blogRouter.put(
     }
   }
 );
+blogRouter.delete(`/delete-id/:id`, verifyToken, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const deleteData = await blogModel.findByIdAndDelete(id);
+    if (deleteData?.thumbnail) {
+      await cloudinary_deleteFile(deleteData.thumbnail);
+    }
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Blog deleted successfully",
+      data: deleteData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default blogRouter;
