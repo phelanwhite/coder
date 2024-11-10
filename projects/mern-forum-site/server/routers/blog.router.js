@@ -292,7 +292,6 @@ blogRouter.get(`/get-blogs-by-me`, verifyToken, async (req, res, next) => {
     const _page = parseInt(req.query._page) || QUERY._PAGE;
     const _skip = (_page - 1) * _limit;
 
-    const _topic = req.query._topic || QUERY._TOPIC;
     const _status = req.query._status === "1" ? true : false;
 
     const user = req.user;
@@ -301,12 +300,6 @@ blogRouter.get(`/get-blogs-by-me`, verifyToken, async (req, res, next) => {
       $and: [
         {
           author: user._id,
-        },
-        {
-          topic: {
-            $regex: _topic,
-            $options: "i",
-          },
         },
         {
           status: _status,
