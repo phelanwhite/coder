@@ -19,6 +19,7 @@ type TypeCard1 = {
 export const BlogCard1 = ({ data, type }: TypeCard1) => {
   return (
     <div className="p-5">
+      {/* top  */}
       <div className="flex gap-6 items-center justify-between mb-3 sm:mb-4">
         <div>
           <Link
@@ -45,6 +46,7 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
           {!type && <BlogCardButtonMenu />}
         </div>
       </div>
+      {/* content  */}
       <div className="flex items-start gap-6">
         <div className="flex-1">
           <div className="line-clamp-2 text-xl font-bold">
@@ -60,6 +62,7 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
           </div>
         )}
       </div>
+      {/* footer  */}
       <div className="mt-3 flex flex-wrap gap-2 items-center text-xs">
         <span className="font-medium text-text-secondary-color-2">
           {data?.createdAt && getTimeDisplayBlog(new Date(data?.createdAt))}

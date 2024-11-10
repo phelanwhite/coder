@@ -10,6 +10,8 @@ const blogModel =
         thumbnail: { type: String },
         content: { type: String },
         topic: { type: [String] },
+        article_origin: { type: String },
+        imageList: { type: [String] },
         description: { type: String },
         status: { type: Boolean, default: false },
         author: { type: Schema.Types.ObjectId, ref: "user", required: true },

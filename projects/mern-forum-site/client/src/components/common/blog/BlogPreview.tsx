@@ -171,6 +171,7 @@ const BlogPreview: FC<BlogPreviewProp> = ({
                 Topic:
               </div>
               <TopicInput
+                className="text-xs"
                 listData={data?.topic}
                 setListData={(data) =>
                   setData((prev: any) => ({
@@ -179,6 +180,21 @@ const BlogPreview: FC<BlogPreviewProp> = ({
                   }))
                 }
               />
+            </div>
+            <div className="text-text-secondary-color-2">
+              <div className="text-[0.8125rem] mb-1">Article origin:</div>
+              <div>
+                <input
+                  className="w-full border-b pb-1 outline-none"
+                  value={data?.article_origin}
+                  onChange={(e) =>
+                    setData((prev: any) => ({
+                      ...prev,
+                      article_origin: e.target.value,
+                    }))
+                  }
+                />
+              </div>
             </div>
             <div className="text-text-secondary-color-2">
               <div className="text-[0.8125rem] mb-1">Publication time:</div>
@@ -197,6 +213,7 @@ const BlogPreview: FC<BlogPreviewProp> = ({
                 />
               </div>
             </div>
+
             <div className="text-[0.8125rem] text-text-secondary-color-2">
               <span className="font-medium">Note: </span>
               <span>

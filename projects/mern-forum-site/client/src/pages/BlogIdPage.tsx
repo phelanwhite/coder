@@ -57,7 +57,7 @@ const BlogIdPage = () => {
   return (
     <div className="max-w-[800px] w-full mx-auto px-3 space-y-10">
       {/* Detail  */}
-      <div className="space-y-7">
+      <>
         {/* Title  */}
         <div className=" font-bold text-2xl md:text-[1.875rem]">
           {blogData?.title}
@@ -129,6 +129,18 @@ const BlogIdPage = () => {
             ></div>
           </div>
         </div>
+        {/* article_origin */}
+        {blogData?.article_origin && (
+          <div>
+            <span>Link article: </span>
+            <Link
+              className="underline text-blue-500"
+              to={blogData?.article_origin}
+            >
+              {blogData?.article_origin}
+            </Link>
+          </div>
+        )}
         {/* Action  */}
         <div className="flex items-center gap-8">
           <FavoriteButtonAddRemove
@@ -147,10 +159,10 @@ const BlogIdPage = () => {
             <TopicCard key={item} data={item} />
           ))}
         </div>
-      </div>
+      </>
 
       {/* Similar articles */}
-      <div className="pt-6">
+      <div className="border-t-2 border-t-red-400 pt-6">
         <div className="border-l-[3px] border-green-500 pl-3 font-semibold text-xl mb-8">
           Similar articles
         </div>
@@ -162,7 +174,7 @@ const BlogIdPage = () => {
       </div>
 
       {/* Comment */}
-      <div className="border-t-2 border-t-red-400 pt-6">
+      <div className="pt-6">
         <div className="border-l-[3px] border-green-500 pl-3 font-semibold text-xl mb-8">
           Top comment ({total_comment})
         </div>

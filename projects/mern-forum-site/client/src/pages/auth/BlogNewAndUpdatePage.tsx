@@ -16,6 +16,7 @@ const BlogNewAndUpdatePage = () => {
     thumbnail: "",
     status: false,
     imageList: [],
+    article_origin: "",
     publication_time: getDateTimeLocalToString(new Date()),
   });
 
