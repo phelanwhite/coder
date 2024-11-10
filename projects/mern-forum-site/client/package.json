@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "i": "^0.3.7",
     "js-cookie": "^3.0.5",
+    "mern-forum-site": "file:..",
     "mern-movie-site": "file:..",
     "npm": "^10.9.0",
     "react": "^18.3.1",

@@ -5,12 +5,12 @@
 @import url("swiper/css/navigation");
 
 /* import with react-quill  */
-@import url("react-quill-new/dist/quill.snow.css");
+/* @import url("react-quill-new/dist/quill.snow.css");
 @import url("react-quill-new/dist/quill.core.css");
 @import url("react-quill-new/dist/quill.bubble.css");
 @import url("react-quill/dist/quill.snow.css");
 @import url("react-quill/dist/quill.core.css");
-@import url("react-quill/dist/quill.bubble.css");
+@import url("react-quill/dist/quill.bubble.css"); */
 
 @tailwind base;
 @tailwind components;

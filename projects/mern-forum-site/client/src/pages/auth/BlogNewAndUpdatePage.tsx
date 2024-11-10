@@ -15,6 +15,7 @@ const BlogNewAndUpdatePage = () => {
     topic: [] as string[],
     thumbnail: "",
     status: false,
+    imageList: [],
     publication_time: getDateTimeLocalToString(new Date()),
   });
 
@@ -60,6 +61,9 @@ const BlogNewAndUpdatePage = () => {
             onChange={(e) =>
               setFormValue((prev) => ({ ...prev, description: e }))
             }
+            uploadFiles={(e) => {
+              setFormValue((prev) => ({ ...prev, imageList: e as any }));
+            }}
           />
           <div>
             <button
