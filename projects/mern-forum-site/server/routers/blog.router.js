@@ -367,14 +367,6 @@ blogRouter.post(
         author: user._id,
       });
 
-      if (newData?.status) {
-        await notificationModel.create({
-          user: user._id,
-          type: "blog",
-          notification: newData,
-        });
-      }
-
       return handleResponse(res, {
         status: StatusCodes.CREATED,
         message: "Blog created successfully",
