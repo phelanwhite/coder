@@ -19,7 +19,7 @@ type TypeCard1 = {
 export const BlogCard1 = ({ data, type }: TypeCard1) => {
   return (
     <div className="p-5">
-      <div className="flex gap-6 items-center justify-between mb-4">
+      <div className="flex gap-6 items-center justify-between mb-3 sm:mb-4">
         <div>
           <Link
             to={`/author/${data?.author?._id}`}

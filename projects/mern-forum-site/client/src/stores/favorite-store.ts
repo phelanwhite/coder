@@ -27,9 +27,10 @@ export const useFavoriteStore = create<Type>()((set, get) => ({
   deleteFavorite: async (query) => {
     const url = `/favorite/delete?${query}`;
     const response = (await axiosConfig.delete(url)).data;
+
     set({
       favorites: get().favorites.filter(
-        (item) => item._id !== response?.data?._id
+        (item) => item._id !== response?.data?.blog
       ),
     });
     return response;
