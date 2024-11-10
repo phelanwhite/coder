@@ -1,0 +1,6 @@
+.ql-editor.ql-blank {
+  min-height: 30vh;
+}
+.ql-bubble .ql-editor {
+  padding: 0;
+}
