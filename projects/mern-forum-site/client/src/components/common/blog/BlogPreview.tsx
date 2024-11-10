@@ -183,18 +183,16 @@ const BlogPreview: FC<BlogPreviewProp> = ({
             </div>
             <div className="text-text-secondary-color-2">
               <div className="text-[0.8125rem] mb-1">Article origin:</div>
-              <div>
-                <input
-                  className="w-full border-b pb-1 outline-none"
-                  value={data?.article_origin}
-                  onChange={(e) =>
-                    setData((prev: any) => ({
-                      ...prev,
-                      article_origin: e.target.value,
-                    }))
-                  }
-                />
-              </div>
+              <input
+                className="w-full border-b pb-1 outline-none"
+                value={data?.article_origin}
+                onChange={(e) =>
+                  setData((prev: any) => ({
+                    ...prev,
+                    article_origin: e.target.value,
+                  }))
+                }
+              />
             </div>
             <div className="text-text-secondary-color-2">
               <div className="text-[0.8125rem] mb-1">Publication time:</div>
