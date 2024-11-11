@@ -1,11 +1,11 @@
 import { IMAGES_DEFAULT } from "@/assets/constants/images-constant";
-import { getTimeDisplayBlog } from "@/libs/utils/time";
 import { useCommentStore } from "@/stores/comment-store";
 import { useMutation } from "@tanstack/react-query";
 import { memo, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineComment, AiOutlineLike } from "react-icons/ai";
 import ReplyList from "./ReplyList";
+import { getTimeDisplay } from "@/libs/utils/time";
 
 const CommentCard = ({ data }: { data: any }) => {
   const [isReplyForm, setIsReplyForm] = useState(false);
@@ -46,7 +46,7 @@ const CommentCard = ({ data }: { data: any }) => {
       {/* comment  */}
       <div className="mt-2 p-4 rounded-xl bg-gray-50 whitespace-pre-wrap">
         <div className="text-xs font-medium text-text-secondary-color-2 pt-0.5">
-          {data?.createdAt && getTimeDisplayBlog(new Date(data?.createdAt))}
+          {data?.createdAt && getTimeDisplay(new Date(data?.createdAt))}
         </div>
         {data?.comment}
       </div>

@@ -10,7 +10,7 @@ export const getReadTimeToString = (words: string) => {
   return readingTime;
 };
 
-export const getTimeDisplayBlog = (date: Date) => {
+export const getTimeDisplay = (date: Date) => {
   return new Intl.DateTimeFormat(locales, {
     day: "2-digit",
     month: "short",

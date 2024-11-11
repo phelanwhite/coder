@@ -2,13 +2,13 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { IMAGES_DEFAULT } from "@/assets/constants/images-constant";
-import { getTimeDisplayBlog } from "@/libs/utils/time";
 import { Link } from "react-router-dom";
 import TopicCard from "../topic/TopicCard";
 import BookmarkButtonAddRemove from "../bookmark/BookmarkButtonAddRemove";
 import BlogCardButtonMenu from "./BlogCardButtonMenu";
 import BlogCardAuthorButtonMenu from "./BlogCardAuthorButtonMenu";
 import BlogCardFavoriteButtonMenu from "./BlogCardFavoriteButtonMenu";
+import { getTimeDisplay } from "@/libs/utils/time";
 
 type TypeCard1 = {
   data: any;
@@ -65,7 +65,7 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
       {/* footer  */}
       <div className="mt-3 flex flex-wrap gap-2 items-center text-xs">
         <span className="font-medium text-text-secondary-color-2">
-          {data?.createdAt && getTimeDisplayBlog(new Date(data?.createdAt))}
+          {data?.createdAt && getTimeDisplay(new Date(data?.createdAt))}
         </span>
         <span className="font-medium text-text-secondary-color-2">
           {data?.read_time}

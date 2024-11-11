@@ -9,24 +9,24 @@ export const customDataBlog = async ({ author_id, datas }) => {
     for (const element of datas) {
       const isBookmark = (await bookmarkModel.findOne({
         author: author_id,
-        blog: element._id,
+        blog: element?._id,
       }))
         ? true
         : false;
 
       const isFavorite = (await favoriteModel.findOne({
         author: author_id,
-        blog: element._id,
+        blog: element?._id,
       }))
         ? true
         : false;
 
       const total_comment = await commentModel.countDocuments({
-        blog: element._id,
+        blog: element?._id,
       });
 
       const total_favorite = await favoriteModel.countDocuments({
-        blog: element._id,
+        blog: element?._id,
       });
 
       const read_time = getReadTimeToString(element?.description);

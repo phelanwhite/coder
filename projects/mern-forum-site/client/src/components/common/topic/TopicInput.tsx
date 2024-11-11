@@ -40,7 +40,7 @@ const TopicInput: FC<Props> = ({ listData, setListData, ...props }) => {
       <div className={clsx([`w-full p-3 flex flex-wrap gap-2 rounded border`])}>
         {list.map((item) => (
           <span
-            className="bg-gray-100 py-1 px-2 rounded flex items-center gap-2"
+            className="bg-gray-100 py-1 px-2 rounded flex items-center gap-2 capitalize"
             key={item.id}
           >
             {item.value}

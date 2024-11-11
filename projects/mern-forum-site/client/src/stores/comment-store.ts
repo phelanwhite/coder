@@ -3,15 +3,17 @@ import { create } from "zustand";
 
 type Type = {
   comments: any[];
+  responses: any[];
   total_comment: number;
   createComment: (data: any) => any;
   createReply: (data: any) => any;
   // updateCommentById: (id: any, data: any) => any;
   likeDislikeByCommentId: (id: any) => any;
   deleteCommentById: (id: any) => any;
+  deleteResponseById: (id: any) => any;
   getCommentsByBlogId: (postId: string, query?: string) => any;
   getCommentsByMe: (query?: string) => any;
-  getResponsesByBlogs: (query?: string) => any;
+  getResponses: (query?: string) => any;
   getComments: (query?: string) => any;
 
   replies: any[];
@@ -21,6 +23,7 @@ type Type = {
 export const useCommentStore = create<Type>()((set, get) => ({
   comments: [],
   replies: [],
+  responses: [],
   total_comment: 0,
   total_reply: 0,
   createComment: async (data) => {
@@ -44,7 +47,16 @@ export const useCommentStore = create<Type>()((set, get) => ({
     const url = `/comment/delete-id/${id}`;
     const response = (await axiosConfig.delete(url)).data;
     set({
-      comments: get().comments.filter((comment) => comment._id !== id),
+      comments: get().comments.filter((item) => item._id !== id),
+      responses: get().responses.filter((item) => item._id !== id),
+    });
+    return response;
+  },
+  deleteResponseById: async (id) => {
+    const url = `/comment/delete-id/${id}`;
+    const response = (await axiosConfig.delete(url)).data;
+    set({
+      responses: get().responses.filter((item) => item._id !== id),
     });
     return response;
   },
@@ -80,10 +92,10 @@ export const useCommentStore = create<Type>()((set, get) => ({
     set({ comments: response.data?.result });
     return response;
   },
-  getResponsesByBlogs: async (query) => {
-    const url = `/comment/get-responses-by-blogs?${query}`;
+  getResponses: async (query) => {
+    const url = `/comment/get-responses?${query}`;
     const response = (await axiosConfig.get(url)).data;
-    set({ comments: response.data?.result });
+    set({ responses: response.data?.result });
     return response;
   },
   getComments: async (query) => {

@@ -8,16 +8,23 @@ import CommentList from "@/components/common/comment/CommentList";
 import FavoriteButtonAddRemove from "@/components/common/favorite/FavoriteButtonAddRemove";
 import TopicCard from "@/components/common/topic/TopicCard";
 import axiosConfig from "@/configs/axios-config";
-import { getTimeDisplayBlog } from "@/libs/utils/time";
+import { getTimeDisplay } from "@/libs/utils/time";
 import { useAuthStore } from "@/stores/auth-store";
 import { useCommentStore } from "@/stores/comment-store";
 import { useHistoryStore } from "@/stores/history-store";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useMemo } from "react";
+import React, { ComponentProps, useEffect, useMemo, useRef } from "react";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
 const BlogIdPage = () => {
+  // comment
+  const commentRef = useRef<HTMLDivElement | null>(null);
+  const scrollToComment = () => {
+    if (commentRef.current) {
+      commentRef.current.scrollIntoView();
+    }
+  };
   const { id } = useParams();
   const { user } = useAuthStore();
   const { createHistory } = useHistoryStore();
@@ -62,38 +69,53 @@ const BlogIdPage = () => {
         <div className=" font-bold text-2xl md:text-[1.875rem]">
           {blogData?.title}
         </div>
+        {/* Auth  */}
+        <div>
+          <Link
+            to={`/author/${blogData?.author?._id}`}
+            className="flex items-center gap-3"
+          >
+            <div className="w-10 h-10 rounded-full overflow-hidden border">
+              <img
+                src={
+                  blogData?.author?.avatar || IMAGES_DEFAULT.account_notfound
+                }
+                alt=""
+                loading="lazy"
+              />
+            </div>
+            <div>
+              <div className="text-base font-medium">
+                {blogData?.author?.name}
+              </div>
+              <div className="text-xs font-medium text-text-secondary-color-2 flex gap-4 items-center">
+                <span>
+                  {blogData?.createdAt &&
+                    getTimeDisplay(new Date(blogData?.createdAt))}
+                </span>
+                <span>{blogData?.read_time}</span>
+              </div>
+            </div>
+          </Link>
+        </div>
         {/* Top */}
-        <div className="flex items-center justify-between gap-6">
-          {/* Auth  */}
-          <div>
-            <Link
-              to={`/author/${blogData?.author?._id}`}
-              className="flex items-center gap-3"
+        <div className="flex items-center justify-between gap-6 border-y p-3">
+          {/* left  */}
+          <div className="flex items-center gap-8">
+            <FavoriteButtonAddRemove
+              blogId={id as string}
+              isFavorite={blogData?.isFavorite}
+              count_favorite={blogData?.total_favorite}
+            />
+            <button
+              onClick={scrollToComment}
+              className="flex items-center gap-1"
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden border">
-                <img
-                  src={
-                    blogData?.author?.avatar || IMAGES_DEFAULT.account_notfound
-                  }
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-              <div>
-                <div className="text-base font-medium">
-                  {blogData?.author?.name}
-                </div>
-                <div className="text-xs font-medium text-text-secondary-color-2 flex gap-4 items-center">
-                  <span>
-                    {blogData?.createdAt &&
-                      getTimeDisplayBlog(new Date(blogData?.createdAt))}
-                  </span>
-                  <span>{blogData?.read_time}</span>
-                </div>
-              </div>
-            </Link>
+              <FaRegCommentAlt />
+              <span>{blogData?.total_comment}</span>
+            </button>
           </div>
-          {/* Action  */}
+          {/* right  */}
           <div className="flex items-center gap-3">
             <BookmarkButtonAddRemove
               blogId={id as string}
@@ -141,18 +163,7 @@ const BlogIdPage = () => {
             </Link>
           </div>
         )}
-        {/* Action  */}
-        <div className="flex items-center gap-8">
-          <FavoriteButtonAddRemove
-            blogId={id as string}
-            isFavorite={blogData?.isFavorite}
-            count_favorite={blogData?.total_favorite}
-          />
-          <button className="flex items-center gap-1">
-            <FaRegCommentAlt />
-            <span>{blogData?.total_comment}</span>
-          </button>
-        </div>
+
         {/* Topic  */}
         <div className="text-xs flex flex-wrap items-center gap-2">
           {blogData?.topic?.map((item: any) => (
@@ -174,7 +185,7 @@ const BlogIdPage = () => {
       </div>
 
       {/* Comment */}
-      <div className="pt-6">
+      <div ref={commentRef} className="pt-6">
         <div className="border-l-[3px] border-green-500 pl-3 font-semibold text-xl mb-8">
           Top comment ({total_comment})
         </div>

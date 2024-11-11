@@ -166,6 +166,21 @@ const BlogPreview: FC<BlogPreviewProp> = ({
             </div>
           </div>
           <div className="flex flex-col gap-4">
+            {/* article_origin */}
+            <div className="text-text-secondary-color-2">
+              <div className="text-[0.8125rem] mb-1">Article origin:</div>
+              <input
+                className="w-full border-b pb-1 outline-none"
+                value={data?.article_origin}
+                onChange={(e) =>
+                  setData((prev: any) => ({
+                    ...prev,
+                    article_origin: e.target.value,
+                  }))
+                }
+              />
+            </div>
+            {/* topic  */}
             <div>
               <div className="text-text-secondary-color-2 text-[0.8125rem] mb-1">
                 Topic:
@@ -181,19 +196,7 @@ const BlogPreview: FC<BlogPreviewProp> = ({
                 }
               />
             </div>
-            <div className="text-text-secondary-color-2">
-              <div className="text-[0.8125rem] mb-1">Article origin:</div>
-              <input
-                className="w-full border-b pb-1 outline-none"
-                value={data?.article_origin}
-                onChange={(e) =>
-                  setData((prev: any) => ({
-                    ...prev,
-                    article_origin: e.target.value,
-                  }))
-                }
-              />
-            </div>
+            {/* publication_time */}
             <div className="text-text-secondary-color-2">
               <div className="text-[0.8125rem] mb-1">Publication time:</div>
               <div>
