@@ -6,7 +6,8 @@ import {
 } from "@tanstack/react-query";
 import React, { ChangeEvent, FC, memo, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import CommentCard from "./CommentCard";
+import { CommentCard } from "./CommentCard";
+import TextEditor from "@/components/form/text-editor";
 
 interface Props {
   data: any;
@@ -81,20 +82,25 @@ const ReplyList: FC<Props> = ({ data, isOpenForm, isOpenReplies }) => {
     <div className="space-y-6">
       {/* form  */}
       {isOpenForm && (
-        <form onSubmit={onSubmit} action="" method="post">
-          <textarea
-            required
-            name=""
-            id=""
-            className="mb-1 px-4 py-2 rounded-lg border w-full focus:outline-blue-500"
-            placeholder="Enter your new comment"
-            value={replyContent}
-            onChange={(e) => setReplyContent(e.target.value)}
-          ></textarea>
-          <button type="submit" className="btn btn-success text-xs">
-            Submit
-          </button>
-        </form>
+        <div>
+          <form
+            onSubmit={onSubmit}
+            action=""
+            method="post"
+            className="flex flex-col gap-2"
+          >
+            <TextEditor
+              type="comment"
+              value={replyContent}
+              onChange={(e) => setReplyContent(e)}
+            />
+            <div>
+              <button type="submit" className="btn btn-success">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       )}
       {/* list  */}
       {replies.map((item: any) => (

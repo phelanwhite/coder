@@ -1,20 +1,18 @@
 import { useAuthStore } from "@/stores/auth-store";
-import React, { memo, useEffect } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import SigninSignupModal from "./SigninSignupModal";
 
-const AuthProtectedRouter = () => {
-  const { isAuthenticated } = useAuthStore();
+const AdminProtectedRouter = () => {
+  const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   useEffect(() => {
-    if (!isAuthenticated) setIsOpenModal(true);
-    return () => {
-      setIsOpenModal(false);
-    };
+    if (!isAuthenticated || user?.role !== "admin") setIsOpenModal(true);
+    return () => setIsOpenModal(false);
   }, [isAuthenticated, location.pathname]);
 
-  if (!isAuthenticated)
+  if (!isAuthenticated || user?.role !== "admin")
     return (
       <SigninSignupModal
         isOpen={isOpenModal}
@@ -25,4 +23,4 @@ const AuthProtectedRouter = () => {
   return <Outlet />;
 };
 
-export default memo(AuthProtectedRouter);
+export default AdminProtectedRouter;

@@ -1,4 +1,4 @@
-import CommentCard from "@/components/common/comment/CommentCard";
+import CommentCardList from "@/components/common/comment/CommentCardList";
 import CommentForm from "@/components/common/comment/CommentForm";
 import Paginate from "@/components/layout/paginate";
 import axiosConfig from "@/configs/axios-config";
@@ -53,11 +53,12 @@ const BlogIdCommentPage = () => {
       </button>
       <div className="space-y-6">
         <CommentForm type_id={id as string} type="blog" />
-        {comments.length > 0 ? (
-          <>
-            {comments?.map((item: any) => {
-              return <CommentCard key={item._id} data={item} />;
-            })}
+        <CommentCardList
+          datas={comments}
+          isLoading={getCommentByBlogIdResult.isLoading}
+        />
+        {getCommentByBlogIdResult.data && comments?.length > 0 && (
+          <div className="mt-4">
             <Paginate
               forcePage={Number(getCommentByBlogIdResult.data?.data?._page) - 1}
               onPageChange={(e) => handleSearchParams(`_page`, e.selected + 1)}
@@ -65,9 +66,7 @@ const BlogIdCommentPage = () => {
                 getCommentByBlogIdResult.data?.data?.total_page as number
               }
             />
-          </>
-        ) : (
-          <div>No Comment</div>
+          </div>
         )}
       </div>
     </div>

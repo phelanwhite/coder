@@ -16,7 +16,6 @@ const InputSearch = () => {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            console.log("Search query entered:", value);
             navigate(`/search?_q=${value}`);
           }
         }}

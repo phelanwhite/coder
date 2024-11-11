@@ -1,30 +1,24 @@
-import { CommentItem } from "@/components/common/comment/CommentItem";
-import CommentItemList from "@/components/common/comment/CommentItemList";
+import UserItemList from "@/components/common/user/UserItemList";
 import Paginate from "@/components/layout/paginate";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
-import { getTimeDisplay } from "@/libs/utils/time";
-import { useCommentStore } from "@/stores/comment-store";
+import { useUserStore } from "@/stores/user-store";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
 
-const CommentPage = () => {
+const AdminUsersPage = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue();
-  const { getCommentsByMe, comments } = useCommentStore();
+  const { getUsersByAdmin, users } = useUserStore();
   const getCommentByMeResult = useQuery({
     queryKey: ["comment", searchParams.toString()],
     queryFn: async () => {
-      const response = await getCommentsByMe(searchParams.toString());
+      const response = await getUsersByAdmin(searchParams.toString());
       return response;
     },
   });
   return (
     <div className="px-5 space-y-4">
-      <CommentItemList
-        datas={comments}
-        isLoading={getCommentByMeResult.isLoading}
-      />
-      {getCommentByMeResult.data && comments?.length > 0 && (
+      <UserItemList datas={users} isLoading={getCommentByMeResult.isLoading} />
+      {getCommentByMeResult.data && users?.length > 0 && (
         <div className="mt-4">
           <Paginate
             forcePage={Number(getCommentByMeResult.data?.data?._page) - 1}
@@ -37,4 +31,4 @@ const CommentPage = () => {
   );
 };
 
-export default CommentPage;
+export default AdminUsersPage;

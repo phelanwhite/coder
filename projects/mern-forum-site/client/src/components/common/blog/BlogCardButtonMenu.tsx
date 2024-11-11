@@ -7,7 +7,7 @@ import { MdReportProblem } from "react-icons/md";
 const BlogCardButtonMenu = () => {
   const handleCopyClipboard = async () => {
     await navigator.clipboard
-      .writeText("https://example.com")
+      .writeText(window.location.href)
       .then((value) => {
         toast.success(`Copy link successfully!`);
       })

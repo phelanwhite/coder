@@ -4,7 +4,10 @@ import { QUERY } from "../helpers/constants.js";
 import blogModel from "../models/blog.model.js";
 import { handleResponse } from "../helpers/responses.js";
 import { customDataBlog } from "../services/customData.js";
-import { verifyToken } from "../middlewares/verifyToken.middleware.js";
+import {
+  verifyToken,
+  verifyTokenAdmin,
+} from "../middlewares/verifyToken.middleware.js";
 import {
   cloudinary_deleteFile,
   cloudinary_uploadImageFile,

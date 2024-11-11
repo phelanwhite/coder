@@ -52,7 +52,7 @@ export const user_links = [
     icon: <RiMovie2Fill />,
   },
 ];
-
+// Website management
 export const USER_MENU_LINKS = {
   menu1: [{ title: `My Profile`, path: `/me/profile` }],
   menu2: [
@@ -71,10 +71,8 @@ export const USER_MENU_LINKS = {
   ],
   menu3: [
     {
-      title: `
-    Website management
-    `,
-      path: `/admin/management`,
+      title: `Dashboard`,
+      path: `/admin`,
     },
   ],
   menu4: [{ title: `Settings`, path: `/settings` }],
@@ -109,20 +107,28 @@ export const USER_MENU_PROTECTED_LINKS = [
     ],
   },
 ];
-// {
-//   my_blog: [
-//     { title: "Draft", path: "/me/my-blogs" },
-//     { title: "Published", path: "/me/my-blogs/published" },
-//     { title: "Responses", path: "/me/my-blogs/responses" },
-//   ],
-//   activity: [
-//     { title: "History", path: "/me/activity" },
-//     { title: "Comment", path: "/me/activity/comment" },
-//     { title: "Bookmark", path: "/me/activity/bookmark" },
-//     { title: "Favorite", path: "/me/activity/favorite" },
-//   ],
-//   management: [
-//     { title: "Topic", path: "/admin/management" },
-//     { title: "Comment", path: "/admin/management/comment" },
-//   ],
-// };
+
+export const ADMIN_MENU_PROTECTED_LINKS = [
+  {
+    title: "Dashboard",
+    path_parent: `/admin`,
+    submenu: [
+      {
+        title: `Dashboard`,
+        path: `/admin`,
+      },
+      {
+        title: `Users`,
+        path: `/admin/users`,
+      },
+      {
+        title: `Blogs`,
+        path: `/admin/blogs`,
+      },
+      {
+        title: `Comments`,
+        path: `/admin/comments`,
+      },
+    ],
+  },
+];

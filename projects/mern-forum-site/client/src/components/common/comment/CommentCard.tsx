@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 import { AiOutlineComment, AiOutlineLike } from "react-icons/ai";
 import ReplyList from "./ReplyList";
 import { getTimeDisplay } from "@/libs/utils/time";
+import Skeleton from "react-loading-skeleton";
 
-const CommentCard = ({ data }: { data: any }) => {
+export const CommentCard = ({ data }: { data: any }) => {
   const [isReplyForm, setIsReplyForm] = useState(false);
   const [isShowReplies, setIsShowReplies] = useState(false);
 
@@ -32,51 +33,83 @@ const CommentCard = ({ data }: { data: any }) => {
 
   return (
     <div>
-      {/* top  */}
-      <div className="flex gap-2 items-center">
-        <div className="w-7 h-7 overflow-hidden rounded-full border">
+      <div className="flex items-start gap-2">
+        {/* left  */}
+        <div className="w-8 h-8 overflow-hidden rounded-full">
           <img
             src={data?.author?.avatar || IMAGES_DEFAULT.account_notfound}
             alt=""
             loading="lazy"
           />
         </div>
-        <div className="font-medium text-sm">{data?.author?.name}</div>
-      </div>
-      {/* comment  */}
-      <div className="mt-2 p-4 rounded-xl bg-gray-50 whitespace-pre-wrap">
-        <div className="text-xs font-medium text-text-secondary-color-2 pt-0.5">
-          {data?.createdAt && getTimeDisplay(new Date(data?.createdAt))}
+        {/* right */}
+        <div className="flex-1">
+          <div className="p-4 rounded border">
+            {/* top  */}
+            <div className="flex items-center gap-2 mb-4 text-text-secondary-color-2">
+              <span className="font-medium">{data?.author?.name}</span>
+              <span className="h-1 w-1 rounded-full bg-black overflow-hidden"></span>
+              <span>
+                {data?.createdAt && getTimeDisplay(new Date(data?.createdAt))}
+              </span>
+            </div>
+            {/* comment  */}
+            <div className="ql-snow">
+              <div
+                className="ql-editor p-0 leading-6"
+                dangerouslySetInnerHTML={{ __html: data?.comment }}
+              ></div>
+            </div>
+          </div>
+          {/* action  */}
+          <div className="px-4 pt-2 flex items-center gap-3 text-sm">
+            <button onClick={() => setIsReplyForm(!isReplyForm)}>Reply</button>
+            <button
+              onClick={() => likeDislikeByCommentIdResult.mutate()}
+              className="flex items-center gap-1"
+            >
+              <AiOutlineLike /> <span>{count_like}</span>
+            </button>
+            <button
+              onClick={() => setIsShowReplies(true)}
+              className="flex items-center gap-1"
+            >
+              <AiOutlineComment />
+              <span>{data?.count_reply}</span>
+            </button>
+          </div>
+          {/* reply */}
+          <div className="mt-4 pl-8 border-l">
+            <ReplyList
+              isOpenForm={isReplyForm}
+              isOpenReplies={isShowReplies}
+              data={data}
+            />
+          </div>
         </div>
-        {data?.comment}
-      </div>
-      {/* action  */}
-      <div className="px-4 pt-2 flex items-center gap-3 text-sm">
-        <button onClick={() => setIsReplyForm(!isReplyForm)}>Reply</button>
-        <button
-          onClick={() => likeDislikeByCommentIdResult.mutate()}
-          className="flex items-center gap-1"
-        >
-          <AiOutlineLike /> <span>{count_like}</span>
-        </button>
-        <button
-          onClick={() => setIsShowReplies(true)}
-          className="flex items-center gap-1"
-        >
-          <AiOutlineComment />
-          <span>{data?.count_reply}</span>
-        </button>
-      </div>
-      {/* reply */}
-      <div className="mt-4 pl-8 border-l">
-        <ReplyList
-          isOpenForm={isReplyForm}
-          isOpenReplies={isShowReplies}
-          data={data}
-        />
       </div>
     </div>
   );
 };
 
-export default memo(CommentCard);
+export const CommentCardSkeleton = () => {
+  return (
+    <div>
+      <div className="flex items-start gap-2">
+        {/* left  */}
+        <div className="w-8 h-8 overflow-hidden rounded-full">
+          <div className="h-full w-full rounded-full bg-gray-500" />
+        </div>
+        {/* right */}
+        <div className="flex-1">
+          <div className="p-4 rounded border">
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+          {/* action  */}
+        </div>
+      </div>
+    </div>
+  );
+};

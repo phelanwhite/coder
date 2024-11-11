@@ -43,7 +43,7 @@ const BlogCardAuthorButtonMenu = ({ data }: { data: any }) => {
 
   const handleCopyClipboard = async () => {
     await navigator.clipboard
-      .writeText("https://example.com")
+      .writeText(window.location.href)
       .then((value) => {
         toast.success(`Copy link successfully!`);
       })

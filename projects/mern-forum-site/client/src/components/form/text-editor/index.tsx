@@ -14,6 +14,7 @@ import "react-quill-new/dist/quill.core.css";
 import "./style.css";
 import toast from "react-hot-toast";
 import { uploadToCloudinary } from "@/services/upload";
+import clsx from "clsx";
 
 interface Props {
   value?: string;
@@ -115,9 +116,14 @@ const RichEditorReactQuillNew: FC<Props> = ({ ...props }) => {
   }, []);
 
   return (
-    <>
+    <div
+      className={clsx(
+        props.type === "blog" && `rich-editor-ql-blog`,
+        props.type === "comment" && `rich-editor-ql-comment`
+      )}
+    >
       <ReactQuillNew ref={reactQuillRef} modules={modulesOptions} {...props} />
-    </>
+    </div>
   );
 };
 

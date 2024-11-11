@@ -23,8 +23,14 @@ const AuthButtonMenu = () => {
   }, []);
 
   const customUserMenuLinks = useMemo(() => {
+    if (user?.role !== "admin") {
+      return Object.values(USER_MENU_LINKS).filter((item) =>
+        item.find((i) => i.path !== `/admin`)
+      );
+    }
+
     return Object.values(USER_MENU_LINKS);
-  }, []);
+  }, [user]);
 
   return (
     <>

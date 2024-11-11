@@ -2,9 +2,6 @@ import { IMAGES_DEFAULT } from "@/assets/constants/images-constant";
 import { BlogCard2 } from "@/components/common/blog/BlogCard";
 import BlogCardButtonMenu from "@/components/common/blog/BlogCardButtonMenu";
 import BookmarkButtonAddRemove from "@/components/common/bookmark/BookmarkButtonAddRemove";
-import CommentCard from "@/components/common/comment/CommentCard";
-import CommentForm from "@/components/common/comment/CommentForm";
-import CommentList from "@/components/common/comment/CommentList";
 import FavoriteButtonAddRemove from "@/components/common/favorite/FavoriteButtonAddRemove";
 import TopicCard from "@/components/common/topic/TopicCard";
 import axiosConfig from "@/configs/axios-config";
@@ -16,6 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import React, { ComponentProps, useEffect, useMemo, useRef } from "react";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import CommentCardList from "@/components/common/comment/CommentCardList";
+import CommentForm from "@/components/common/comment/CommentForm";
 
 const BlogIdPage = () => {
   // comment
@@ -28,7 +27,7 @@ const BlogIdPage = () => {
   const { id } = useParams();
   const { user } = useAuthStore();
   const { createHistory } = useHistoryStore();
-  const { total_comment } = useCommentStore();
+  const { total_comment, comments, getCommentsByBlogId } = useCommentStore();
   const createHistoryResult = useQuery({
     queryKey: ["blog", "id", "history", id],
     queryFn: async () => {
@@ -54,6 +53,13 @@ const BlogIdPage = () => {
       return response;
     },
     enabled: !!(id && getBlogIdResult.data),
+  });
+  const getCommentsByBlogIdResult = useQuery({
+    queryKey: ["blog", "comments", id],
+    queryFn: async () => {
+      return await getCommentsByBlogId(id as string);
+    },
+    enabled: !!id,
   });
 
   const blogData = useMemo(
@@ -143,13 +149,11 @@ const BlogIdPage = () => {
         )}
 
         {/* description  */}
-        <div className="text-base space-y-6 overflow-hidden">
-          <div className="ql-snow">
-            <div
-              className="ql-editor p-0 leading-8"
-              dangerouslySetInnerHTML={{ __html: blogData?.description }}
-            ></div>
-          </div>
+        <div className="ql-snow">
+          <div
+            className="ql-editor p-0 leading-8"
+            dangerouslySetInnerHTML={{ __html: blogData?.description }}
+          ></div>
         </div>
         {/* article_origin */}
         {blogData?.article_origin && (
@@ -189,7 +193,18 @@ const BlogIdPage = () => {
         <div className="border-l-[3px] border-green-500 pl-3 font-semibold text-xl mb-8">
           Top comment ({total_comment})
         </div>
-        <CommentList id={id as string} />
+        <div className="mb-8">
+          <CommentForm type_id={id as string} type="blog" />
+        </div>
+        <CommentCardList
+          datas={comments}
+          isLoading={getCommentsByBlogIdResult.isLoading}
+        />
+        {comments.length > 0 && (
+          <div className="text-center text-blue-500 text-xs">
+            <Link to={`comment`}>View more comment</Link>
+          </div>
+        )}
       </div>
     </div>
   );

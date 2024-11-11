@@ -9,6 +9,7 @@ type Type = {
   deleteBlogById: (id: any) => any;
   getBlogs: (query?: string) => any;
   getBlogsByMe: (query?: string) => any;
+  getBlogsByAdmin: (query?: string) => any;
 };
 
 export const useBlogStore = create<Type>()((set, get) => ({
@@ -55,6 +56,13 @@ export const useBlogStore = create<Type>()((set, get) => ({
   },
   getBlogsByMe: async (query) => {
     const url = `blog/get-blogs-by-me?${query}`;
+    const response = (await axiosConfig.get(url)).data;
+
+    set({ blogs: response.data?.result });
+    return response;
+  },
+  getBlogsByAdmin: async (query) => {
+    const url = `admin/get-blogs?${query}`;
     const response = (await axiosConfig.get(url)).data;
 
     set({ blogs: response.data?.result });

@@ -1,20 +1,17 @@
-import { memo, useEffect, useMemo } from "react";
-import { BlogCard1, BlogCard1Skeleton } from "./BlogCard";
-
+import React from "react";
+import { UserItem, UserItemSkeleton } from "./UserItem";
 type Type = {
   datas: any[];
   isLoading: boolean;
-  type?: "author" | "admin" | "favorite" | "bookmark" | "history";
 };
-
-export const BlogList1 = ({ isLoading, datas, type }: Type) => {
+const UserItemList = ({ datas, isLoading }: Type) => {
   if (isLoading)
     return (
       <div className="space-y-4">
         {Array(20)
           .fill(0)
           .map((_, index) => {
-            return <BlogCard1Skeleton key={index} />;
+            return <UserItemSkeleton key={index} />;
           })}
       </div>
     );
@@ -24,7 +21,7 @@ export const BlogList1 = ({ isLoading, datas, type }: Type) => {
       {datas.length ? (
         <div className="space-y-4">
           {datas?.map((item: any) => {
-            return <BlogCard1 key={item._id} data={item} type={type} />;
+            return <UserItem key={item._id} data={item} />;
           })}
         </div>
       ) : (
@@ -35,3 +32,5 @@ export const BlogList1 = ({ isLoading, datas, type }: Type) => {
     </div>
   );
 };
+
+export default UserItemList;

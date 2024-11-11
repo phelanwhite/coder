@@ -57,6 +57,7 @@ const BlogNewAndUpdatePage = () => {
             }
           />
           <TextEditor
+            type="blog"
             placeholder="Write..."
             value={formValue.description || ""}
             onChange={(e) =>

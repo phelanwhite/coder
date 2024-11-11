@@ -21,3 +21,26 @@ export const verifyToken = async (req, res, next) => {
     next(error);
   }
 };
+
+export const verifyTokenAdmin = async (req, res, next) => {
+  try {
+    const token = req.cookies.access_token;
+
+    if (!token) {
+      throw createHttpError.Forbidden("Invalid token");
+    }
+
+    jwt.verify(token, env.JWT.JWT_SECRET, (error, decode) => {
+      if (error) {
+        throw createHttpError.Forbidden(error.message);
+      }
+      // if (decode.role !== "admin") {
+      //   throw createHttpError.Forbidden("Unauthorized access");
+      // }
+      req.user = decode;
+      next();
+    });
+  } catch (error) {
+    next(error);
+  }
+};

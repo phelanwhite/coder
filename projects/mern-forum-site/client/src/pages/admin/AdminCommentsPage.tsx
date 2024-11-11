@@ -1,20 +1,17 @@
-import { CommentItem } from "@/components/common/comment/CommentItem";
 import CommentItemList from "@/components/common/comment/CommentItemList";
 import Paginate from "@/components/layout/paginate";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
-import { getTimeDisplay } from "@/libs/utils/time";
 import { useCommentStore } from "@/stores/comment-store";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
 
-const CommentPage = () => {
+const AdminCommentsPage = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue();
-  const { getCommentsByMe, comments } = useCommentStore();
+  const { getCommentsByAdmin, comments } = useCommentStore();
   const getCommentByMeResult = useQuery({
-    queryKey: ["comment", searchParams.toString()],
+    queryKey: ["admin", "comment", searchParams.toString()],
     queryFn: async () => {
-      const response = await getCommentsByMe(searchParams.toString());
+      const response = await getCommentsByAdmin(searchParams.toString());
       return response;
     },
   });
@@ -37,4 +34,4 @@ const CommentPage = () => {
   );
 };
 
-export default CommentPage;
+export default AdminCommentsPage;

@@ -1,4 +1,5 @@
-import CommentItem from "@/components/common/comment/CommentItem";
+import { CommentItem } from "@/components/common/comment/CommentItem";
+import CommentItemList from "@/components/common/comment/CommentItemList";
 import Paginate from "@/components/layout/paginate";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import { useCommentStore } from "@/stores/comment-store";
@@ -8,21 +9,18 @@ const ResponsesPage = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue();
   const { responses, getResponses } = useCommentStore();
   const getResponsesResult = useQuery({
-    queryKey: ["comment", searchParams.toString()],
+    queryKey: ["response", searchParams.toString()],
     queryFn: async () => {
       const response = await getResponses(searchParams.toString());
       return response;
     },
   });
   return (
-    <div className="p-5 space-y-4">
-      {/* <BlogList1
-    isLoading={getBookmarksByMeResult.isLoading}
-    datas={bookmarks}
-  /> */}
-      {responses.map((item) => {
-        return <CommentItem key={item?._id} data={item} />;
-      })}
+    <div className="px-5 space-y-4">
+      <CommentItemList
+        datas={responses}
+        isLoading={getResponsesResult.isLoading}
+      />
       {getResponsesResult.data && responses?.length > 0 && (
         <div className="mt-4">
           <Paginate

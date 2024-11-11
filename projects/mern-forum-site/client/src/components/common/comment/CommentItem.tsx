@@ -3,12 +3,13 @@ import { useAuthStore } from "@/stores/auth-store";
 import React, { FC, memo } from "react";
 import { Link } from "react-router-dom";
 import CommentItemButtonMenu from "./CommentItemButtonMenu";
+import Skeleton from "react-loading-skeleton";
 
 interface Props {
   data: any;
 }
 
-const CommentItem: FC<Props> = ({ data }) => {
+export const CommentItem: FC<Props> = ({ data }) => {
   const { user } = useAuthStore();
 
   return (
@@ -18,7 +19,7 @@ const CommentItem: FC<Props> = ({ data }) => {
           <div>
             <span>
               {data?.author?._id === user?._id ? "You" : data?.author?.name}
-            </span>
+            </span>{" "}
             {data?.reply?.type_id ? (
               <>
                 <span>reply on the article </span>{" "}
@@ -35,7 +36,7 @@ const CommentItem: FC<Props> = ({ data }) => {
               </>
             ) : (
               <>
-                <span>You commented on the article </span>{" "}
+                <span>commented on the article </span>{" "}
                 <Link
                   className="italic text-blue-500"
                   to={`/blog/${data?.blog?._id}`}
@@ -54,10 +55,22 @@ const CommentItem: FC<Props> = ({ data }) => {
       </div>
       <div>
         <div className="text-text-secondary-color-2 text-xs"></div>
-        <div>{data?.comment}</div>
+        <div className="ql-snow">
+          <div
+            className="ql-editor p-0 leading-6"
+            dangerouslySetInnerHTML={{ __html: data?.comment }}
+          ></div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default memo(CommentItem);
+export const CommentItemSkeleton = () => {
+  return (
+    <div>
+      <Skeleton />
+      <Skeleton />
+    </div>
+  );
+};

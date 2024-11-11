@@ -12,7 +12,7 @@ import { getTimeDisplay } from "@/libs/utils/time";
 
 type TypeCard1 = {
   data: any;
-  type?: "author" | "favorite" | "bookmark" | "history";
+  type?: "author" | "admin" | "favorite" | "bookmark" | "history";
 };
 
 // card 1
@@ -42,6 +42,7 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
             isBookmark={data?.isBookmark}
           />
           {type === "author" && <BlogCardAuthorButtonMenu data={data} />}
+          {type === "admin" && <BlogCardAuthorButtonMenu data={data} />}
           {type === "favorite" && <BlogCardFavoriteButtonMenu data={data} />}
           {!type && <BlogCardButtonMenu />}
         </div>

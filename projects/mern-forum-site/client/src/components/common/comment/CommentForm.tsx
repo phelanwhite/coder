@@ -1,3 +1,4 @@
+import TextEditor from "@/components/form/text-editor";
 import { useCommentStore } from "@/stores/comment-store";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, FC, memo, useState } from "react";
@@ -33,19 +34,22 @@ const CommentForm: FC<Props> = ({ type_id, type }) => {
 
   return (
     <div>
-      <form onSubmit={onSubmit} action="" method="post">
-        <textarea
-          required
-          name=""
-          id=""
-          className="mb-1 px-4 py-2 rounded-lg border w-full focus:outline-blue-500"
-          placeholder="Enter your new comment"
+      <form
+        onSubmit={onSubmit}
+        action=""
+        method="post"
+        className="flex flex-col gap-2"
+      >
+        <TextEditor
+          type="comment"
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        ></textarea>
-        <button type="submit" className="btn btn-success">
-          Submit
-        </button>
+          onChange={(e) => setComment(e)}
+        />
+        <div>
+          <button type="submit" className="btn btn-success">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

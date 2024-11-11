@@ -8,6 +8,8 @@ import historyRouter from "./history.router.js";
 import favoriteRouter from "./favorite.router.js";
 import followRouter from "./follow.router.js";
 import commentRouter from "./comment.router.js";
+import adminRouter from "./admin.router.js";
+import { verifyTokenAdmin } from "../middlewares/verifyToken.middleware.js";
 
 const router = express.Router();
 
@@ -20,5 +22,6 @@ router.use(`/history`, historyRouter);
 router.use(`/favorite`, favoriteRouter);
 router.use(`/follow`, followRouter);
 router.use(`/comment`, commentRouter);
+router.use(`/admin`, adminRouter);
 
 export default router;

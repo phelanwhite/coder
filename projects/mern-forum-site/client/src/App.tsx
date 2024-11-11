@@ -28,6 +28,12 @@ import FavoritePage from "./pages/auth/FavoritePage";
 import BlogNewAndUpdatePage from "./pages/auth/BlogNewAndUpdatePage";
 import CommentPage from "./pages/auth/CommentPage";
 import BlogIdCommentPage from "./pages/BlogIdCommentPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminBlogsPage from "./pages/admin/AdminBlogsPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminCommentsPage from "./pages/admin/AdminCommentsPage";
+import AdminLayout from "./components/layout/layout/AdminLayout";
+import AdminProtectedRouter from "./components/common/auth/AdminProtectedRouter";
 
 function App() {
   const { logginWithPassportSuccess } = useAuthStore();
@@ -60,25 +66,41 @@ function App() {
             <Route path="blog/:id/comment" element={<BlogIdCommentPage />} />
             <Route path="author/:id" element={<AuthorIdPage />} />
           </Route>
-          <Route path="me" element={<AuthProtectedRouter />}>
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="profile/update" element={<ProfileUpdatePage />} />
-            <Route path="new-blog" element={<BlogNewAndUpdatePage />} />
-            <Route path="update-blog/:id" element={<BlogNewAndUpdatePage />} />
-            <Route element={<AuthLayout />}>
-              <Route path="update-me" element={<UpdateMePage />} />
-              <Route path="change-password" element={<ChangePasswordPage />} />
-              <Route path="my-blogs">
-                <Route index element={<PublishedPage />} />
-                <Route path="draft" element={<DraftPage />} />
-                <Route path="responses" element={<ResponsesPage />} />
+          <Route element={<AuthProtectedRouter />}>
+            <Route path="me">
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/update" element={<ProfileUpdatePage />} />
+              <Route path="new-blog" element={<BlogNewAndUpdatePage />} />
+              <Route
+                path="update-blog/:id"
+                element={<BlogNewAndUpdatePage />}
+              />
+              <Route element={<AuthLayout />}>
+                <Route path="update-me" element={<UpdateMePage />} />
+                <Route
+                  path="change-password"
+                  element={<ChangePasswordPage />}
+                />
+                <Route path="my-blogs">
+                  <Route index element={<PublishedPage />} />
+                  <Route path="draft" element={<DraftPage />} />
+                  <Route path="responses" element={<ResponsesPage />} />
+                </Route>
+                <Route path="activity">
+                  <Route index element={<HistoryPage />} />
+                  <Route path="bookmark" element={<BookmarkPage />} />
+                  <Route path="favorite" element={<FavoritePage />} />
+                  <Route path="comment" element={<CommentPage />} />
+                </Route>
               </Route>
-              <Route path="activity">
-                <Route index element={<HistoryPage />} />
-                <Route path="bookmark" element={<BookmarkPage />} />
-                <Route path="favorite" element={<FavoritePage />} />
-                <Route path="comment" element={<CommentPage />} />
-              </Route>
+            </Route>
+          </Route>
+          <Route element={<AdminProtectedRouter />}>
+            <Route path="admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboardPage />} />
+              <Route path="users" element={<AdminUsersPage />} />
+              <Route path="blogs" element={<AdminBlogsPage />} />
+              <Route path="comments" element={<AdminCommentsPage />} />
             </Route>
           </Route>
         </Routes>

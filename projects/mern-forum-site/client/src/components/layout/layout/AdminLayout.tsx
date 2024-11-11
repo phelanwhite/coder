@@ -1,0 +1,63 @@
+import {
+  ADMIN_MENU_PROTECTED_LINKS,
+  USER_MENU_LINKS,
+} from "@/assets/constants/links-constant";
+import React, { useMemo } from "react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import SidebarRight from "../sidebar/SidebarRight";
+import clsx from "clsx";
+
+const AdminLayout = () => {
+  const location = useLocation();
+  const title = useMemo(() => {
+    return Object.values(USER_MENU_LINKS)
+      .flat()
+      .find((item) => location.pathname?.includes(item.path))?.title;
+  }, [location.pathname]);
+  const subLinks = useMemo(() => {
+    return ADMIN_MENU_PROTECTED_LINKS.find((item) => {
+      const links = location.pathname?.split("/");
+      const link = links[0] + "/" + links[1];
+
+      return item?.path_parent === link;
+    });
+  }, [location.pathname]);
+
+  return (
+    <div className="flex max-w-[1332px] w-full mx-auto">
+      {/* Left  */}
+      <section className="flex-1">
+        <div className="px-5 mb-4">
+          <div className="capitalize text-2xl font-bold mb-8">{title}</div>
+          <div className="overflow-x-auto">
+            <div className="flex items-center gap-4 text-text-secondary-color-2 border-b">
+              {subLinks?.submenu.map((item) => {
+                return (
+                  <NavLink
+                    to={item.path}
+                    key={item.title}
+                    className={clsx([
+                      location.pathname === item.path &&
+                        `text-black font-medium border-b-2 border-b-black `,
+                      `pb-2`,
+                    ])}
+                  >
+                    {item.title}
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <section>
+          <Outlet />
+        </section>
+      </section>
+
+      {/* Right  */}
+      <SidebarRight />
+    </div>
+  );
+};
+
+export default AdminLayout;

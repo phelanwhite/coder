@@ -13,6 +13,7 @@ type Type = {
   deleteResponseById: (id: any) => any;
   getCommentsByBlogId: (postId: string, query?: string) => any;
   getCommentsByMe: (query?: string) => any;
+  getCommentsByAdmin: (query?: string) => any;
   getResponses: (query?: string) => any;
   getComments: (query?: string) => any;
 
@@ -100,6 +101,12 @@ export const useCommentStore = create<Type>()((set, get) => ({
   },
   getComments: async (query) => {
     const url = `/comment/get-all?${query}`;
+    const response = (await axiosConfig.get(url)).data;
+    set({ comments: response.data?.result });
+    return response;
+  },
+  getCommentsByAdmin: async (query) => {
+    const url = `/admin/get-comments?${query}`;
     const response = (await axiosConfig.get(url)).data;
     set({ comments: response.data?.result });
     return response;

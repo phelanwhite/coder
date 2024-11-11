@@ -1,14 +1,23 @@
 .ql-editor {
-  min-height: 30vh;
+  /* min-height: 30vh; */
 }
-.ql-toolbar {
+.rich-editor-ql-blog .ql-toolbar {
   @apply sticky top-[64px] bg-white z-[1] shadow;
 }
 
+.rich-editor-ql-blog .ql-editor {
+  min-height: 30vh;
+}
+.rich-editor-ql-comment .ql-editor {
+  min-height: 100px;
+}
+.ql-editor {
+}
+
 /* heading  */
-/* .ql-snow .ql-editor h1 {
-  @apply font-semibold text-2xl my-2 !important;
+.ql-snow .ql-editor h1 {
+  @apply font-semibold text-2xl !important;
 }
 .ql-snow.ql-editor h2 {
-  @apply font-semibold text-xl my-2 !important;
-} */
+  @apply font-semibold text-xl !important;
+}
