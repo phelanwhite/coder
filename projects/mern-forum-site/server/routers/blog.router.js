@@ -4,16 +4,19 @@ import { QUERY } from "../helpers/constants.js";
 import blogModel from "../models/blog.model.js";
 import { handleResponse } from "../helpers/responses.js";
 import { customDataBlog } from "../services/customData.js";
-import {
-  verifyToken,
-  verifyTokenAdmin,
-} from "../middlewares/verifyToken.middleware.js";
+import { verifyToken } from "../middlewares/verifyToken.middleware.js";
 import {
   cloudinary_deleteFile,
   cloudinary_uploadImageFile,
 } from "../configs/cloudinary-config.js";
 import upload from "../configs/multer-config.js";
 import slug from "slug";
+import notificationModel from "../models/notification.model.js";
+import followModel from "../models/follow.model.js";
+import commentModel from "../models/comment.model.js";
+import historyModel from "../models/history.model.js";
+import favoriteModel from "../models/favorite.model.js";
+import bookmarkModel from "../models/bookmark.model.js";
 
 const blogRouter = express.Router();
 
@@ -85,20 +88,31 @@ blogRouter.get(`/get-all`, async (req, res, next) => {
     next(error);
   }
 });
-blogRouter.get(`/get-id/:id`, async (req, res, next) => {
+blogRouter.get(`/get-id/:id/incriment-view`, async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const _tracking_id = req.query._tracking_id;
-
-    // incriment view
-    await blogModel.findByIdAndUpdate(
+    const updateData = await blogModel.findByIdAndUpdate(
       id,
       {
         $inc: { count_views: 1 },
       },
       { new: true }
     );
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      data: updateData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+blogRouter.get(`/get-id/:id`, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const _tracking_id = req.query._tracking_id;
 
     const getData = await blogModel.findById(id).populate([`author`]);
 
@@ -363,10 +377,14 @@ blogRouter.post(
         author: user._id,
       });
 
+      const getData = await blogModel
+        .findById(newData?._id)
+        .populate([`author`]);
+
       return handleResponse(res, {
         status: StatusCodes.CREATED,
         message: "Blog created successfully",
-        data: newData,
+        data: getData,
       });
     } catch (error) {
       next(error);
@@ -407,10 +425,31 @@ blogRouter.put(
 blogRouter.delete(`/delete-id/:id`, verifyToken, async (req, res, next) => {
   try {
     const id = req.params.id;
-    const deleteData = await blogModel.findByIdAndDelete(id);
+    const deleteData = await blogModel.findByIdAndDelete(id, { new: true });
     if (deleteData?.thumbnail) {
       await cloudinary_deleteFile(deleteData.thumbnail);
     }
+
+    await commentModel.deleteMany({
+      $or: [
+        { blog: deleteData?._id },
+        {
+          "reply.type_id": deleteData?._id,
+        },
+      ],
+    });
+    await historyModel.deleteMany({
+      blog: deleteData?._id,
+    });
+    await favoriteModel.deleteMany({
+      blog: deleteData?._id,
+    });
+    await bookmarkModel.deleteMany({
+      blog: deleteData?._id,
+    });
+    await notificationModel.deleteMany({
+      "notification.data": deleteData?._id,
+    });
 
     return handleResponse(res, {
       status: StatusCodes.OK,

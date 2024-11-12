@@ -1,5 +1,8 @@
 import { IMAGES_DEFAULT } from "@/assets/constants/images-constant";
-import { USER_MENU_LINKS } from "@/assets/constants/links-constant";
+import {
+  ADMIN_MENU_LINKS,
+  USER_MENU_LINKS,
+} from "@/assets/constants/links-constant";
 import { useAuthStore } from "@/stores/auth-store";
 import clsx from "clsx";
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
@@ -23,12 +26,9 @@ const AuthButtonMenu = () => {
   }, []);
 
   const customUserMenuLinks = useMemo(() => {
-    if (user?.role !== "admin") {
-      return Object.values(USER_MENU_LINKS).filter((item) =>
-        item.find((i) => i.path !== `/admin`)
-      );
+    if (user?.role === "admin") {
+      return Object.values(ADMIN_MENU_LINKS);
     }
-
     return Object.values(USER_MENU_LINKS);
   }, [user]);
 

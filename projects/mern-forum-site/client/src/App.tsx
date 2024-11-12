@@ -34,6 +34,8 @@ import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminCommentsPage from "./pages/admin/AdminCommentsPage";
 import AdminLayout from "./components/layout/layout/AdminLayout";
 import AdminProtectedRouter from "./components/common/auth/AdminProtectedRouter";
+import NotificationPage from "./pages/auth/NotificationPage";
+import TopicPage from "./pages/TopicPage";
 
 function App() {
   const { logginWithPassportSuccess } = useAuthStore();
@@ -58,6 +60,7 @@ function App() {
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
+            <Route path="topic" element={<TopicPage />} />
             <Route path="topic/:id" element={<TopicIdPage />} />
           </Route>
           <Route>
@@ -76,6 +79,7 @@ function App() {
                 element={<BlogNewAndUpdatePage />}
               />
               <Route element={<AuthLayout />}>
+                <Route path="notifications" element={<NotificationPage />} />
                 <Route path="update-me" element={<UpdateMePage />} />
                 <Route
                   path="change-password"

@@ -23,8 +23,8 @@ authorRouter.get(`/get-id/:id`, async (req, res, next) => {
       .select(["-password", "-role", "-provider"]);
 
     const total_blog = await blogModel.countDocuments({ author: id });
-    const total_follower = await followModel.countDocuments({ follower: id });
-    const total_following = await followModel.countDocuments({ following: id });
+    const total_follower = await followModel.countDocuments({ following: id });
+    const total_following = await followModel.countDocuments({ follower: id });
 
     return handleResponse(res, {
       status: StatusCodes.OK,

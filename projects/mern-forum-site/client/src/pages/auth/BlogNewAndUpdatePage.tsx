@@ -4,10 +4,18 @@ import { useEffect, useState } from "react";
 import { getDateTimeLocalToString } from "@/libs/utils/time";
 import BlogPreview from "@/components/common/blog/BlogPreview";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axiosConfig from "@/configs/axios-config";
 
 const BlogNewAndUpdatePage = () => {
+  const location = useLocation();
+  const [isUpdate, setIsUpdate] = useState(false);
+  useEffect(() => {
+    location.pathname.includes(`update-blog`)
+      ? setIsUpdate(true)
+      : setIsUpdate(false);
+  }, [location.pathname]);
+
   const [formValue, setFormValue] = useState({
     title: "",
     content: "",
@@ -30,7 +38,7 @@ const BlogNewAndUpdatePage = () => {
     enabled: !!id,
   });
   useEffect(() => {
-    if (id && getBlogByIdResult.data?.data) {
+    if (id && isUpdate && getBlogByIdResult.data?.data) {
       for (const key in formValue) {
         setFormValue((prev) => ({
           ...prev,
@@ -39,8 +47,21 @@ const BlogNewAndUpdatePage = () => {
           }),
         }));
       }
+    } else {
+      setFormValue((prev) => ({
+        ...prev,
+        title: "",
+        content: "",
+        description: "",
+        topic: [] as string[],
+        thumbnail: "",
+        status: false,
+        imageList: [],
+        article_origin: "",
+        publication_time: getDateTimeLocalToString(new Date()),
+      }));
     }
-  }, [getBlogByIdResult.data, id]);
+  }, [getBlogByIdResult.data, id, isUpdate]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -69,7 +90,7 @@ const BlogNewAndUpdatePage = () => {
           />
           <div>
             <button
-              disabled={formValue.title ? false : true}
+              disabled={formValue.title || formValue.description ? false : true}
               onClick={() => setIsOpen(true)}
               className="btn btn-success rounded-full"
             >
@@ -79,6 +100,7 @@ const BlogNewAndUpdatePage = () => {
         </div>
       </div>
       <BlogPreview
+        isUpdate={isUpdate}
         isOpen={isOpen}
         data={formValue}
         setData={setFormValue}

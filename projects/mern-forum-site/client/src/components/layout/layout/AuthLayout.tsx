@@ -1,9 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import {
-  USER_MENU_LINKS,
-  USER_MENU_PROTECTED_LINKS,
-} from "@/assets/constants/links-constant";
+import { USER_MENU_LINKS } from "@/assets/constants/links-constant";
 import SidebarRight from "../sidebar/SidebarRight";
 import clsx from "clsx";
 
@@ -15,11 +12,9 @@ const AuthLayout = () => {
       .find((item) => location.pathname?.includes(item.path))?.title;
   }, [location.pathname]);
   const subLinks = useMemo(() => {
-    return USER_MENU_PROTECTED_LINKS.find((item) => {
-      const links = location.pathname?.split("/");
-      const link = "/" + links[1] + "/" + links[2];
-      return item?.path_parent === link;
-    });
+    return Object.values(USER_MENU_LINKS)
+      .flat()
+      .find((item) => location.pathname.includes(item.path));
   }, [location.pathname]);
 
   return (
@@ -30,13 +25,13 @@ const AuthLayout = () => {
           <div className="capitalize text-2xl font-bold mb-8">{title}</div>
           <div className="overflow-x-auto">
             <div className="flex items-center gap-4 text-text-secondary-color-2 border-b">
-              {subLinks?.submenu.map((item) => {
+              {subLinks?.submenu?.map((item) => {
                 return (
                   <NavLink
-                    to={item.path}
+                    to={subLinks.path + item.path}
                     key={item.title}
                     className={clsx([
-                      location.pathname === item.path &&
+                      location.pathname === subLinks.path + item.path &&
                         `text-black font-medium border-b-2 border-b-black `,
                       `pb-2`,
                     ])}

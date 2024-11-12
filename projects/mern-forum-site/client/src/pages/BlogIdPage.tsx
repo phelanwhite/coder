@@ -39,6 +39,7 @@ const BlogIdPage = () => {
   const getBlogIdResult = useQuery({
     queryKey: ["blog", id],
     queryFn: async () => {
+      await axiosConfig.get(`/blog/get-id/${id}/incriment-view`);
       const url = `/blog/get-id/${id}`;
       const response = (await axiosConfig.get(url)).data;
       return response;

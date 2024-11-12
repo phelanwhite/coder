@@ -9,10 +9,17 @@ import BlogCardButtonMenu from "./BlogCardButtonMenu";
 import BlogCardAuthorButtonMenu from "./BlogCardAuthorButtonMenu";
 import BlogCardFavoriteButtonMenu from "./BlogCardFavoriteButtonMenu";
 import { getTimeDisplay } from "@/libs/utils/time";
+import BlogCardNotificationButtonMenu from "./BlogCardNotificationButtonMenu";
 
 type TypeCard1 = {
   data: any;
-  type?: "author" | "admin" | "favorite" | "bookmark" | "history";
+  type?:
+    | "author"
+    | "admin"
+    | "favorite"
+    | "bookmark"
+    | "history"
+    | "notification";
 };
 
 // card 1
@@ -44,6 +51,9 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
           {type === "author" && <BlogCardAuthorButtonMenu data={data} />}
           {type === "admin" && <BlogCardAuthorButtonMenu data={data} />}
           {type === "favorite" && <BlogCardFavoriteButtonMenu data={data} />}
+          {type === "notification" && (
+            <BlogCardNotificationButtonMenu data={data} />
+          )}
           {!type && <BlogCardButtonMenu />}
         </div>
       </div>

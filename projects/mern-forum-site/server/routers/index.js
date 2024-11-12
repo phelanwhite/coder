@@ -10,6 +10,8 @@ import followRouter from "./follow.router.js";
 import commentRouter from "./comment.router.js";
 import adminRouter from "./admin.router.js";
 import { verifyTokenAdmin } from "../middlewares/verifyToken.middleware.js";
+import notificationRouter from "./notification.router.js";
+import topicRouter from "./topic.router.js";
 
 const router = express.Router();
 
@@ -22,6 +24,9 @@ router.use(`/history`, historyRouter);
 router.use(`/favorite`, favoriteRouter);
 router.use(`/follow`, followRouter);
 router.use(`/comment`, commentRouter);
-router.use(`/admin`, adminRouter);
+router.use(`/notification`, notificationRouter);
+router.use(`/topic`, topicRouter);
+
+router.use(`/admin`, verifyTokenAdmin, adminRouter);
 
 export default router;

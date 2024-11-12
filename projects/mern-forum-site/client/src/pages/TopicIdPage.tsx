@@ -11,6 +11,7 @@ const TopicIdPage = () => {
   const getBlogsResult = useQuery({
     queryKey: ["blogs", "topic", id, searchParams.toString()],
     queryFn: async () => {
+      await axiosConfig.get(`/topic/get-id/${id}/incriment-view`);
       const url = `blog/get-blogs-by-topic?${searchParams.toString()}`;
       const response = (
         await axiosConfig.get(url, {

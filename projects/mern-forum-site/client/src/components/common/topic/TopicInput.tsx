@@ -33,6 +33,7 @@ const TopicInput: FC<Props> = ({ listData, setListData, ...props }) => {
 
   useEffect(() => {
     setListData && setListData(list.map((item) => item.value));
+    return () => {};
   }, [list]);
 
   return (

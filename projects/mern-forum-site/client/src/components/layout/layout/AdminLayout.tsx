@@ -1,7 +1,4 @@
-import {
-  ADMIN_MENU_PROTECTED_LINKS,
-  USER_MENU_LINKS,
-} from "@/assets/constants/links-constant";
+import { ADMIN_MENU_LINKS } from "@/assets/constants/links-constant";
 import React, { useMemo } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import SidebarRight from "../sidebar/SidebarRight";
@@ -10,17 +7,14 @@ import clsx from "clsx";
 const AdminLayout = () => {
   const location = useLocation();
   const title = useMemo(() => {
-    return Object.values(USER_MENU_LINKS)
+    return Object.values(ADMIN_MENU_LINKS)
       .flat()
       .find((item) => location.pathname?.includes(item.path))?.title;
   }, [location.pathname]);
   const subLinks = useMemo(() => {
-    return ADMIN_MENU_PROTECTED_LINKS.find((item) => {
-      const links = location.pathname?.split("/");
-      const link = links[0] + "/" + links[1];
-
-      return item?.path_parent === link;
-    });
+    return Object.values(ADMIN_MENU_LINKS)
+      .flat()
+      .find((item) => location.pathname.includes(item.path));
   }, [location.pathname]);
 
   return (
@@ -31,13 +25,13 @@ const AdminLayout = () => {
           <div className="capitalize text-2xl font-bold mb-8">{title}</div>
           <div className="overflow-x-auto">
             <div className="flex items-center gap-4 text-text-secondary-color-2 border-b">
-              {subLinks?.submenu.map((item) => {
+              {subLinks?.submenu?.map((item) => {
                 return (
                   <NavLink
-                    to={item.path}
+                    to={subLinks.path + item.path}
                     key={item.title}
                     className={clsx([
-                      location.pathname === item.path &&
+                      location.pathname === subLinks.path + item.path &&
                         `text-black font-medium border-b-2 border-b-black `,
                       `pb-2`,
                     ])}
@@ -53,7 +47,6 @@ const AdminLayout = () => {
           <Outlet />
         </section>
       </section>
-
       {/* Right  */}
       <SidebarRight />
     </div>

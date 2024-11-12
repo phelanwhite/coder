@@ -5,21 +5,25 @@ import toast from "react-hot-toast";
 import { MdClose } from "react-icons/md";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axiosConfig from "@/configs/axios-config";
 import TopicInput from "../topic/TopicInput";
+import { useNotificationStore } from "@/stores/notification-store";
+import Loader from "@/components/layout/loader";
 
 interface BlogPreviewProp {
   data: any;
   setData: (data: any) => void;
+  isUpdate: boolean;
   isOpen: boolean;
   onClose: () => void;
 }
 const BlogPreview: FC<BlogPreviewProp> = ({
   isOpen,
+  onClose,
   data,
   setData,
-  onClose,
+  isUpdate,
 }) => {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
@@ -28,14 +32,9 @@ const BlogPreview: FC<BlogPreviewProp> = ({
     };
   }, [isOpen]);
 
+  const navigate = useNavigate();
+
   const { id } = useParams();
-  const location = useLocation();
-  const [isUpdate, setIsUpdate] = useState(false);
-  useEffect(() => {
-    location.pathname.includes(`update-blog`)
-      ? setIsUpdate(true)
-      : setIsUpdate(false);
-  }, [location.pathname]);
 
   const [file, setFile] = useState<File | null>(null);
   const { createBlog, updateBlogById } = useBlogStore();
@@ -56,7 +55,6 @@ const BlogPreview: FC<BlogPreviewProp> = ({
         formData.append("file", file);
       }
       formData.set(`status`, status as unknown as string);
-      console.log(Array.from(formData));
 
       if (isUpdate) {
         return await updateBlogById(id, formData);
@@ -73,27 +71,35 @@ const BlogPreview: FC<BlogPreviewProp> = ({
   });
 
   const createTopicResult = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: any) => {
       const url = `topic/create-many`;
-      return await axiosConfig.post(url, {
-        topics: data,
+      return await axiosConfig.post(url, data);
+    },
+  });
+  const { createNotificationBlog } = useNotificationStore();
+  const createNotificationBlogResult = useMutation({
+    mutationFn: async (data: any) => {
+      return await createNotificationBlog({
+        blog_id: data.blog_id,
       });
     },
   });
 
-  // create topic
+  // create notification and topic
   useEffect(() => {
-    if (
-      createUpdateBlogResult.data?.data?.topic?.length &&
-      createUpdateBlogResult.isSuccess
-    ) {
-      (async () => {
-        createTopicResult.mutate(createUpdateBlogResult?.data?.data?.topic);
-      })();
+    if (createUpdateBlogResult.isSuccess) {
+      createNotificationBlogResult.mutate({
+        blog_id: createUpdateBlogResult?.data?.data?._id,
+      });
+      createTopicResult.mutate({
+        topics: createUpdateBlogResult?.data?.data?.topic,
+      });
+
+      navigate(`/me/my-blogs`);
     }
   }, [createUpdateBlogResult.data]);
 
-  //   if (createUpdateBlogResult.isPending) return <Loader />;
+  if (createUpdateBlogResult.isPending) return <Loader />;
 
   if (!isOpen) return <></>;
   return (
@@ -214,7 +220,7 @@ const BlogPreview: FC<BlogPreviewProp> = ({
                 />
               </div>
             </div>
-
+            {/* note  */}
             <div className="text-[0.8125rem] text-text-secondary-color-2">
               <span className="font-medium">Note: </span>
               <span>

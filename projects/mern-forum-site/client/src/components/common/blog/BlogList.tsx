@@ -4,7 +4,13 @@ import { BlogCard1, BlogCard1Skeleton } from "./BlogCard";
 type Type = {
   datas: any[];
   isLoading: boolean;
-  type?: "author" | "admin" | "favorite" | "bookmark" | "history";
+  type?:
+    | "author"
+    | "admin"
+    | "favorite"
+    | "bookmark"
+    | "history"
+    | "notification";
 };
 
 export const BlogList1 = ({ isLoading, datas, type }: Type) => {
@@ -21,7 +27,7 @@ export const BlogList1 = ({ isLoading, datas, type }: Type) => {
 
   return (
     <div>
-      {datas.length ? (
+      {datas?.length ? (
         <div className="space-y-4">
           {datas?.map((item: any) => {
             return <BlogCard1 key={item._id} data={item} type={type} />;

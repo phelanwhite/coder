@@ -18,7 +18,7 @@ export const useBlogStore = create<Type>()((set, get) => ({
     const url = `blog/create`;
     const response = await (await axiosConfig.post(url, data)).data;
     set({
-      blogs: [...get().blogs, response.data],
+      blogs: [response.data, ...get().blogs],
     });
     return response;
   },
@@ -44,7 +44,7 @@ export const useBlogStore = create<Type>()((set, get) => ({
     const url = `blog/delete-id/${id}`;
     const response = (await axiosConfig.delete(url)).data;
     set({
-      blogs: get().blogs.filter((blog) => blog._id !== id),
+      blogs: get().blogs.filter((blog) => blog._id !== response?.data?._id),
     });
     return response;
   },
