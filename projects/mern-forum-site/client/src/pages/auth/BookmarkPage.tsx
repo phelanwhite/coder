@@ -9,7 +9,7 @@ const BookmarkPage = () => {
   const { bookmarks, getBookmarksByMe } = useBookmarkStore();
 
   const getBookmarksByMeResult = useQuery({
-    queryKey: ["bookmarks", "me", searchParams.toString()],
+    queryKey: ["me", "bookmarks", searchParams.toString()],
     queryFn: async () => {
       return getBookmarksByMe(searchParams.toString());
     },
@@ -21,6 +21,7 @@ const BookmarkPage = () => {
       <BlogList1
         isLoading={getBookmarksByMeResult.isLoading}
         datas={bookmarks}
+        type="bookmark"
       />
       {getBookmarksByMeResult.data && bookmarks?.length > 0 && (
         <div className="mt-4">

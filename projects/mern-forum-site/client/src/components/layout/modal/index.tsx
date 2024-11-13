@@ -28,7 +28,10 @@ const Modal = ({ children, isOpen, onClose }: Type) => {
         aria-hidden="true"
         className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 transition -z-[1]"
       ></div>
-      <div className="absolute top-0 left-0 bottom-0 right-0 p-4 flex items-center justify-center">
+      <div
+        className="relative top-[50%]
+       left-[50%] -translate-x-[50%] -translate-y-[50%] p-4 flex items-center justify-center"
+      >
         {children}
       </div>
     </div>

@@ -12,6 +12,7 @@ import adminRouter from "./admin.router.js";
 import { verifyTokenAdmin } from "../middlewares/verifyToken.middleware.js";
 import notificationRouter from "./notification.router.js";
 import topicRouter from "./topic.router.js";
+import listRouter from "./list.router.js";
 
 const router = express.Router();
 
@@ -25,6 +26,7 @@ router.use(`/favorite`, favoriteRouter);
 router.use(`/follow`, followRouter);
 router.use(`/comment`, commentRouter);
 router.use(`/notification`, notificationRouter);
+router.use(`/list`, listRouter);
 router.use(`/topic`, topicRouter);
 
 router.use(`/admin`, verifyTokenAdmin, adminRouter);

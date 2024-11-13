@@ -56,6 +56,29 @@ historyRouter.delete(
     }
   }
 );
+historyRouter.delete("/delete", verifyToken, async (req, res, next) => {
+  try {
+    const blog = req.query.blog;
+    const user = req.user;
+    const deleteData = await historyModel.findOneAndDelete(
+      {
+        author: user._id,
+        blog: blog,
+      },
+      {
+        new: true,
+      }
+    );
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "History deleted successfully",
+      data: deleteData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 historyRouter.get(
   `/get-histories-by-me`,

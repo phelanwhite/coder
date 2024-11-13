@@ -7,6 +7,7 @@ import { BiLink } from "react-icons/bi";
 import { TbStatusChange } from "react-icons/tb";
 import { MdDelete, MdEdit, MdReportProblem } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Loader from "@/components/layout/loader";
 
 const BlogCardAuthorButtonMenu = ({ data }: { data: any }) => {
   const { deleteBlogById, changeStatusBlogById } = useBlogStore();
@@ -41,29 +42,10 @@ const BlogCardAuthorButtonMenu = ({ data }: { data: any }) => {
     }
   };
 
-  const handleCopyClipboard = async () => {
-    await navigator.clipboard
-      .writeText(window.location.href)
-      .then((value) => {
-        toast.success(`Copy link successfully!`);
-      })
-      .catch((err) => {
-        toast.error(`Failed to copy link! Please try again later.`);
-        console.error(err);
-      });
-  };
+  if (deleteBlogByIdResult.isPending) return <Loader />;
 
   return (
     <ButtonMenu>
-      <button
-        onClick={() => {
-          handleCopyClipboard();
-        }}
-        className="flex gap-4 items-center px-5 py-3 hover:bg-gray-100 w-full"
-      >
-        <BiLink size={16} />
-        <span className="flex-1 text-left">Copy link</span>
-      </button>
       <Link
         to={`/me/update-blog/${data?._id}`}
         className="flex gap-4 items-center px-5 py-3 hover:bg-gray-100 w-full"
@@ -88,10 +70,6 @@ const BlogCardAuthorButtonMenu = ({ data }: { data: any }) => {
         <span className="flex-1 text-left">
           {!data?.status ? `Make blog published` : `Make blog private`}
         </span>
-      </button>
-      <button className="flex gap-4 items-center px-5 py-3 hover:bg-gray-100 w-full">
-        <MdReportProblem size={16} />
-        <span className="flex-1 text-left">Report article</span>
       </button>
     </ButtonMenu>
   );

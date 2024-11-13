@@ -28,6 +28,7 @@ const BlogNewAndUpdatePage = () => {
     publication_time: getDateTimeLocalToString(new Date()),
   });
 
+  // update data
   const { id } = useParams();
   const getBlogByIdResult = useQuery({
     queryKey: ["blog", "id", id],

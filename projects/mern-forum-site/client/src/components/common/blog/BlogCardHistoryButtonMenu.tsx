@@ -1,16 +1,16 @@
 import ButtonMenu from "@/components/form/button-menu";
 import Loader from "@/components/layout/loader";
-import { useFavoriteStore } from "@/stores/favorite-store";
+import { useHistoryStore } from "@/stores/history-store";
 import { useMutation } from "@tanstack/react-query";
 import React, { memo } from "react";
 import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 
-const BlogCardFavoriteButtonMenu = ({ data }: { data: any }) => {
-  const { deleteFavorite } = useFavoriteStore();
+const BlogCardHistoryButtonMenu = ({ data }: { data: any }) => {
+  const { deleteHistory } = useHistoryStore();
   const deleteFavoriteResult = useMutation({
     mutationFn: async () => {
-      return deleteFavorite(`blog=${data?._id}`);
+      return deleteHistory(`blog=${data?._id}`);
     },
     onSuccess: (data) => {
       toast.success(data?.message);
@@ -41,4 +41,4 @@ const BlogCardFavoriteButtonMenu = ({ data }: { data: any }) => {
   );
 };
 
-export default memo(BlogCardFavoriteButtonMenu);
+export default memo(BlogCardHistoryButtonMenu);

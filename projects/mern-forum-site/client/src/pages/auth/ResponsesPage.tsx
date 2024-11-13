@@ -9,7 +9,7 @@ const ResponsesPage = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue();
   const { responses, getResponses } = useCommentStore();
   const getResponsesResult = useQuery({
-    queryKey: ["response", searchParams.toString()],
+    queryKey: ["me", "response", searchParams.toString()],
     queryFn: async () => {
       const response = await getResponses(searchParams.toString());
       return response;

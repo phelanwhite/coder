@@ -1,16 +1,17 @@
 import ButtonMenu from "@/components/form/button-menu";
 import Loader from "@/components/layout/loader";
-import { useFavoriteStore } from "@/stores/favorite-store";
+import { useListStore } from "@/stores/list-store";
 import { useMutation } from "@tanstack/react-query";
 import React, { memo } from "react";
 import toast from "react-hot-toast";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { Link } from "react-router-dom";
 
-const BlogCardFavoriteButtonMenu = ({ data }: { data: any }) => {
-  const { deleteFavorite } = useFavoriteStore();
-  const deleteFavoriteResult = useMutation({
+const ListItemButtonMenu = ({ data }: { data: any }) => {
+  const { deleteListById } = useListStore();
+  const deleteListByIdResult = useMutation({
     mutationFn: async () => {
-      return deleteFavorite(`blog=${data?._id}`);
+      return deleteListById(data?._id);
     },
     onSuccess: (data) => {
       toast.success(data?.message);
@@ -22,14 +23,21 @@ const BlogCardFavoriteButtonMenu = ({ data }: { data: any }) => {
 
   const handleDelete = async () => {
     if (window.confirm(`You definitely want to delete`)) {
-      deleteFavoriteResult.mutate();
+      deleteListByIdResult.mutate();
     }
   };
 
-  if (deleteFavoriteResult.isPending) return <Loader />;
+  if (deleteListByIdResult.isPending) return <Loader />;
 
   return (
     <ButtonMenu>
+      <Link
+        to={`/me/update-list/${data?._id}`}
+        className="flex gap-4 items-center px-5 py-3 hover:bg-gray-100 w-full"
+      >
+        <MdEdit size={16} />
+        <span className="flex-1 text-left">Edit</span>
+      </Link>
       <button
         onClick={handleDelete}
         className="flex gap-4 items-center px-5 py-3 hover:bg-gray-100 w-full"
@@ -41,4 +49,4 @@ const BlogCardFavoriteButtonMenu = ({ data }: { data: any }) => {
   );
 };
 
-export default memo(BlogCardFavoriteButtonMenu);
+export default memo(ListItemButtonMenu);

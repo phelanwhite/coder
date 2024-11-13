@@ -14,7 +14,7 @@ const BlogIdCommentPage = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue();
   const { comments, getCommentsByBlogId } = useCommentStore();
   const getCommentByBlogIdResult = useQuery({
-    queryKey: ["blog", "id", "comment", id, searchParams.toString()],
+    queryKey: ["blog", "comment", id, searchParams.toString()],
     queryFn: async () => {
       return getCommentsByBlogId(id as string, searchParams.toString());
     },

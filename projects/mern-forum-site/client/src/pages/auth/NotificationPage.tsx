@@ -13,7 +13,7 @@ const NotificationPage = () => {
     _status: `1`,
   });
   const getNotificationsByMeResult = useQuery({
-    queryKey: ["notifications", searchParams.toString()],
+    queryKey: ["me", "notifications", searchParams.toString()],
     queryFn: async () => {
       return await getNotificationsByMe(searchParams.toString());
     },

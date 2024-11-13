@@ -12,7 +12,7 @@ const CommentPage = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue();
   const { getCommentsByMe, comments } = useCommentStore();
   const getCommentByMeResult = useQuery({
-    queryKey: ["comment", searchParams.toString()],
+    queryKey: ["me", "comment", searchParams.toString()],
     queryFn: async () => {
       const response = await getCommentsByMe(searchParams.toString());
       return response;

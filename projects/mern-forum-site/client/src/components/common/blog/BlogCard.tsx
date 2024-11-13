@@ -10,16 +10,12 @@ import BlogCardAuthorButtonMenu from "./BlogCardAuthorButtonMenu";
 import BlogCardFavoriteButtonMenu from "./BlogCardFavoriteButtonMenu";
 import { getTimeDisplay } from "@/libs/utils/time";
 import BlogCardNotificationButtonMenu from "./BlogCardNotificationButtonMenu";
+import { BlogMenuType } from "@/assets/constants/type";
+import BlogCardHistoryButtonMenu from "./BlogCardHistoryButtonMenu";
 
 type TypeCard1 = {
   data: any;
-  type?:
-    | "author"
-    | "admin"
-    | "favorite"
-    | "bookmark"
-    | "history"
-    | "notification";
+  type?: BlogMenuType;
 };
 
 // card 1
@@ -27,7 +23,7 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
   return (
     <div className="p-5">
       {/* top  */}
-      <div className="flex gap-6 items-center justify-between mb-3 sm:mb-4">
+      <div className="flex gap-6 items-center justify-between mb-3 sm:mb-3">
         <div>
           <Link
             to={`/author/${data?.author?._id}`}
@@ -48,13 +44,17 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
             blogId={data?._id}
             isBookmark={data?.isBookmark}
           />
-          {type === "author" && <BlogCardAuthorButtonMenu data={data} />}
-          {type === "admin" && <BlogCardAuthorButtonMenu data={data} />}
-          {type === "favorite" && <BlogCardFavoriteButtonMenu data={data} />}
-          {type === "notification" && (
-            <BlogCardNotificationButtonMenu data={data} />
-          )}
-          {!type && <BlogCardButtonMenu />}
+          <>
+            {type === "author" && <BlogCardAuthorButtonMenu data={data} />}
+            {type === "admin" && <BlogCardAuthorButtonMenu data={data} />}
+            {type === "favorite" && <BlogCardFavoriteButtonMenu data={data} />}
+            {type === "bookmark" && <BlogCardButtonMenu data={data} />}
+            {type === "history" && <BlogCardHistoryButtonMenu data={data} />}
+            {type === "notification" && (
+              <BlogCardNotificationButtonMenu data={data} />
+            )}
+            {!type && <BlogCardButtonMenu data={data} />}
+          </>
         </div>
       </div>
       {/* content  */}
@@ -63,14 +63,16 @@ export const BlogCard1 = ({ data, type }: TypeCard1) => {
           <div className="line-clamp-2 text-xl font-bold">
             <Link to={`/blog/${data?._id}`}>{data?.title}</Link>
           </div>
-          <div className="mt-2 line-clamp-3 text-[15px] text-text-secondary-color-2">
+          <div className="mt-2 line-clamp-3 text-text-secondary-color-2">
             {data?.content}
           </div>
         </div>
         {data?.thumbnail && (
-          <div className="aspect-video w-20 sm:w-40 rounded overflow-hidden ">
-            <img src={data?.thumbnail} alt="" loading="lazy" />
-          </div>
+          <Link to={`/blog/${data?._id}`}>
+            <div className="aspect-video w-20 sm:w-40 rounded overflow-hidden ">
+              <img src={data?.thumbnail} alt="" loading="lazy" />
+            </div>
+          </Link>
         )}
       </div>
       {/* footer  */}
@@ -139,13 +141,16 @@ export const BlogCard2 = ({ data }: { data: any }) => {
         <Link to={`/blog/${data?._id}`}>{data?.title}</Link>
       </div>
       {data?.thumbnail && (
-        <div className="mt-2 rounded overflow-hidden sm:h-[150px]">
+        <Link
+          to={`/blog/${data?._id}`}
+          className="mt-2 block rounded overflow-hidden sm:h-[150px]"
+        >
           <img
             src={data?.thumbnail || IMAGES_DEFAULT.thumbnail_notFound}
             alt=""
             loading="lazy"
           />
-        </div>
+        </Link>
       )}
       <div className="mt-2 line-clamp-3 text-sm text-text-secondary-color-2">
         {data?.content}

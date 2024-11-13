@@ -28,17 +28,11 @@ const BlogIdPage = () => {
   const { user } = useAuthStore();
   const { createHistory } = useHistoryStore();
   const { total_comment, comments, getCommentsByBlogId } = useCommentStore();
-  const createHistoryResult = useQuery({
-    queryKey: ["blog", "id", "history", id],
-    queryFn: async () => {
-      const response = await createHistory({ blog: id, type: "blog" });
-      return response.data;
-    },
-    enabled: !!(id && user),
-  });
+
   const getBlogIdResult = useQuery({
     queryKey: ["blog", id],
     queryFn: async () => {
+      user && (await createHistory({ blog: id, type: "blog" }));
       await axiosConfig.get(`/blog/get-id/${id}/incriment-view`);
       const url = `/blog/get-id/${id}`;
       const response = (await axiosConfig.get(url)).data;
@@ -129,7 +123,7 @@ const BlogIdPage = () => {
               isBookmark={blogData?.isBookmark}
             />
 
-            <BlogCardButtonMenu />
+            <BlogCardButtonMenu data={blogData} />
           </div>
         </div>
         {/* content */}

@@ -1,5 +1,6 @@
 import { BlogCard1 } from "@/components/common/blog/BlogCard";
 import { BlogList1 } from "@/components/common/blog/BlogList";
+import Loader from "@/components/layout/loader";
 import Paginate from "@/components/layout/paginate";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import { useHistoryStore } from "@/stores/history-store";
@@ -13,7 +14,7 @@ const HistoryPage = () => {
     useHistoryStore();
 
   const getHistoriesByMeResult = useQuery({
-    queryKey: ["histories", "me", searchParams.toString()],
+    queryKey: ["me", "histories", searchParams.toString()],
     queryFn: async () => {
       return getHistoriesByMe(searchParams.toString());
     },
@@ -31,6 +32,8 @@ const HistoryPage = () => {
       toast.error(error.message);
     },
   });
+
+  if (historiesDeleteResult.isPending) return <Loader />;
 
   return (
     <div>
@@ -51,6 +54,7 @@ const HistoryPage = () => {
         <BlogList1
           isLoading={getHistoriesByMeResult.isLoading}
           datas={histories}
+          type="history"
         />
         {getHistoriesByMeResult.data && histories?.length > 0 && (
           <div className="mt-4">

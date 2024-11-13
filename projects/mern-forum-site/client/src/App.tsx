@@ -36,6 +36,10 @@ import AdminLayout from "./components/layout/layout/AdminLayout";
 import AdminProtectedRouter from "./components/common/auth/AdminProtectedRouter";
 import NotificationPage from "./pages/auth/NotificationPage";
 import TopicPage from "./pages/TopicPage";
+import SeriesPage from "./pages/auth/SeriesPage";
+import ListPage from "./pages/auth/ListPage";
+import ListNewAndUpdatePage from "./pages/auth/ListNewAndUpdatePage";
+import ListIdPage from "./pages/auth/ListIdPage";
 
 function App() {
   const { logginWithPassportSuccess } = useAuthStore();
@@ -73,11 +77,17 @@ function App() {
             <Route path="me">
               <Route path="profile" element={<ProfilePage />} />
               <Route path="profile/update" element={<ProfileUpdatePage />} />
+              <Route path="new-list" element={<ListNewAndUpdatePage />} />
+              <Route
+                path="update-list/:id"
+                element={<ListNewAndUpdatePage />}
+              />
               <Route path="new-blog" element={<BlogNewAndUpdatePage />} />
               <Route
                 path="update-blog/:id"
                 element={<BlogNewAndUpdatePage />}
               />
+              <Route path="list/:id" element={<ListIdPage />} />
               <Route element={<AuthLayout />}>
                 <Route path="notifications" element={<NotificationPage />} />
                 <Route path="update-me" element={<UpdateMePage />} />
@@ -90,11 +100,15 @@ function App() {
                   <Route path="draft" element={<DraftPage />} />
                   <Route path="responses" element={<ResponsesPage />} />
                 </Route>
-                <Route path="activity">
+                <Route path="my-activity">
                   <Route index element={<HistoryPage />} />
                   <Route path="bookmark" element={<BookmarkPage />} />
                   <Route path="favorite" element={<FavoritePage />} />
                   <Route path="comment" element={<CommentPage />} />
+                </Route>
+                <Route path="my-library">
+                  <Route index element={<ListPage />} />
+                  <Route path="series" element={<SeriesPage />} />
                 </Route>
               </Route>
             </Route>

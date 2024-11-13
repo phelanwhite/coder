@@ -1,30 +1,28 @@
-import { BlogCard1, BlogCard1Skeleton } from "./BlogCard";
-import { BlogMenuType } from "@/assets/constants/type";
+import React, { memo } from "react";
+import { ListItem, ListItemSkeleton } from "./ListItem";
 
 type Type = {
   datas: any[];
   isLoading: boolean;
-  type?: BlogMenuType;
 };
 
-export const BlogList1 = ({ isLoading, datas, type }: Type) => {
+const ListItemList = ({ datas, isLoading }: Type) => {
   if (isLoading)
     return (
       <div className="space-y-4">
         {Array(20)
           .fill(0)
           .map((_, index) => {
-            return <BlogCard1Skeleton key={index} />;
+            return <ListItemSkeleton key={index} />;
           })}
       </div>
     );
-
   return (
     <div>
       {datas?.length ? (
         <div className="space-y-4">
           {datas?.map((item: any) => {
-            return <BlogCard1 key={item._id} data={item} type={type} />;
+            return <ListItem key={item._id} data={item} />;
           })}
         </div>
       ) : (
@@ -35,3 +33,5 @@ export const BlogList1 = ({ isLoading, datas, type }: Type) => {
     </div>
   );
 };
+
+export default memo(ListItemList);

@@ -9,19 +9,10 @@ type Type = {
 };
 
 const CommentCardList = ({ datas, isLoading }: Type) => {
-  // const { comments, getCommentsByBlogId } = useCommentStore();
-  // const getCommentsByBlogIdResult = useQuery({
-  //   queryKey: ["blog", "comments", id],
-  //   queryFn: async () => {
-  //     return await getCommentsByBlogId(id as string);
-  //   },
-  //   enabled: !!id,
-  // });
-
   if (isLoading)
     return (
       <div className="space-y-4">
-        {Array(20)
+        {Array(5)
           .fill(0)
           .map((_, index) => {
             return <CommentCardSkeleton key={index} />;

@@ -36,6 +36,7 @@ axiosConfig.interceptors.response.use(
     if (error.status === 403) {
       localStorage.removeItem("auth");
     }
+
     const customError = error?.response?.data;
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger

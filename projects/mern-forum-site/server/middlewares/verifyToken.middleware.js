@@ -34,9 +34,9 @@ export const verifyTokenAdmin = async (req, res, next) => {
       if (error) {
         throw createHttpError.Forbidden(error.message);
       }
-      // if (decode.role !== "admin") {
-      //   throw createHttpError.Forbidden("Unauthorized access");
-      // }
+      if (decode.role !== "admin") {
+        throw createHttpError.Forbidden("Unauthorized access");
+      }
       req.user = decode;
       next();
     });

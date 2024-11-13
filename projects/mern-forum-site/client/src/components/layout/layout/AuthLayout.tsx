@@ -24,7 +24,7 @@ const AuthLayout = () => {
         <div className="px-5 mb-4">
           <div className="capitalize text-2xl font-bold mb-8">{title}</div>
           <div className="overflow-x-auto">
-            <div className="flex items-center gap-4 text-text-secondary-color-2 border-b">
+            <div className="flex items-center gap-8 text-text-secondary-color-2 border-b">
               {subLinks?.submenu?.map((item) => {
                 return (
                   <NavLink
@@ -48,6 +48,7 @@ const AuthLayout = () => {
         </section>
       </section>
       {/* Right  */}
+
       <SidebarRight />
     </div>
   );

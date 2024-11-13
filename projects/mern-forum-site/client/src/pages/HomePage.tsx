@@ -1,7 +1,3 @@
-import {
-  BlogCard1,
-  BlogCard1Skeleton,
-} from "@/components/common/blog/BlogCard";
 import { BlogList1 } from "@/components/common/blog/BlogList";
 import axiosConfig from "@/configs/axios-config";
 import {
@@ -35,24 +31,6 @@ const HomePage = () => {
       getBlogsResult.data?.pages?.map((item) => item?.data?.result).flat() || []
     );
   }, [getBlogsResult.data]);
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => {
-  //     console.log(
-  //       document.body.scrollHeight,
-  //       window.scrollY,
-  //       window.innerHeight,
-  //       window.scrollY + window.innerHeight,
-  //       getBlogsResult.hasNextPage
-  //     );
-  //     // if (
-  //     //   document.body.scrollHeight - 100 <=
-  //     //   window.scrollY + window.innerHeight
-  //     // ) {
-  //     //   getBlogsResult.fetchNextPage();
-  //     // }
-  //   });
-  // }, []);
 
   return (
     <div className="space-y-4">

@@ -47,7 +47,7 @@ const AuthButtonMenu = () => {
             />
           </div>
           {isOpen && (
-            <div className="button-show-menu absolute top-8 right-0 z-[999] bg-white shadow-lg border py-2 rounded-lg w-[230px] text-sm px-6">
+            <div className="button-show-menu absolute top-8 right-0 z-[999] bg-white shadow-lg border py-2 rounded-lg w-[230px] text-sm px-6 overflow-y-auto max-h-[80vh] ">
               {/* auth  */}
               <div className="border-b pt-2 pb-4 flex items-center gap-3">
                 <div className="w-10 h-10 overflow-hidden rounded-full border">

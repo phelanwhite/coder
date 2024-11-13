@@ -11,7 +11,7 @@ const PublishedPage = () => {
   });
   const { blogs, getBlogsByMe } = useBlogStore();
   const getBlogsByMeResult = useQuery({
-    queryKey: ["blogsByMe", searchParams.toString()],
+    queryKey: ["me", "blogs", searchParams.toString()],
     queryFn: async () => {
       return await getBlogsByMe(searchParams.toString());
     },

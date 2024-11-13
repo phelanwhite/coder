@@ -10,7 +10,7 @@ const FavoritePage = () => {
   const { favorites, getFavoritesByMe } = useFavoriteStore();
 
   const getFavoritesByMeResult = useQuery({
-    queryKey: ["favorites", "me", searchParams.toString()],
+    queryKey: ["me", "favorites", searchParams.toString()],
     queryFn: async () => {
       return getFavoritesByMe(searchParams.toString());
     },
