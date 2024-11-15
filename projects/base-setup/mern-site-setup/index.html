@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form enctype="multipart/form-data">
+      <label for="file">Select a file:</label>
+      <input type="file" id="file" name="file" multiple />
+      <input type="file" id="files1" name="files1" multiple />
+      <input type="file" id="files2" name="files2" multiple />
+      <button type="submit">Submit</button>
+    </form>
+
+    <a href="http://localhost:5000/api/v1/passport/google" target="_top"
+      >signin with google</a
+    >
+  </body>
+  <script>
+    const form = document.querySelector("form");
+    async function uploadSingle(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await fetch(
+        "http://localhost:5000/api/v1/upload/single",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    }
+    async function uploadArray(files) {
+      const formData = new FormData();
+      files.forEach((file) => formData.append("files", file));
+      const response = await fetch(
+        "http://localhost:5000/api/v1/upload/array",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    }
+    async function uploadFields(files1, files2) {
+      const formData = new FormData();
+      files1.forEach((file) => formData.append("files1", file));
+      files2.forEach((file) => formData.append("files2", file));
+      const response = await fetch(
+        "http://localhost:5000/api/v1/upload/fields",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const fileInput = document.getElementById("file");
+      const files1Input = document.getElementById("files1");
+      const files2Input = document.getElementById("files2");
+      //   const file = fileInput.files[0];
+      //   await uploadSingle(file);
+
+      //   const files = fileInput.files;
+      //   await uploadArray(Array.from(files));
+
+      const files1 = files1Input.files;
+      const files2 = files2Input.files;
+      await uploadFields(Array.from(files1), Array.from(files2));
+    });
+  </script>
+</html>
