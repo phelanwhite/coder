@@ -21,8 +21,8 @@ export const mail_services = {
     });
   },
 
-  sendMailRestPassword: ({ to, data }) => {
-    const message = teamplate.emailResetPassword(data);
+  sendMailForgotPassword: ({ to, data }) => {
+    const message = teamplate.emailForgotPassword(data);
 
     var mailOptions = {
       from: ENV_CONFIG.EMAIL.EMAIL_USER,

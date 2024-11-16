@@ -189,7 +189,7 @@ authRouter.put(`/forgot-password`, async (req, res, next) => {
 
     //token
     const resetPasswordToken = await cryptojs.SHA256(body.email).toString();
-    const resetPasswordExpires = Date.now() + 60 * 1000;
+    const resetPasswordExpires = Date.now() + 60 * 1000; // 1 minute
 
     // update user
     await userModel.findOneAndUpdate(
@@ -205,7 +205,7 @@ authRouter.put(`/forgot-password`, async (req, res, next) => {
     const makeLink =
       ENV_CONFIG.URL.URL_CLIENT + `/reset-password/` + resetPasswordToken;
 
-    mail_services.sendMailRestPassword({ to: body.email, data: makeLink });
+    mail_services.sendMailForgotPassword({ to: body.email, data: makeLink });
 
     return handleResponse(res, {
       status: StatusCodes.OK,
