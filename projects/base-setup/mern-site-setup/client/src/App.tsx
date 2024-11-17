@@ -5,6 +5,7 @@ import HomePage from "./pages/public/home-page";
 import SigninSignupPage from "./pages/public/signin-signup-page";
 import ForgotPasswordPage from "./pages/public/forgot-password-page";
 import ResetPasswordPage from "./pages/public/reset-password-page";
+import NotFoundPage from "./pages/public/not-found-page";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <div>
         <Routes>
           <Route index element={<HomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="signin" element={<SigninSignupPage />} />
           <Route path="signup" element={<SigninSignupPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />

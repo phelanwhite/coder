@@ -6,6 +6,7 @@ type Type = {
   user: any;
   access_token: string;
   isLoggedIn: boolean;
+  redirect_url: string;
   signup: (data: any) => any;
   signin: (data: any) => any;
   signout: () => any;
@@ -22,6 +23,7 @@ export const useAuthStore = create<Type>()(
       user: null,
       access_token: "",
       isLoggedIn: false,
+      redirect_url: "",
       signup: async (data) => {
         const url = `auth/signup`;
         const response = (await axiosConfigV1.post(url, data)).data;
