@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #0079bf;
+  --bg-side-color: #00639d;
+  --text-color: #172b4d;
+  --text-secondary: #44546f;
+  --text-size: 0.875rem;
+
+  --bg-color-board-card-active: #4d92ba;
+  --bg-color-board-card-hover: #297cac;
+  --bg-color-column-card: #f1f2f4;
+  --bg-color-task-card: #ffffff;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--text-size);
+}
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
