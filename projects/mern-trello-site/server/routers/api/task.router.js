@@ -27,6 +27,28 @@ taskRouter.post(`/add`, async (req, res, next) => {
     next(error);
   }
 });
+taskRouter.post(`/update-id/:id`, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+
+    const updateData = await taskModel.findByIdAndUpdate(
+      id,
+      { ...body },
+      {
+        new: true,
+      }
+    );
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Task updated successfully",
+      data: updateData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 taskRouter.post(`/update-position`, async (req, res, next) => {
   try {
     const body = req.body;
@@ -67,6 +89,21 @@ taskRouter.get(`/get-all-by-me`, async (req, res, next) => {
       status: StatusCodes.OK,
       message: "Tasks fetched successfully",
       data: getDatas,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+taskRouter.get(`/get-id/:id`, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const getData = await taskModel.findById(id);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Task fetched successfully",
+      data: getData,
     });
   } catch (error) {
     next(error);

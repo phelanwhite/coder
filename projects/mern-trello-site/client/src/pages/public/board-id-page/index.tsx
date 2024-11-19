@@ -1,6 +1,7 @@
 import ColumnList from "@/components/common/column/ColumnList";
-import TaskForm from "@/components/common/task/TaskForm";
+import TaskModal from "@/components/common/task/TaskModal";
 import { useColumnStore } from "@/stores/column-store";
+import { useTaskModalStore } from "@/stores/modal-store";
 import { useTaskStore } from "@/stores/task-store";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -10,6 +11,7 @@ const BoardIdPage = () => {
   const { id } = useParams();
   const { getColumns } = useColumnStore();
   const { getTasks } = useTaskStore();
+  const { isOpen, closeModal } = useTaskModalStore();
   const getColumnsResult = useQuery({
     queryKey: ["columns", id],
     queryFn: async () => {
@@ -24,7 +26,7 @@ const BoardIdPage = () => {
   });
   return (
     <div>
-      <TaskForm />
+      <TaskModal />
       <ColumnList />
     </div>
   );

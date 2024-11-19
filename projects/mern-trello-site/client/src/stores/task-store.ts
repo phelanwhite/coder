@@ -1,5 +1,4 @@
-import { dataColumn, dataTask } from "@/assets/data";
-import { ColumnType, TaskType } from "@/assets/type";
+import { TaskType } from "@/assets/type";
 import { axiosConfigV1 } from "@/configs/axios-config";
 import { create } from "zustand";
 
@@ -7,7 +6,8 @@ type Type = {
   tasks: TaskType[];
   addTask: (data: any) => any;
   removeTask: (id: string) => any;
-  updateTasks: (data: TaskType[]) => any;
+  updateTaskById: (id: string, data: any) => any;
+  updateTasks: (data: any) => any;
   updateTasksPosition: (data: any) => any;
   getTasks: () => any;
 };
@@ -30,6 +30,19 @@ export const useTaskStore = create<Type>()((set, get) => ({
     set({
       tasks: get().tasks.filter((task) => task._id !== id),
     });
+  },
+  updateTaskById: async (id, data) => {
+    try {
+      const url = `task/update-id/${id}`;
+      const response = (await axiosConfigV1.post(url, data)).data;
+      set({
+        tasks: get().tasks.map((task) =>
+          task._id === id ? { ...task, ...response?.data } : task
+        ),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
   updateTasks: (data) => {
     set({

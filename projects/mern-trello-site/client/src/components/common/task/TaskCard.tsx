@@ -1,12 +1,17 @@
 import { TaskType } from "@/assets/type";
+import { useTaskModalStore } from "@/stores/modal-store";
 import React, { memo } from "react";
 import { FaEye, FaRegComment } from "react-icons/fa";
 type Type = {
   task: TaskType;
 };
 const TaskCard = ({ task }: Type) => {
+  const { openModal } = useTaskModalStore();
   return (
-    <div className="rounded-lg overflow-hidden bg-[--bg-color-task-card] shadow ">
+    <div
+      onClick={() => openModal(task._id)}
+      className="rounded-lg overflow-hidden bg-[--bg-color-task-card] shadow "
+    >
       {task.files?.length && (
         <div className="aspect-video">
           <img src={task.files?.[0]} loading="lazy" alt="" />
