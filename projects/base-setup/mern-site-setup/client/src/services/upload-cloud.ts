@@ -1,11 +1,11 @@
-import axiosConfig from "../configs/axios-config";
+import { axiosConfigV1 } from "@/configs/axios-config";
 
 export async function uploadImageToCloud(file: File) {
   try {
     const url = `upload/single`;
     const formData = new FormData();
     formData.append("file", file);
-    return (await axiosConfig.post(url, formData)).data;
+    return (await axiosConfigV1.post(url, formData)).data;
   } catch (error) {
     console.log(error);
   }
@@ -17,7 +17,7 @@ export async function uploadImagesToCloud(files: FileList) {
     for (const file of files) {
       formData.append("files", file);
     }
-    return (await axiosConfig.post(url, formData)).data;
+    return (await axiosConfigV1.post(url, formData)).data;
   } catch (error) {
     console.log(error);
   }
@@ -25,7 +25,7 @@ export async function uploadImagesToCloud(files: FileList) {
 export async function deleteImageFromCloud(fileUrl: string) {
   try {
     const url = `upload/delete-file/${fileUrl}`;
-    return (await axiosConfig.delete(url)).data;
+    return (await axiosConfigV1.delete(url)).data;
   } catch (error) {
     console.log(error);
   }

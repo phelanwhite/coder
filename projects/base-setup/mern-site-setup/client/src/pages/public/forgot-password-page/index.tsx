@@ -1,3 +1,4 @@
+import { ICONS_DEFAULT } from "@/constants/images-constant";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useState } from "react";
@@ -39,11 +40,8 @@ const ForgotPasswordPage = () => {
       <div className="max-w-[560px] w-full p-4 flex flex-col justify-center gap-8">
         {/* top  */}
         <div className="flex flex-col gap-4">
-          <Link
-            to={`/`}
-            className="mx-auto inline-block w-max py-2 px-2 rounded font-bold text-2xl bg-black text-white"
-          >
-            PW
+          <Link to={`/`} className="w-14 inline-block mx-auto">
+            <img src={ICONS_DEFAULT.logo_svg} alt="" />
           </Link>
           <div className="text-center text-2xl font-bold">
             Fogot Password the PLW Community
@@ -83,7 +81,7 @@ const ForgotPasswordPage = () => {
         <div className="text-center text-sm">
           Already have an account?{" "}
           <Link to={`/signin`} className="text-blue-500">
-            Sign In
+            Signin
           </Link>
         </div>
       </div>

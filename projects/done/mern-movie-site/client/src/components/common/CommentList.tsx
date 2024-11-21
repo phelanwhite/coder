@@ -67,7 +67,7 @@ const CommentList = ({ media_id, media_type }: Type) => {
         </button>
       </form>
       <div className="flex flex-col gap-4">
-        {comments.map((comment) => (
+        {comments?.map((comment) => (
           <CommentCard data={comment} key={comment._id} />
         ))}
       </div>

@@ -209,7 +209,7 @@ authRouter.put(`/forgot-password`, async (req, res, next) => {
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Reset password link sent successfully",
+      message: "Check your email",
     });
   } catch (error) {
     next(error);

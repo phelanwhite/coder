@@ -1,28 +1,27 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { Link, redirect, useLocation } from "react-router-dom";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useAuthStore } from "@/stores/auth-store";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import ENV from "@/configs/env-config";
+import { ICONS_DEFAULT } from "@/constants/images-constant";
+import useSignin from "@/hooks/useSignin";
 
 const SigninSignupPage = () => {
-  const [isSignup, setIsSignup] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isSignup, setIsSignup] = useState(false);
   useEffect(() => {
     location.pathname.includes(`signup`) && setIsSignup(true);
     location.pathname.includes(`signin`) && setIsSignup(false);
   }, [location.pathname]);
 
-  const { signup, signin, signinPassportSuccess } = useAuthStore();
-  const signupSignUpResult = useMutation({
+  const { signup, signin, signinPassportSuccess, isLoggedIn } = useAuthStore();
+  const signinResult = useMutation({
     mutationFn: async () => {
-      if (isSignup) {
-        return await signup(formValue);
-      } else {
-        const { email, password } = formValue;
-        return await signin({ email, password });
-      }
+      const { email, password } = formValue;
+      return await signin({ email, password });
     },
     onSuccess: (data) => {
       toast.success(data?.message);
@@ -31,13 +30,37 @@ const SigninSignupPage = () => {
       toast.error(error.message);
     },
   });
+  const signupResult = useMutation({
+    mutationFn: async () => {
+      return await signup(formValue);
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const { getRedirect_url, handleRemoveStateRedirect } = useSignin();
   // signin with social account
   const handleGoogleLogin = () => {
     const url = ENV.PORT_SERVER + `/passport/google`;
     window.open(url, "_self");
   };
+  // redirect to page before login
   useEffect(() => {
-    signinPassportSuccess();
+    try {
+      (async () => {
+        const response = await signinPassportSuccess();
+        if (response.status === 200 && !isLoggedIn) {
+          navigate(getRedirect_url);
+          handleRemoveStateRedirect();
+        }
+      })();
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   // form
@@ -56,19 +79,32 @@ const SigninSignupPage = () => {
   };
   const onSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    signupSignUpResult.mutate();
+    if (isSignup) {
+      signupResult.mutate();
+    } else {
+      signinResult.mutate();
+    }
   };
+
+  // redirect to page before login
+  useEffect(() => {
+    try {
+      if (signinResult.isSuccess) {
+        navigate(getRedirect_url);
+        handleRemoveStateRedirect();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [signinResult]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="max-w-[560px] w-full p-4 flex flex-col justify-center gap-8">
         {/* top  */}
         <div className="flex flex-col gap-4">
-          <Link
-            to={`/`}
-            className="mx-auto inline-block w-max py-2 px-2 rounded font-bold text-2xl bg-black text-white"
-          >
-            PW
+          <Link to={`/`} className="w-14 inline-block mx-auto">
+            <img src={ICONS_DEFAULT.logo_svg} alt="" />
           </Link>
           <div className="text-center text-2xl font-bold">
             Join the PLW Community
@@ -134,7 +170,11 @@ const SigninSignupPage = () => {
             Submit
           </button>
         </form>
-        <hr />
+        <div className="flex items-center gap-3 leading-none">
+          <hr className="flex-1 mt-1" />
+          <span>or</span>
+          <hr className="flex-1 mt-1" />
+        </div>
         {/* social media buttons */}
         <div className="flex flex-col gap-4">
           <button
@@ -169,7 +209,7 @@ const SigninSignupPage = () => {
           <div className="text-center text-sm">
             Already have an account?{" "}
             <Link to={`/signin`} className="text-blue-500">
-              Sign In
+              Signin
             </Link>
           </div>
         ) : (
