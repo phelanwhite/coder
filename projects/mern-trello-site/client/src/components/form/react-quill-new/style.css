@@ -6,8 +6,14 @@
   @apply sticky top-0 bg-white z-[1] shadow w-full;
 }
 
+.rich-editor-ql-blog {
+  background-color: #fff;
+}
 .rich-editor-ql-blog .ql-snow .ql-editor {
   min-height: 200px;
+}
+.rich-editor-ql-comment {
+  background-color: #fff;
 }
 .rich-editor-ql-comment .ql-editor {
   min-height: 100px;

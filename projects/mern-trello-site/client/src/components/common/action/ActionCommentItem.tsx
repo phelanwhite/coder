@@ -4,7 +4,12 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ActionCommentItem = ({ data }: { data: any }) => {
+type Type = {
+  data: any;
+  setEdit: (id: string, value: string) => void;
+};
+
+const ActionCommentItem = ({ data, setEdit }: Type) => {
   const { deleteCommentById } = useActionStore();
   const deleteCommentByIdResult = useMutation({
     mutationFn: async (commentId: string) => {
@@ -36,7 +41,7 @@ const ActionCommentItem = ({ data }: { data: any }) => {
           ></div>
         </div>
         <div className="space-x-2 text-xs">
-          <button>Edit</button>
+          <button onClick={() => setEdit(data?._id, data?.data)}>Edit</button>
           <button onClick={() => deleteCommentByIdResult.mutate(data?._id)}>
             Delete
           </button>

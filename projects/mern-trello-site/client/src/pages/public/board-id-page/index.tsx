@@ -1,7 +1,7 @@
 import ColumnList from "@/components/common/column/ColumnList";
-import TaskModal from "@/components/common/task/TaskModal";
+import TaskModal from "@/components/common/task/task-modal/TaskModal";
 import { useColumnStore } from "@/stores/column-store";
-import { useTaskModalStore } from "@/stores/modal-store";
+import { useTaskModalStore } from "@/components/common/task/task-modal/modal-store";
 import { useTaskStore } from "@/stores/task-store";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";

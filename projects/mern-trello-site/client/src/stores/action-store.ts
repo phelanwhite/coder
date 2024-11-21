@@ -10,6 +10,7 @@ type ActionType = {
 
   //comment
   createComment: (task: string, data: any) => any;
+  updateCommentById: (id: string, data: any) => any;
   deleteCommentById: (id: string) => any;
   //   action
   actions: any[];
@@ -68,6 +69,20 @@ export const useActionStore = create<ActionType>()((set, get) => ({
       const response = (await axiosConfigV1.post(url, { task, data })).data;
       set({
         actions: [response?.data, ...get().actions],
+      });
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  updateCommentById: async (id, data) => {
+    try {
+      const url = `action/update-comment/${id}`;
+      const response = (await axiosConfigV1.post(url, data)).data;
+      set({
+        actions: get().actions.map((action) =>
+          action._id === id ? { ...action, ...response?.data } : action
+        ),
       });
       return response;
     } catch (error) {

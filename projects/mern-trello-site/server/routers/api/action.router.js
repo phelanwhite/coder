@@ -28,11 +28,14 @@ actionRouter.post(
         type: "file",
         user: user._id,
       });
+      const getData = await actionModel
+        .findById(newData?._id)
+        .populate([`user`]);
 
       return handleResponse(res, {
         status: StatusCodes.CREATED,
         message: "File uploaded successfully",
-        data: newData,
+        data: getData,
       });
     } catch (error) {
       next(error);
@@ -88,11 +91,37 @@ actionRouter.post("/create-comment", async (req, res, next) => {
       type: "comment",
       user: user._id,
     });
+    const getData = await actionModel.findById(newData?._id).populate([`user`]);
 
     return handleResponse(res, {
       status: StatusCodes.CREATED,
       message: "Comment added successfully",
-      data: newData,
+      data: getData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+actionRouter.post("/update-comment/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+
+    const updateData = await actionModel.findByIdAndUpdate(
+      id,
+      {
+        ...body,
+      },
+      { new: true }
+    );
+    const getData = await actionModel
+      .findById(updateData?._id)
+      .populate([`user`]);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Comment updated successfully",
+      data: getData,
     });
   } catch (error) {
     next(error);

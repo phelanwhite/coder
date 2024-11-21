@@ -1,5 +1,5 @@
 import { TaskType } from "@/assets/type";
-import { useTaskModalStore } from "@/stores/modal-store";
+import { useTaskModalStore } from "@/components/common/task/task-modal/modal-store";
 import React, { memo } from "react";
 import { FaEye, FaRegComment } from "react-icons/fa";
 type Type = {
@@ -10,7 +10,7 @@ const TaskCard = ({ task }: Type) => {
   return (
     <div
       onClick={() => openModal(task._id)}
-      className="rounded-lg overflow-hidden bg-[--bg-color-task-card] shadow "
+      className="rounded-lg overflow-hidden bg-[--bg-color-task-card] shadow-sm border-2 hover:border-blue-500"
     >
       {task.files?.length && (
         <div className="aspect-video">
