@@ -20,6 +20,9 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
+    banner: {
+      type: String,
+    },
     phone_number: {
       type: String,
     },
@@ -57,16 +60,28 @@ const userSchema = new Schema(
         },
       },
     ],
-    links: [
-      {
-        link_type: {
-          type: String,
-        },
-        link_url: {
-          type: String,
-        },
-      },
-    ],
+
+    email_address: {
+      type: String,
+    },
+    link_website: {
+      type: String,
+    },
+    link_instagram: {
+      type: String,
+    },
+    link_facebook: {
+      type: String,
+    },
+    link_twitter: {
+      type: String,
+    },
+    link_linkedin: {
+      type: String,
+    },
+    link_pinterest: {
+      type: String,
+    },
   },
   {
     timestamps: true,

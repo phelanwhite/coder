@@ -9,6 +9,7 @@ type Type = {
   signup: (data: any) => any;
   signin: (data: any) => any;
   signout: () => any;
+  getMe: () => any;
   updateMe: (data: any) => any;
   signinPassportSuccess: () => any;
   changePassword: (data: any) => any;
@@ -41,6 +42,12 @@ export const useAuthStore = create<Type>()(
         const url = `auth/signout`;
         const response = await (await axiosConfigV1.delete(url)).data;
         set({ user: null, isLoggedIn: false, access_token: "" });
+        return response;
+      },
+      getMe: async () => {
+        const url = `auth/get-me`;
+        const response = (await axiosConfigV1.get(url)).data;
+        set({ user: response?.data });
         return response;
       },
       updateMe: async (data) => {

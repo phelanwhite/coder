@@ -7,6 +7,9 @@ import toast from "react-hot-toast";
 import ENV from "@/configs/env-config";
 import { ICONS_DEFAULT } from "@/constants/images-constant";
 import useSignin from "@/hooks/useSignin";
+import InputField from "@/components/form/input-field";
+import ButtonComponent from "@/components/form/button-component";
+import Loader from "@/components/form/loader";
 
 const SigninSignupPage = () => {
   const location = useLocation();
@@ -99,129 +102,126 @@ const SigninSignupPage = () => {
   }, [signinResult]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="max-w-[560px] w-full p-4 flex flex-col justify-center gap-8">
-        {/* top  */}
-        <div className="flex flex-col gap-4">
-          <Link to={`/`} className="w-14 inline-block mx-auto">
-            <img src={ICONS_DEFAULT.logo_svg} alt="" />
-          </Link>
-          <div className="text-center text-2xl font-bold">
-            Join the PLW Community
+    <>
+      {(signinResult.isPending || signupResult.isPending) && <Loader />}
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="max-w-[560px] w-full p-4 flex flex-col justify-center gap-8">
+          {/* top  */}
+          <div className="flex flex-col gap-4">
+            <Link to={`/`} className="w-14 inline-block mx-auto">
+              <img src={ICONS_DEFAULT.logo_svg} alt="" />
+            </Link>
+            <div className="text-center text-2xl font-bold">
+              Join the PLW Community
+            </div>
           </div>
-        </div>
-        {/* form  */}
-        <form
-          onSubmit={onSubmit}
-          action=""
-          method="post"
-          className="flex flex-col gap-4"
-        >
-          {isSignup && (
-            <input
+          {/* form  */}
+          <form
+            onSubmit={onSubmit}
+            action=""
+            method="post"
+            className="flex flex-col gap-4"
+          >
+            {isSignup && (
+              <InputField
+                required
+                placeholder="Name"
+                type="text"
+                name="name"
+                value={formValue.name}
+                onChange={handleFormChange}
+              />
+            )}
+            <InputField
               required
-              type="text"
-              className="px-4 py-2 rounded border"
-              name="name"
-              placeholder="Name"
-              value={formValue.name}
+              placeholder="Email"
+              type="email"
+              name="email"
+              value={formValue.email}
               onChange={handleFormChange}
             />
-          )}
-          <input
-            required
-            type="text"
-            className="px-4 py-2 rounded border"
-            name="email"
-            placeholder="Email"
-            value={formValue.email}
-            onChange={handleFormChange}
-          />
-          <input
-            required
-            type="password"
-            className="px-4 py-2 rounded border"
-            name="password"
-            placeholder="Password"
-            value={formValue.password}
-            onChange={handleFormChange}
-          />
-          {isSignup && (
-            <input
+            <InputField
               required
+              placeholder="Password"
               type="password"
-              className="px-4 py-2 rounded border"
-              name="confirm_password"
-              placeholder="Confirm Password"
-              value={formValue.confirm_password}
+              name="password"
+              value={formValue.password}
               onChange={handleFormChange}
             />
+            {isSignup && (
+              <InputField
+                required
+                placeholder="Confirm Password"
+                type="password"
+                name="confirm_password"
+                value={formValue.confirm_password}
+                onChange={handleFormChange}
+              />
+            )}
+
+            {/* forgot password */}
+            <div className="text-right text-sm">
+              <Link to={`/forgot-password`} className="text-blue-500">
+                Forgot Password?
+              </Link>
+            </div>
+            <ButtonComponent color="black" type="submit">
+              Submit
+            </ButtonComponent>
+          </form>
+          <div className="flex items-center gap-3 leading-none">
+            <hr className="flex-1 mt-1" />
+            <span>or</span>
+            <hr className="flex-1 mt-1" />
+          </div>
+          {/* social media buttons */}
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={handleGoogleLogin}
+              className="flex items-center border rounded px-4 py-2 w-full hover:bg-gray-100"
+            >
+              <FaGoogle />
+              <div className="flex-1 text-sm text-center font-medium">
+                Sign in with Google
+              </div>
+            </button>
+            <button className="flex items-center border rounded px-4 py-2 w-full hover:bg-gray-100">
+              <FaFacebook />
+              <div className="flex-1 text-sm text-center font-medium">
+                Sign in with Facebook
+              </div>
+            </button>
+            <button className="flex items-center border rounded px-4 py-2 w-full hover:bg-gray-100">
+              <FaGithub />
+              <div className="flex-1 text-sm text-center font-medium">
+                Sign in with Github
+              </div>
+            </button>
+          </div>
+          {/* bottom */}
+          <div className="text-center text-sm italic text-gray-500">
+            By signing up, you are agreeing to our privacy policy, terms of use
+            and code of conduct.
+          </div>
+          {/* switch between signup and signin */}
+          {isSignup ? (
+            <div className="text-center text-sm">
+              Already have an account?{" "}
+              <Link to={`/signin`} className="text-blue-500">
+                Signin
+              </Link>
+            </div>
+          ) : (
+            <div className="text-center text-sm">
+              Don't have an account?{" "}
+              <Link to={`/signup`} className="text-blue-500">
+                Signup
+              </Link>
+            </div>
           )}
-          {/* forgot password */}
-          <div className="text-right text-sm">
-            <Link to={`/forgot-password`} className="text-blue-500">
-              Forgot Password?
-            </Link>
-          </div>
-          <button
-            type="submit"
-            className="px-4 py-2 rounded text-white bg-black"
-          >
-            Submit
-          </button>
-        </form>
-        <div className="flex items-center gap-3 leading-none">
-          <hr className="flex-1 mt-1" />
-          <span>or</span>
-          <hr className="flex-1 mt-1" />
         </div>
-        {/* social media buttons */}
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={handleGoogleLogin}
-            className="flex items-center border rounded px-4 py-2 w-full hover:bg-gray-100"
-          >
-            <FaGoogle />
-            <div className="flex-1 text-sm text-center font-medium">
-              Sign in with Google
-            </div>
-          </button>
-          <button className="flex items-center border rounded px-4 py-2 w-full hover:bg-gray-100">
-            <FaFacebook />
-            <div className="flex-1 text-sm text-center font-medium">
-              Sign in with Facebook
-            </div>
-          </button>
-          <button className="flex items-center border rounded px-4 py-2 w-full hover:bg-gray-100">
-            <FaGithub />
-            <div className="flex-1 text-sm text-center font-medium">
-              Sign in with Github
-            </div>
-          </button>
-        </div>
-        {/* bottom */}
-        <div className="text-center text-sm italic text-gray-500">
-          By signing up, you are agreeing to our privacy policy, terms of use
-          and code of conduct.
-        </div>
-        {/* switch between signup and signin */}
-        {isSignup ? (
-          <div className="text-center text-sm">
-            Already have an account?{" "}
-            <Link to={`/signin`} className="text-blue-500">
-              Signin
-            </Link>
-          </div>
-        ) : (
-          <div className="text-center text-sm">
-            Don't have an account?{" "}
-            <Link to={`/signup`} className="text-blue-500">
-              Signup
-            </Link>
-          </div>
-        )}
       </div>
-    </div>
+    </>
   );
 };
 

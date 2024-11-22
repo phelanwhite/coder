@@ -147,25 +147,64 @@ authRouter.put(`/change-password`, verifyToken, async (req, res, next) => {
     next(error);
   }
 });
+authRouter.get(`/get-me`, verifyToken, async (req, res, next) => {
+  try {
+    const user = req.user;
+
+    const getData = await userModel.findById(user._id);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "User data fetched successfully",
+      data: getData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 authRouter.put(
   `/update-me`,
-  upload.single("file"),
+  upload.fields([
+    {
+      name: "avatarFile",
+    },
+    {
+      name: "bannerFile",
+    },
+  ]),
   verifyToken,
   async (req, res, next) => {
     try {
       const user = req.user;
       const body = req.body;
-      const file = req.file;
+      const files = req.files;
 
-      let avatar = body.avatar;
-      if (file) {
-        avatar = await storage_utils.cloudinary.uploadImageFile(file);
+      const avatarFile = files?.avatarFile?.[0];
+      const bannerFile = files?.bannerFile?.[0];
+
+      let avatar = body?.avatar;
+      let banner = body?.banner;
+
+      if (avatarFile) {
+        avatar = (await storage_utils.cloudinary.uploadImageFile(avatarFile))
+          .url;
+        await storage_utils.cloudinary.deleteFile(body?.avatar);
+      }
+      if (bannerFile) {
+        banner = (await storage_utils.cloudinary.uploadImageFile(bannerFile))
+          .url;
+        await storage_utils.cloudinary.deleteFile(body?.banner);
       }
 
-      const updateData = await userModel.findByIdAndUpdate(user._id, {
-        ...body,
-        avatar,
-      });
+      const updateData = await userModel.findByIdAndUpdate(
+        user._id,
+        {
+          ...body,
+          avatar,
+          banner,
+        },
+        { new: true }
+      );
 
       return handleResponse(res, {
         status: StatusCodes.OK,

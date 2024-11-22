@@ -41,19 +41,36 @@ passport.use(
         });
       }
 
-      if (
-        !userExists?.provider?.find(
-          (item) => item?.provider_type === PROVIDER_TYPE.GOOGLE
-        )
-      ) {
-        userExists = await userModel.findByIdAndUpdate(userExists?._id, {
-          $push: {
-            provider: {
-              provider_type: PROVIDER_TYPE.GOOGLE,
-              provider_id: body?.sub,
+      const findProvider = userExists?.provider?.find(
+        (item) => item?.provider_type === PROVIDER_TYPE.GOOGLE
+      );
+
+      // update avatar if avatar not existing
+      let avatar = userExists?.avatar;
+      if (!avatar) {
+        avatar = body?.picture;
+        userExists = await userModel.findByIdAndUpdate(
+          userExists?._id,
+          {
+            avatar,
+          },
+          { new: true }
+        );
+      }
+
+      if (!findProvider) {
+        userExists = await userModel.findByIdAndUpdate(
+          userExists?._id,
+          {
+            $push: {
+              provider: {
+                provider_type: PROVIDER_TYPE.GOOGLE,
+                provider_id: body?.sub,
+              },
             },
           },
-        });
+          { new: true }
+        );
       }
 
       return done(null, userExists);

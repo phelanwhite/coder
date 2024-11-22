@@ -32,7 +32,7 @@ const Header = () => {
 
         <div className="flex items-center gap-4">
           <NavLink to={`/search`} className="sm:hidden">
-            <MdSearch size={20} />
+            <MdSearch size={24} />
           </NavLink>
           {isLoggedIn && (
             <NavLink to={`/notification`}>

@@ -16,12 +16,15 @@ import AuthProtectedRouter from "./components/common/auth/AuthProtectedRouter";
 import DashboardPage from "./pages/auth/dashboard-page";
 import SettingPage from "./pages/auth/setting-page";
 import ProfilePage from "./pages/auth/profile-page";
+import ProfileUpdatePage from "./pages/auth/profile-update-page";
+import ButtonScrollBackToTop from "./components/form/button-scroll-back-to-top";
+import Footer from "./components/layout/footer";
 
 function App() {
   return (
     <>
       <Header />
-      <div>
+      <div className="min-h-screen">
         <Routes>
           <Route path="*" element={<NotFoundPage />} />
           <Route path="signin" element={<SigninSignupPage />} />
@@ -36,13 +39,16 @@ function App() {
           <Route element={<AuthProtectedLayout />}>
             <Route element={<AuthProtectedRouter />}>
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/update" element={<ProfileUpdatePage />} />
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="setting" element={<SettingPage />} />
             </Route>
           </Route>
         </Routes>
       </div>
+      <Footer />
 
+      <ButtonScrollBackToTop />
       <Toaster />
     </>
   );
