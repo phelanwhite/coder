@@ -1,6 +1,6 @@
 import ButtonMenu from "@/components/form/button-menu";
 import { IMAGES_DEFAULT } from "@/constants/images-constant";
-import useSignin from "@/hooks/useSignin";
+import useSigninRedirect from "@/hooks/useSigninRedirect";
 import { useAuthStore } from "@/stores/auth-store";
 import clsx from "clsx";
 import { FaUserCircle } from "react-icons/fa";
@@ -28,7 +28,7 @@ const links = [
 
 const AuthButtonMenu = () => {
   const { isLoggedIn, user, signout } = useAuthStore();
-  const { handleSaveStateRedirect } = useSignin();
+  const { handleSaveStateRedirect } = useSigninRedirect();
 
   return (
     <div>

@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 import cryptojs from "crypto-js";
 import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
 import { auth_utils } from "../../utils/auth.js";
 import userModel from "../../models/user.model.js";
 import { handleResponse } from "../../helpers/responses.js";
@@ -13,6 +14,7 @@ import ENV_CONFIG from "../../configs/env-config.js";
 import { mail_services } from "../../services/mail.js";
 import upload from "../../configs/multer-config.js";
 import storage_utils from "../../services/storage.js";
+import tokenModel from "../../models/token.model.js";
 
 const authRouter = express.Router();
 
@@ -81,15 +83,14 @@ authRouter.post("/signin", async (req, res, next) => {
     if (!isMatchPassword) {
       throw createHttpError.NotFound("Invalid email or password");
     }
-
     // save token in cookie
-    const access_token = token_utils.generateToken({
+    const token = await token_utils.generateTokenJWT({
       _id: userExists._id,
       role: userExists.role,
     });
-    cookies_utils.saveCookie(res, {
-      name: "access_token",
-      value: access_token,
+    await cookies_utils.saveTokenJWT(res, {
+      access_token: token.access_token,
+      refresh_token: token.refresh_token,
     });
 
     // return
@@ -98,7 +99,7 @@ authRouter.post("/signin", async (req, res, next) => {
       message: "User signed in successfully",
       data: {
         user: userExists,
-        access_token: access_token,
+        access_token: token.access_token,
       },
     });
   } catch (error) {
@@ -108,11 +109,63 @@ authRouter.post("/signin", async (req, res, next) => {
 authRouter.delete("/signout", async (req, res, next) => {
   try {
     res.clearCookie("access_token");
+    res.clearCookie("refresh_token");
     res.clearCookie("connect.sid");
     return handleResponse(res, {
       status: StatusCodes.OK,
       message: "User logged out successfully",
     });
+  } catch (error) {
+    next(error);
+  }
+});
+authRouter.post("/refresh-token", async (req, res, next) => {
+  try {
+    const refresh_token_cookie = req.cookies.refresh_token;
+
+    if (!refresh_token_cookie) {
+      throw createHttpError.Forbidden("Invalid token");
+    }
+
+    jwt.verify(
+      refresh_token_cookie,
+      ENV_CONFIG.JWT.JWT_REFRESH_SECRET,
+      async (err, decode) => {
+        if (err) throw createHttpError.Forbidden(err.message);
+
+        const tokenExists = await tokenModel.findOne({
+          token: refresh_token_cookie,
+        });
+
+        if (!tokenExists) {
+          throw createHttpError.Forbidden("Invalid token");
+        }
+
+        // save token in cookie and delete token in database
+        const token = await token_utils.generateTokenJWT({
+          _id: decode?._id,
+          role: decode?.role,
+        });
+        await cookies_utils.saveTokenJWT(res, {
+          access_token: token.access_token,
+          refresh_token: token.refresh_token,
+        });
+        await tokenModel.findOneAndDelete(
+          {
+            token: refresh_token_cookie,
+          },
+          { new: true }
+        );
+
+        return handleResponse(res, {
+          status: StatusCodes.OK,
+          message: "Token refreshed successfully",
+          data: {
+            access_token: token.access_token,
+          },
+        });
+      }
+    );
   } catch (error) {
     next(error);
   }

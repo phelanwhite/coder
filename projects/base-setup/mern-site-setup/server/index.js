@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
+import path from "path";
 
 import passportConfig from "./configs/passport-config.js";
 import router from "./routers/index.router.js";
@@ -47,5 +48,14 @@ app.use(passport.session());
 
 // routes
 app.use(`/api/v1`, router);
+
+// deployments
+if (process.env.NODE_ENV === "production") {
+  const _dirname = path.resolve();
+  app.use(express.static(path.join(_dirname, "client", "dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
+  });
+}
 
 app.use(handleError);

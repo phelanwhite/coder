@@ -1,19 +1,18 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useAuthStore } from "@/stores/auth-store";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import ENV from "@/configs/env-config";
 import { ICONS_DEFAULT } from "@/constants/images-constant";
-import useSignin from "@/hooks/useSignin";
 import InputField from "@/components/form/input-field";
 import ButtonComponent from "@/components/form/button-component";
 import Loader from "@/components/form/loader";
+import useSigninRedirect from "@/hooks/useSigninRedirect";
 
 const SigninSignupPage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   useEffect(() => {
     location.pathname.includes(`signup`) && setIsSignup(true);
@@ -45,7 +44,7 @@ const SigninSignupPage = () => {
     },
   });
 
-  const { getRedirect_url, handleRemoveStateRedirect } = useSignin();
+  const { handleRedirectUrl } = useSigninRedirect();
   // signin with social account
   const handleGoogleLogin = () => {
     const url = ENV.PORT_SERVER + `/passport/google`;
@@ -57,8 +56,7 @@ const SigninSignupPage = () => {
       (async () => {
         const response = await signinPassportSuccess();
         if (response.status === 200 && !isLoggedIn) {
-          navigate(getRedirect_url);
-          handleRemoveStateRedirect();
+          handleRedirectUrl();
         }
       })();
     } catch (error) {
@@ -93,8 +91,7 @@ const SigninSignupPage = () => {
   useEffect(() => {
     try {
       if (signinResult.isSuccess) {
-        navigate(getRedirect_url);
-        handleRemoveStateRedirect();
+        handleRedirectUrl();
       }
     } catch (error) {
       console.log(error);

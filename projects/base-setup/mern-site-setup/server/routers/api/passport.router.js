@@ -37,14 +37,13 @@ passportRouter.get("/signin-passport/success", async (req, res, next) => {
     });
 
     // save token in cookie
-    const access_token = token_utils.generateToken({
+    const token = await token_utils.generateTokenJWT({
       _id: userExists._id,
       role: userExists.role,
     });
-
-    cookies_utils.saveCookie(res, {
-      name: "access_token",
-      value: access_token,
+    await cookies_utils.saveTokenJWT(res, {
+      access_token: token.access_token,
+      refresh_token: token.refresh_token,
     });
 
     return handleResponse(res, {
@@ -52,7 +51,7 @@ passportRouter.get("/signin-passport/success", async (req, res, next) => {
       message: "User signed in successfully",
       data: {
         user: userExists,
-        access_token: access_token,
+        access_token: token.access_token,
       },
     });
   } catch (error) {

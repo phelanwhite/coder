@@ -1,20 +1,14 @@
+import useSigninRedirect from "@/hooks/useSigninRedirect";
 import { useAuthStore } from "@/stores/auth-store";
 import React, { useEffect } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const AuthProtectedRouter = () => {
   const { isLoggedIn } = useAuthStore();
-  const location = useLocation();
+  const { handleSaveStateRedirect } = useSigninRedirect();
   useEffect(() => {
-    if (
-      location.pathname.includes(`signin`) ||
-      location.pathname.includes(`signup`) ||
-      location.pathname.includes(`forgot-password`) ||
-      location.pathname.includes(`reset-password`)
-    )
-      return;
     if (!isLoggedIn) {
-      localStorage.setItem("redirect_state", JSON.stringify(location));
+      handleSaveStateRedirect();
     }
   }, [isLoggedIn, location]);
 

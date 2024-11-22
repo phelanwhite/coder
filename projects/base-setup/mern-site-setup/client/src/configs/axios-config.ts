@@ -1,5 +1,6 @@
 import axios from "axios";
 import ENV from "./env-config";
+import { useAuthStore } from "@/stores/auth-store";
 
 export const axiosConfigV1 = axios.create({
   baseURL: ENV.PORT_SERVER,
@@ -32,11 +33,18 @@ axiosConfigV1.interceptors.response.use(
     return response;
   },
   async function (error) {
-    if (error.status === 403) {
-      localStorage.removeItem("auth");
-    }
-
     const customError = error?.response?.data;
+    if (error.status === 403) {
+      useAuthStore.getState().signout();
+      // try {
+      //   const response = await useAuthStore.getState().refreshToken();
+      // } catch (error: any) {
+      //   if (error.status === 403) {
+
+      //     return;
+      //   }
+      // }
+    }
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
