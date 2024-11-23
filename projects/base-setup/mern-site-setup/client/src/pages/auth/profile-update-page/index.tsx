@@ -35,6 +35,7 @@ const ProfileUpdatePage = () => {
       if (bannerFile) {
         formData.append("bannerFile", bannerFile);
       }
+
       return await updateMe(formData);
     },
     onSuccess: (data) => {
@@ -93,8 +94,6 @@ const ProfileUpdatePage = () => {
       }
     }
   }, [getMeResult.data]);
-
-  //   if (getMeResult.isLoading || updateMeResult.isPending) <Loader />;
 
   // render
   return (
@@ -160,6 +159,7 @@ const ProfileUpdatePage = () => {
           </div>
           {/* name */}
           <InputField
+            required
             label="Name"
             name="name"
             value={formValue.name || ""}
@@ -239,6 +239,7 @@ const ProfileUpdatePage = () => {
           />
           {/* submit button */}
           <ButtonComponent
+            type="submit"
             disabled={updateMeResult.isPending}
             size="sm"
             color="black"

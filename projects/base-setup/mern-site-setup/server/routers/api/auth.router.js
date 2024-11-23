@@ -7,8 +7,6 @@ import jwt from "jsonwebtoken";
 import { auth_utils } from "../../utils/auth.js";
 import userModel from "../../models/user.model.js";
 import { handleResponse } from "../../helpers/responses.js";
-import { token_utils } from "../../utils/token.js";
-import { cookies_utils } from "../../utils/cookie.js";
 import { verifyToken } from "../../middlewares/verifyToken.middleware.js";
 import ENV_CONFIG from "../../configs/env-config.js";
 import { mail_services } from "../../services/mail.js";
@@ -84,11 +82,11 @@ authRouter.post("/signin", async (req, res, next) => {
       throw createHttpError.NotFound("Invalid email or password");
     }
     // save token in cookie
-    const token = await token_utils.generateTokenJWT({
+    const token = await auth_utils.generateTokenJWT({
       _id: userExists._id,
       role: userExists.role,
     });
-    await cookies_utils.saveTokenJWT(res, {
+    await auth_utils.saveTokenJWTToCookie(res, {
       access_token: token.access_token,
       refresh_token: token.refresh_token,
     });
@@ -122,7 +120,6 @@ authRouter.delete("/signout", async (req, res, next) => {
 authRouter.post("/refresh-token", async (req, res, next) => {
   try {
     const refresh_token_cookie = req.cookies.refresh_token;
-
     if (!refresh_token_cookie) {
       throw createHttpError.Forbidden("Invalid token");
     }
@@ -142,11 +139,11 @@ authRouter.post("/refresh-token", async (req, res, next) => {
         }
 
         // save token in cookie and delete token in database
-        const token = await token_utils.generateTokenJWT({
-          _id: decode?._id,
-          role: decode?.role,
+        const token = await auth_utils.generateTokenJWT({
+          _id: decode._id,
+          role: decode.role,
         });
-        await cookies_utils.saveTokenJWT(res, {
+        await auth_utils.saveTokenJWTToCookie(res, {
           access_token: token.access_token,
           refresh_token: token.refresh_token,
         });

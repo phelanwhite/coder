@@ -10,18 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@tanstack/react-query": "^5.60.5",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
     "mern-site-setup": "file:..",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.2",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.3.0",
     "react-paginate": "^8.2.0",
     "react-quill-new": "^3.3.3",
     "react-router-dom": "^6.28.0",
     "swiper": "^11.1.14",
+    "zod": "^3.23.8",
     "zustand": "^5.0.1"
   },
   "devDependencies": {

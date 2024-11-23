@@ -6,13 +6,8 @@ const useSigninRedirect = () => {
   const navigate = useNavigate();
 
   const handleSaveStateRedirect = useCallback(() => {
-    if (
-      location.pathname.includes(`signin`) ||
-      location.pathname.includes(`signup`) ||
-      location.pathname.includes(`forgot-password`) ||
-      location.pathname.includes(`reset-password`)
-    )
-      return;
+    const arrayPath = [`signin`, `signup`, `forgot-password`, `reset-password`];
+    if (arrayPath.find((item) => location.pathname.includes(item))) return;
 
     sessionStorage.setItem("redirect_state", JSON.stringify(location));
   }, [location]);

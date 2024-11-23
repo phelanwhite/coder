@@ -156,7 +156,6 @@ const SigninSignupPage = () => {
               />
             )}
 
-            {/* forgot password */}
             <div className="text-right text-sm">
               <Link to={`/forgot-password`} className="text-blue-500">
                 Forgot Password?

@@ -52,7 +52,7 @@ const ENV_CONFIG = {
       process.env.NODE_ENV === "production"
         ? process.env.URL_CLIENT_PRODUCTION
         : process.env.URL_CLIENT_DEV,
-    URL_SERVER_DEV:
+    URL_SERVER:
       process.env.NODE_ENV === "production"
         ? process.env.URL_SERVER_PRODUCTION
         : process.env.URL_SERVER_DEV,

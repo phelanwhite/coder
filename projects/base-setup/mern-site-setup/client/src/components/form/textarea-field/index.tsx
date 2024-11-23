@@ -1,10 +1,10 @@
-import React, { FC, memo } from "react";
+import React, { FC, forwardRef, memo } from "react";
 
 interface Props extends React.ComponentProps<"textarea"> {
   label?: string;
 }
 
-const TextareaField: FC<Props> = ({ name, ...props }) => {
+const TextareaField: FC<Props> = forwardRef(({ name, ...props }, ref) => {
   return (
     <div className="grid w-full items-center gap-1.5">
       {props.label && (
@@ -16,10 +16,11 @@ const TextareaField: FC<Props> = ({ name, ...props }) => {
         className="border rounded px-3 py-1.5"
         name={name}
         id={name}
+        ref={ref}
         {...props}
       />
     </div>
   );
-};
+});
 
 export default memo(TextareaField);

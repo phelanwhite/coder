@@ -4,9 +4,8 @@ import passport from "passport";
 import createHttpError from "http-errors";
 import ENV_CONFIG from "../../configs/env-config.js";
 import userModel from "../../models/user.model.js";
-import { token_utils } from "../../utils/token.js";
-import { cookies_utils } from "../../utils/cookie.js";
 import { handleResponse } from "../../helpers/responses.js";
+import { auth_utils } from "../../utils/auth.js";
 
 const passportRouter = express.Router();
 
@@ -37,11 +36,11 @@ passportRouter.get("/signin-passport/success", async (req, res, next) => {
     });
 
     // save token in cookie
-    const token = await token_utils.generateTokenJWT({
+    const token = await auth_utils.generateTokenJWT({
       _id: userExists._id,
       role: userExists.role,
     });
-    await cookies_utils.saveTokenJWT(res, {
+    await auth_utils.saveTokenJWTToCookie(res, {
       access_token: token.access_token,
       refresh_token: token.refresh_token,
     });

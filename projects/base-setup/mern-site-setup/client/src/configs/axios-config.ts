@@ -34,20 +34,46 @@ axiosConfigV1.interceptors.response.use(
   },
   async function (error) {
     const customError = error?.response?.data;
+    // refresh token
     if (error.status === 403) {
-      useAuthStore.getState().signout();
-      // try {
-      //   const response = await useAuthStore.getState().refreshToken();
-      // } catch (error: any) {
-      //   if (error.status === 403) {
+      try {
+        const url = ENV.PORT_SERVER + `auth/refresh-token`;
+        const refreshTokenResult = (
+          await axios.post(
+            url,
+            {},
+            {
+              withCredentials: true,
+            }
+          )
+        ).data;
 
-      //     return;
-      //   }
-      // }
+        if (refreshTokenResult) {
+          useAuthStore.setState({
+            access_token: refreshTokenResult?.data?.access_token,
+          });
+
+          // retry the original query with new access token
+          const originalRequestConfig = error.config;
+
+          const query = (await axios.request(originalRequestConfig)).data;
+
+          return query;
+        } else {
+          await useAuthStore.getState().signout();
+          return Promise.reject(customError);
+        }
+      } catch (_error: any) {
+        if (_error.status === 403) {
+          await useAuthStore.getState().signout();
+          return Promise.reject(customError);
+        }
+      }
     }
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
     return Promise.reject(customError);
   }
 );
