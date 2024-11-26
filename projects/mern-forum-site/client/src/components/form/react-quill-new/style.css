@@ -1,0 +1,14 @@
+@import "react-quill-new/dist/quill.snow.css";
+@import "react-quill-new/dist/quill.bubble.css";
+@import "react-quill-new/dist/quill.core.css";
+
+.rich-editor-ql-blog .ql-snow.ql-toolbar {
+  @apply sticky top-0 bg-white z-[1] shadow w-full;
+}
+
+.rich-editor-ql-blog .ql-snow .ql-editor {
+  min-height: 50vh;
+}
+.rich-editor-ql-comment .ql-editor {
+  min-height: 100px;
+}
