@@ -1,15 +1,19 @@
 import express from "express";
-import authRouter from "./auth.router.js";
-import uploadRouter from "./upload.router.js";
-import passportRouter from "./passport.router.js";
+import { verifyToken } from "../../middlewares/verifyToken.middleware.js";
 import postRouter from "./post.router.js";
+import historyRouter from "./history.router.js";
+import bookmarkRouter from "./bookmark.router.js";
+import favoriteRouter from "./favorite.router.js";
+import authorRouter from "./author.router.js";
+import followRouter from "./follow.router.js";
 
-const rootRouter = express();
+const apiRouter = express();
 
-rootRouter.use("/upload", uploadRouter);
-rootRouter.use("/auth", authRouter);
-rootRouter.use("/passport", passportRouter);
+apiRouter.use("/author", authorRouter);
+apiRouter.use("/post", postRouter);
+apiRouter.use("/history", verifyToken, historyRouter);
+apiRouter.use("/bookmark", verifyToken, bookmarkRouter);
+apiRouter.use("/favorite", verifyToken, favoriteRouter);
+apiRouter.use("/follow", verifyToken, followRouter);
 
-rootRouter.use("/post", postRouter);
-
-export default rootRouter;
+export default apiRouter;

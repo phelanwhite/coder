@@ -26,9 +26,6 @@ const PostPreview = ({ isOpen, onClose, data, onchangeData, idPost }: Type) => {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
-  console.log({
-    idPost,
-  });
 
   const navigate = useNavigate();
 
@@ -58,7 +55,7 @@ const PostPreview = ({ isOpen, onClose, data, onchangeData, idPost }: Type) => {
     },
     onSuccess: (data) => {
       toast.success(data?.message);
-      navigate(`/me/posts`);
+      navigate(`/me/post`);
     },
     onError: (error) => {
       toast.error(error.message);

@@ -1,6 +1,7 @@
 import { LinkType } from "@/constants/type";
+import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import clsx from "clsx";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 type Type = {
@@ -9,10 +10,10 @@ type Type = {
   children: React.ReactNode;
   sidebarRight: React.ReactNode;
 };
-document.parentElement;
 
 const Layout1 = ({ title, links, children, sidebarRight }: Type) => {
   const location = useLocation();
+
   return (
     <div className="flex items-start justify-evenly gap-4">
       {/* left  */}
@@ -30,8 +31,8 @@ const Layout1 = ({ title, links, children, sidebarRight }: Type) => {
                     to={item.path}
                     className={({ isActive }) =>
                       clsx([
-                        "inline-block py-4",
-                        location.pathname === item.path &&
+                        "inline-block pb-4",
+                        location.pathname === item.path.split(`?`)?.[0] &&
                           " border-b-black border-b text-text-color",
                       ])
                     }

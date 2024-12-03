@@ -20,8 +20,11 @@ import ButtonScrollBackToTop from "./components/form/button-scroll-back-to-top";
 import Footer from "./components/layout/footer";
 import PostIdPage from "./pages/public/post-id-page";
 import AuthorIdPage from "./pages/public/author-id-page";
-import MyPostPage from "./pages/auth/post";
 import PostCreateUpdatePage from "./pages/auth/post-create-update-page";
+import MyActivityPage from "./pages/auth/activity-page";
+import SearchPage from "./pages/public/search-page";
+import MyPostPage from "./pages/auth/post-page";
+import MyLibraryPage from "./pages/auth/library-page";
 
 function App() {
   return (
@@ -38,6 +41,7 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route index element={<HomePage />} />
             <Route path="post/:id" element={<PostIdPage />} />
+            <Route path="search/*" element={<SearchPage />} />
             <Route path="author/:id/*" element={<AuthorIdPage />} />
           </Route>
           {/* auth  */}
@@ -55,8 +59,8 @@ function App() {
                   element={<PostCreateUpdatePage />}
                 />
                 <Route path="post/*" element={<MyPostPage />} />
-                <Route path="library/*" element={<MyPostPage />} />
-                <Route path="activity/*" element={<MyPostPage />} />
+                <Route path="library/*" element={<MyLibraryPage />} />
+                <Route path="activity/*" element={<MyActivityPage />} />
               </Route>
             </Route>
           </Route>

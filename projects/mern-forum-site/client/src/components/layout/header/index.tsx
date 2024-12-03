@@ -35,13 +35,16 @@ const Header = () => {
             <MdSearch size={24} />
           </NavLink>
           {isLoggedIn && (
-            <NavLink to={`/notification`}>
-              {location.pathname.includes("/notification") ? (
-                <FaBell size={20} />
-              ) : (
-                <FaRegBell size={20} />
-              )}
-            </NavLink>
+            <>
+              <NavLink to={`/me/create-post`}>New post</NavLink>
+              <NavLink to={`/notification`}>
+                {location.pathname.includes("/notification") ? (
+                  <FaBell size={20} />
+                ) : (
+                  <FaRegBell size={20} />
+                )}
+              </NavLink>
+            </>
           )}
           <AuthButtonMenu />
         </div>

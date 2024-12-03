@@ -7,14 +7,18 @@ import ButtonBookmark from "../bookmark/ButtonBookmark";
 import PostButtonMenu from "./PostButtonMenu";
 import clsx from "clsx";
 import { PostButtonMenuType, PostType } from "@/constants/type";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type Type = {
   data?: PostType;
   typePost?: "post1" | "post2" | "post3";
-  menuType: PostButtonMenuType;
+
+  menuData?: any;
+  menuType?: PostButtonMenuType;
 };
 
-const PostCard = ({ data, typePost, menuType }: Type) => {
+const PostCard = ({ data, typePost, menuData, menuType }: Type) => {
   return (
     <div className="px-5">
       {/* author  */}
@@ -81,21 +85,29 @@ const PostCard = ({ data, typePost, menuType }: Type) => {
             </div>
             {/* action  */}
             <div className="flex items-center gap-3 text-xl">
-              <ButtonBookmark />
-              <PostButtonMenu data={data as PostType} menuType={menuType} />
+              <ButtonBookmark
+                isBookmark={data?.isBookmark as boolean}
+                data={data?._id as string}
+                type="post"
+              />
+              <PostButtonMenu data={menuData} menuType={menuType} />
             </div>
           </div>
         </div>
         {/* right  */}
-        <div
-          className={clsx(
-            "overflow-hidden rounded-sm ",
-            typePost === "post2" && "hidden",
-            typePost === "post3" ? "aspect-video" : "w-20 h-12 md:w-40 md:h-25"
-          )}
-        >
-          <img src={data?.thumbnail} loading="lazy" alt="" />
-        </div>
+        <Link to={`/post/${data?._id}`}>
+          <div
+            className={clsx(
+              "overflow-hidden rounded-sm ",
+              typePost === "post2" && "hidden",
+              typePost === "post3"
+                ? "aspect-video"
+                : "w-20 h-12 md:w-40 md:h-25"
+            )}
+          >
+            <img src={data?.thumbnail} loading="lazy" alt="" />
+          </div>
+        </Link>
       </div>
       <hr
         className={clsx(
@@ -103,6 +115,26 @@ const PostCard = ({ data, typePost, menuType }: Type) => {
           (typePost === "post2" || typePost === "post3") && "hidden"
         )}
       />
+    </div>
+  );
+};
+
+export const PostCardSkeleton = () => {
+  return (
+    <div className="px-5">
+      <div>
+        <Skeleton circle height={20} width={20} />
+      </div>
+      <div className="flex items-start gap-8 md:gap-14">
+        <div className="flex-1">
+          <Skeleton count={2} />
+          <Skeleton count={3} />
+        </div>
+        <div>
+          <Skeleton className="w-20 h-12 md:w-40 md:h-25" />
+        </div>
+      </div>
+      <hr className="mt-8" />
     </div>
   );
 };

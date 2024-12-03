@@ -1,8 +1,8 @@
 import PostCard from "@/components/common/post/PostCard";
-import SidebarRight from "./SidebarRight";
+import SidebarRight from "../../../components/layout/sidebar/SidebarRight";
 import { useQuery } from "@tanstack/react-query";
 import { axiosConfigV1 } from "@/configs/axios-config";
-import PostList from "@/components/common/post/PostList";
+import { PostType } from "@/constants/type";
 
 const HomePage = () => {
   // const { searchParams, handleSearchParams } = useSearchParamsValue({
@@ -20,10 +20,11 @@ const HomePage = () => {
   return (
     <div className="flex items-start justify-evenly gap-4">
       <div className="md:max-w-screen-sm lg:max-w-screen-md space-y-8 ">
-        <PostList
-          loading={getDatasResult.isLoading}
-          datas={getDatasResult.data?.data?.results}
-        />
+        <div className="space-y-8">
+          {getDatasResult.data?.data?.results?.map((data: PostType) => (
+            <PostCard key={data._id} data={data} />
+          ))}
+        </div>
       </div>
       <SidebarRight />
     </div>

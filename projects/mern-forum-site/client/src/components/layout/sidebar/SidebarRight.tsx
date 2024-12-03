@@ -1,29 +1,37 @@
 import AuthorCard from "@/components/common/author/AuthorCard";
 import PostCard from "@/components/common/post/PostCard";
+import { axiosConfigV1 } from "@/configs/axios-config";
+import { PostType } from "@/constants/type";
+import { useQuery } from "@tanstack/react-query";
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
 
 const SidebarRight = () => {
+  const getDatasResult = useQuery({
+    queryKey: [`post`, `staff picks`],
+    queryFn: async () => {
+      const url = `post/get-posts?_limit=5&_sort_view=1`;
+      return (await axiosConfigV1.get(url)).data;
+    },
+  });
+  const getAuthorsResult = useQuery({
+    queryKey: [`author`],
+    queryFn: async () => {
+      const url = `author/get-authors?_limit=5&_sort_follower=1`;
+      return (await axiosConfigV1.get(url)).data;
+    },
+  });
   return (
     <div className="max-w-screen-xs w-full space-y-10 hidden md:block">
       {/* staff picks  */}
       <ul className="space-y-5">
         <li className="px-5 capitalize text-base font-semibold">staff picks</li>
-        <li>
-          <PostCard typePost="post2" />
-        </li>
-        <li>
-          <PostCard typePost="post2" />
-        </li>
-        <li>
-          <PostCard typePost="post2" />
-        </li>
-        <li>
-          <PostCard typePost="post2" />
-        </li>
-        <li>
-          <PostCard typePost="post2" />
-        </li>
+        {getDatasResult.data?.data?.results?.map((data: PostType) => (
+          <li key={data._id}>
+            <PostCard typePost="post2" data={data} />
+          </li>
+        ))}
+
         <li className="px-5 text-text-secondary-color text-sm font-medium hover:underline">
           <Link to={`/`}>See the full list</Link>
         </li>
@@ -62,16 +70,12 @@ const SidebarRight = () => {
         <li className="px-5 capitalize text-base font-semibold">
           Who to follow
         </li>
-        <ul className="px-5 space-y-5">
-          <li>
-            <AuthorCard />
-          </li>
-          <li>
-            <AuthorCard />
-          </li>
-          <li>
-            <AuthorCard />
-          </li>
+        <ul className="space-y-5">
+          {getAuthorsResult.data?.data?.results?.map((data: PostType) => (
+            <li key={data._id}>
+              <AuthorCard data={data} />
+            </li>
+          ))}
         </ul>
         <li className="px-5 text-text-secondary-color text-sm font-medium hover:underline">
           <Link to={`/`}>See more suggestions</Link>

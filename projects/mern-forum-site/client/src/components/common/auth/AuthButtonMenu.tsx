@@ -1,13 +1,12 @@
 import ButtonMenu from "@/components/form/button-menu";
 import { IMAGES_DEFAULT } from "@/constants/images-constant";
 import { user_links } from "@/constants/links-constant";
-import useSigninRedirect from "@/hooks/useSigninRedirect";
 import { useAuthStore } from "@/stores/auth-store";
 import clsx from "clsx";
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import { MdDashboard, MdSettings } from "react-icons/md";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const links = [
   {
@@ -28,11 +27,11 @@ const links = [
 ];
 
 const AuthButtonMenu = () => {
-  const { isLoggedIn, user, signout } = useAuthStore();
-  const { handleSaveStateRedirect } = useSigninRedirect();
+  const { isLoggedIn, user, signout, changeRedirectUrl } = useAuthStore();
+  const location = useLocation();
 
   return (
-    <div>
+    <>
       {isLoggedIn ? (
         <ButtonMenu
           icon={
@@ -96,13 +95,14 @@ const AuthButtonMenu = () => {
       ) : (
         <Link
           to={`/signin`}
-          onClick={handleSaveStateRedirect}
+          // onClick={handleSaveStateRedirect}
+          onClick={() => changeRedirectUrl(location)}
           className="inline-block text-sm px-3 py-1.5 bg-black text-white rounded"
         >
           Signin
         </Link>
       )}
-    </div>
+    </>
   );
 };
 

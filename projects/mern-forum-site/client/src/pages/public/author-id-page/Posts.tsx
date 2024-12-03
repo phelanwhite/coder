@@ -1,26 +1,28 @@
-import PostCard from "@/components/common/post/PostCard";
 import PostList from "@/components/common/post/PostList";
+import { axiosConfigV1 } from "@/configs/axios-config";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
-import { usePostStore } from "@/stores/post-store";
 import { useQuery } from "@tanstack/react-query";
-import React, { memo } from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
 
-const Draft = () => {
+const Posts = () => {
+  const { id } = useParams();
   const { searchParams, handleSearchParams } = useSearchParamsValue({
-    _status: "-1",
+    _author: id as string,
   });
-  const { posts, getPostByMe } = usePostStore();
   const getDatasResult = useQuery({
-    queryKey: [`post`, `me`, searchParams.toString()],
+    queryKey: [`post`, `author`, searchParams.toString()],
     queryFn: async () => {
-      return await getPostByMe(searchParams.toString());
+      const url = `post/get-posts?${searchParams.toString()}`;
+      return (await axiosConfigV1.get(url)).data;
     },
   });
+
   return (
     <PostList
       menuType="User"
       loading={getDatasResult.isLoading}
-      datas={posts}
+      datas={getDatasResult?.data?.data?.results}
       onchagePage={(e) => handleSearchParams(`_page`, e.selected + 1)}
       page={getDatasResult?.data?.data?._page}
       pageCount={getDatasResult?.data?.data?.total_pages}
@@ -28,4 +30,4 @@ const Draft = () => {
   );
 };
 
-export default memo(Draft);
+export default Posts;

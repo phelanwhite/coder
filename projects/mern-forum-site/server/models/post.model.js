@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import bookmarkModel from "./bookmark.model.js";
 
 const postSchema = new Schema(
   {

@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation } from "@tanstack/react-query";
@@ -9,9 +9,9 @@ import { ICONS_DEFAULT } from "@/constants/images-constant";
 import InputField from "@/components/form/input-field";
 import ButtonComponent from "@/components/form/button-component";
 import Loader from "@/components/form/loader";
-import useSigninRedirect from "@/hooks/useSigninRedirect";
 
 const SigninSignupPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [isSignup, setIsSignup] = useState(false);
   useEffect(() => {
@@ -19,7 +19,14 @@ const SigninSignupPage = () => {
     location.pathname.includes(`signin`) && setIsSignup(false);
   }, [location.pathname]);
 
-  const { signup, signin, signinPassportSuccess, isLoggedIn } = useAuthStore();
+  const {
+    signup,
+    signin,
+    signinPassportSuccess,
+    isLoggedIn,
+    redirectUrl,
+    user,
+  } = useAuthStore();
   const signinResult = useMutation({
     mutationFn: async () => {
       const { email, password } = formValue;
@@ -44,7 +51,6 @@ const SigninSignupPage = () => {
     },
   });
 
-  const { handleRedirectUrl } = useSigninRedirect();
   // signin with social account
   const handleGoogleLogin = () => {
     const url = ENV.PORT_SERVER + `/passport/google`;
@@ -56,7 +62,12 @@ const SigninSignupPage = () => {
       (async () => {
         const response = await signinPassportSuccess();
         if (response.status === 200 && !isLoggedIn) {
-          handleRedirectUrl();
+          const path = redirectUrl
+            ? redirectUrl?.pathname + redirectUrl?.search
+            : "/";
+          navigate(path, {
+            replace: true,
+          });
         }
       })();
     } catch (error) {
@@ -91,12 +102,21 @@ const SigninSignupPage = () => {
   useEffect(() => {
     try {
       if (signinResult.isSuccess) {
-        handleRedirectUrl();
+        const path = redirectUrl
+          ? redirectUrl?.pathname + redirectUrl?.search
+          : "/";
+        navigate(path, {
+          replace: true,
+        });
       }
     } catch (error) {
       console.log(error);
     }
   }, [signinResult]);
+
+  useEffect(() => {
+    isLoggedIn && localStorage.setItem(`_tracking_id`, user?._id);
+  }, [isLoggedIn]);
 
   return (
     <>

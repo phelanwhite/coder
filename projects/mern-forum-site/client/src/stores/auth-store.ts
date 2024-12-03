@@ -6,6 +6,9 @@ type Type = {
   user: any;
   access_token: string;
   isLoggedIn: boolean;
+  redirectUrl: any;
+  changeRedirectUrl: (location: any) => any;
+
   signup: (data: any) => any;
   signin: (data: any) => any;
   signout: () => any;
@@ -23,6 +26,18 @@ export const useAuthStore = create<Type>()(
       user: null,
       access_token: "",
       isLoggedIn: false,
+      redirectUrl: null,
+      changeRedirectUrl: (location) => {
+        const arrayPath = [
+          `signin`,
+          `signup`,
+          `forgot-password`,
+          `reset-password`,
+        ];
+        if (arrayPath.find((item) => location.pathname.includes(item))) return;
+        set({ redirectUrl: location as Location });
+      },
+
       signup: async (data) => {
         const url = `auth/signup`;
         const response = (await axiosConfigV1.post(url, data)).data;
@@ -33,6 +48,7 @@ export const useAuthStore = create<Type>()(
         const response = (await axiosConfigV1.post(url, data)).data;
         set({
           user: response?.data?.user,
+
           access_token: response?.data?.access_token,
           isLoggedIn: true,
         });
@@ -41,7 +57,15 @@ export const useAuthStore = create<Type>()(
       signout: async () => {
         const url = `auth/signout`;
         const response = await (await axiosConfigV1.delete(url)).data;
-        set({ user: null, isLoggedIn: false, access_token: "" });
+        set({
+          user: null,
+
+          isLoggedIn: false,
+          access_token: "",
+        });
+
+        localStorage.removeItem("_tracking_id");
+
         return response;
       },
       getMe: async () => {

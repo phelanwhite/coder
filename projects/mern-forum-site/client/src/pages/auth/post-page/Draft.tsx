@@ -1,25 +1,34 @@
-import PostList from "@/components/common/post/PostList";
+import MyQueriesResultList from "@/components/common/MyQueriesResultList";
 import useSearchParamsValue from "@/hooks/useSearchParamsValue";
 import { usePostStore } from "@/stores/post-store";
-import { useQuery } from "@tanstack/react-query";
-import React, { memo } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import React, { memo, useMemo } from "react";
 
-const Published = () => {
+const Draft = () => {
   const { searchParams, handleSearchParams } = useSearchParamsValue({
-    _status: "1",
+    _status: "-1",
   });
   const { posts, getPostByMe } = usePostStore();
   const getDatasResult = useQuery({
-    queryKey: [`post`, `me`, searchParams.toString()],
+    queryKey: [`me`, `draft`, searchParams.toString()],
     queryFn: async () => {
       return await getPostByMe(searchParams.toString());
     },
+    placeholderData: keepPreviousData,
   });
+  const makeData = useMemo(() => {
+    return posts.map((item) => ({
+      ...item,
+      type: `post`,
+      data: item,
+    }));
+  }, [posts]);
+
   return (
-    <PostList
-      menuType="User"
+    <MyQueriesResultList
+      menuType="Author"
       loading={getDatasResult.isLoading}
-      datas={posts}
+      datas={makeData}
       onchagePage={(e) => handleSearchParams(`_page`, e.selected + 1)}
       page={getDatasResult?.data?.data?._page}
       pageCount={getDatasResult?.data?.data?.total_pages}
@@ -27,4 +36,4 @@ const Published = () => {
   );
 };
 
-export default memo(Published);
+export default memo(Draft);

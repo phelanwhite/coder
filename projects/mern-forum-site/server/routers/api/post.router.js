@@ -7,19 +7,98 @@ import postModel from "../../models/post.model.js";
 import { handleResponse } from "../../helpers/responses.js";
 import { StatusCodes } from "http-status-codes";
 import { QUERY_PARAMETER } from "../../constants/index.js";
+import { customDataPost } from "../../helpers/customData.js";
 
 const postRouter = express.Router();
 
 postRouter.get(`/get-posts`, async (req, res, next) => {
   try {
+    const _q = req.query._q || QUERY_PARAMETER._Q;
     const _page = parseInt(req.query._page) || QUERY_PARAMETER._PAGE;
     const _limit = parseInt(req.query._limit) || QUERY_PARAMETER._LIMIT;
+    const _author = req.query._author;
+    const _tracking_id = req.query._tracking_id;
     const _status = true;
 
     const skip = (_page - 1) * _limit;
 
     const filter = {
+      title: {
+        $regex: _q,
+        $options: "i",
+      },
       status: _status,
+      ...(_author && { user: _author }),
+    };
+
+    const getDatas = await postModel
+      .find(filter)
+      .populate([`user`])
+      .limit(_limit)
+      .skip(skip)
+      .sort({
+        createdAt: -1,
+      });
+
+    const customData = await customDataPost({
+      datas: getDatas,
+      user_id: _tracking_id,
+    });
+
+    const total_rows = await postModel.countDocuments(filter);
+    const total_pages = Math.ceil(total_rows / _limit);
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Posts fetched successfully",
+      data: {
+        results: customData,
+        total_rows,
+        total_pages,
+        _page,
+        _limit,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+postRouter.get(`/get-post-by-id/:id`, async (req, res, next) => {
+  try {
+    const _tracking_id = req.query._tracking_id;
+    const id = req.params.id;
+
+    const getData = await postModel.findById(id).populate([`user`]);
+
+    const customData = (
+      await customDataPost({
+        datas: [getData],
+        user_id: _tracking_id,
+      })
+    )?.[0];
+
+    return handleResponse(res, {
+      status: StatusCodes.OK,
+      message: "Post fetched successfully",
+      data: customData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+postRouter.get(`/get-post-by-id/:id/similar`, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const _page = parseInt(req.query._page) || QUERY_PARAMETER._PAGE;
+    const _limit = parseInt(req.query._limit) || QUERY_PARAMETER._LIMIT;
+    const _author = req.query._author;
+
+    const skip = (_page - 1) * _limit;
+
+    const filter = {
+      _id: { $ne: id },
+      user: _author,
+      status: true,
     };
 
     const getDatas = await postModel
@@ -35,7 +114,7 @@ postRouter.get(`/get-posts`, async (req, res, next) => {
 
     return handleResponse(res, {
       status: StatusCodes.OK,
-      message: "Posts fetched successfully",
+      message: "Similar posts fetched successfully",
       data: {
         results: getDatas,
         total_rows,
@@ -142,21 +221,6 @@ postRouter.delete(`/delete/:id`, verifyToken, async (req, res, next) => {
       status: StatusCodes.OK,
       message: "Post deleted successfully",
       data: deletedData,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-postRouter.get(`/get-post-by-id/:id`, verifyToken, async (req, res, next) => {
-  try {
-    const id = req.params.id;
-
-    const getData = await postModel.findById(id).populate([`user`]);
-
-    return handleResponse(res, {
-      status: StatusCodes.OK,
-      message: "Post fetched successfully",
-      data: getData,
     });
   } catch (error) {
     next(error);

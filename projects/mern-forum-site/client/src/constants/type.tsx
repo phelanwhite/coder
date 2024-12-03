@@ -20,6 +20,16 @@ export type PostType = {
   publication_time: string;
 
   user?: any;
+  isFavorite?: boolean;
+  isBookmark?: boolean;
 };
 
-export type PostButtonMenuType = "Card" | "User";
+export type MyQueriesResultButtonMenuType =
+  | "Card"
+  | "Author"
+  | "History"
+  | "Bookmark"
+  | "Favorite";
+
+export type PostButtonMenuType = MyQueriesResultButtonMenuType;
+export type ListButtonMenuType = MyQueriesResultButtonMenuType;

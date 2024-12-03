@@ -2,7 +2,7 @@ import { LinkType } from "./type";
 
 export const author_links: LinkType[] = [
   {
-    title: `Home`,
+    title: `Posts`,
     path: ``,
   },
   {
@@ -12,6 +12,25 @@ export const author_links: LinkType[] = [
   {
     title: `About`,
     path: `/about`,
+  },
+];
+
+export const search_links: LinkType[] = [
+  {
+    title: `Posts`,
+    path: ``,
+  },
+  {
+    title: `Lists`,
+    path: `/lists`,
+  },
+  {
+    title: `Authors`,
+    path: `/authors`,
+  },
+  {
+    title: `Tags`,
+    path: `/tags`,
   },
 ];
 
@@ -40,7 +59,23 @@ export const user_links: LinkType[] = [
     subMenu: [
       {
         title: `List`,
-        path: `/list`,
+        path: ``,
+      },
+      {
+        title: `Series`,
+        path: `/series`,
+      },
+      {
+        title: `Discussions`,
+        path: `/discussions`,
+      },
+      {
+        title: `Following`,
+        path: `/following`,
+      },
+      {
+        title: `Followers`,
+        path: `/followers`,
       },
     ],
   },
@@ -50,7 +85,7 @@ export const user_links: LinkType[] = [
     subMenu: [
       {
         title: `History`,
-        path: `/history`,
+        path: ``,
       },
       {
         title: `Responses`,
@@ -61,8 +96,8 @@ export const user_links: LinkType[] = [
         path: `/bookmark`,
       },
       {
-        title: `Clap`,
-        path: `/clap`,
+        title: `Favorite`,
+        path: `/favorite`,
       },
     ],
   },

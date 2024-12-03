@@ -22,7 +22,7 @@ const ButtonMenu = ({ icon, children }: Type) => {
   }, []);
   return (
     <div className="relative" ref={menuRef}>
-      <button onClick={() => setIsOpen(!isOpen)}>
+      <button className="block" onClick={() => setIsOpen(!isOpen)}>
         {icon ? icon : <HiOutlineDotsHorizontal />}
       </button>
       {isOpen && (

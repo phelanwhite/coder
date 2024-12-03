@@ -1,7 +1,7 @@
 import Layout1 from "@/components/layout/layout/Layout1";
 import { user_links } from "@/constants/links-constant";
 import { LinkType } from "@/constants/type";
-import SidebarRight from "@/pages/public/home-page/SidebarRight";
+import SidebarRight from "@/components/layout/sidebar/SidebarRight";
 import React, { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import Published from "./Published";

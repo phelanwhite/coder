@@ -9,6 +9,9 @@
     "production": "NODE_ENV=production&& node server/index.js",
     "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
+  "imports": {
+    "#server/*": "./server/*.js"
+  },
   "type": "module",
   "keywords": [],
   "author": "",

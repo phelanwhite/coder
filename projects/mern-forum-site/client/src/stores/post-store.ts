@@ -8,7 +8,6 @@ type Type = {
   updatePostById: (id: string, data: any) => any;
   changeStatusBlogById: (id: string, data: PostType) => any;
   deletePostById: (id: string) => any;
-  //   getPosts: (query?: string) => any;
   getPostByMe: (query?: string) => any;
 };
 

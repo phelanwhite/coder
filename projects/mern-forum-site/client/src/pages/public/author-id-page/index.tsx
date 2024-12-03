@@ -2,11 +2,11 @@ import SidebarRight from "./SidebarRight";
 import { author_links } from "@/constants/links-constant";
 import Layout1 from "@/components/layout/layout/Layout1";
 import { Link, Route, Routes, useParams } from "react-router-dom";
-import Home from "./Home";
 import About from "./About";
-import List from "./List";
+import Posts from "./Posts";
 import ButtonFollow from "@/components/common/follow/ButtonFollow";
 import { useMemo } from "react";
+import Lists from "./Lists";
 
 const AuthorIdPage = () => {
   const { id } = useParams();
@@ -47,8 +47,8 @@ const AuthorIdPage = () => {
       links={makeLinks}
     >
       <Routes>
-        <Route index element={<Home />} />
-        <Route path="list" element={<List />} />
+        <Route index element={<Posts />} />
+        <Route path="list" element={<Lists />} />
         <Route path="about" element={<About />} />
       </Routes>
     </Layout1>

@@ -48,7 +48,7 @@ axiosConfigV1.interceptors.response.use(
           )
         ).data;
 
-        if (refreshTokenResult) {
+        if (refreshTokenResult?.status === 200) {
           useAuthStore.setState({
             access_token: refreshTokenResult?.data?.access_token,
           });
@@ -57,8 +57,11 @@ axiosConfigV1.interceptors.response.use(
           const originalRequestConfig = error.config;
 
           const query = (await axios.request(originalRequestConfig)).data;
+          console.log({
+            query,
+          });
 
-          return query;
+          return Promise.resolve(query);
         } else {
           await useAuthStore.getState().signout();
           return Promise.reject(customError);
